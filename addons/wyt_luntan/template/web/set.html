@@ -1,0 +1,417 @@
+{template 'common/header'}
+
+<div id="menu">
+    <ul class="nav nav-tabs">
+        <li {if $_GPC['action'] == ''}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('set', array('action' => ''));}">参数设置</a>
+        </li>
+        <li {if $_GPC['action'] == 'admin'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('set', array('action' => 'admin'));}">后台身份定义</a>
+        </li>
+        <li {if $_GPC['action'] == 'self'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('set', array('action' => 'self'));}">个人中心栏目</a>
+        </li>
+        <li {if $_GPC['action'] == 'self_add'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('set', array('action' => 'self_add'));}">编辑/添加</a>
+        </li>
+        <li {if $_GPC['action'] == 'withdraw'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('set', array('action' => 'withdraw'));}">企业支付</a>
+        </li>
+    </ul>
+</div>
+
+
+
+{if $_GPC['action'] == 'withdraw'}
+<form method="post" action="{php echo $this->createWebUrl('set',array('action'=>'withdraw'))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">企业提现</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >开启企业提现</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="radio" name="tstate" value="1" {if $res['tstate'] == 1}checked{/if}> 开启
+                    <input type="radio" name="tstate" value="0" {if $res['tstate'] == 0}checked {/if}> 关闭
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">AppSecret(应用密钥): </label>
+                <div class="col-sm-10">
+                    <input type="text" name="appsecret" value="{php echo $res['appsecret']}" class="form-control">
+                    <span class="help-block">认证服务号secret</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">MCHID(商户号): </label>
+                <div class="col-sm-10">
+                    <input type="text" name="mch_id" value="{php echo $res['mch_id']}" class="form-control">
+                    <span class="help-block">输入微信MCHID参数</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">PARTNERKEY(商户支付密钥32位): </label>
+                <div class="col-sm-10">
+                    <input type="text" name="partnerkey" value="{php echo $res['partnerkey']}" class="form-control">
+                    <span class="help-block">商户支付密钥(API密钥)</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">商户支付证书: </label>
+                <div class="col-sm-10">
+
+                    <textarea name="cert" rows="5" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                    <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 apiclient_cert.pem 用记事本打开并复制文件内容, 填至此处</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">支付证书私钥: </label>
+                <div class="col-sm-10">
+                    <textarea name="key" rows="5" class="form-control" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                    <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 apiclient_key.pem 用记事本打开并复制文件内容, 填至此处</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+
+
+
+
+
+{if $_GPC['action'] == 'admin'}
+<form method="post" action="{php echo $this->createWebUrl('set',array('action'=>'admin'))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">后台身份定义</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >昵称</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="nickname" value="{$res['nickname']}" class="form-control" placeholder="请输入列表标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">头像</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('avatar',$res['avatar'])}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >openid</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="openid" value="{$res['openid']}" class="form-control" placeholder="后台发布openid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >uid</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="uid" value="{$res['uid']}" class="form-control" placeholder="后台发布uid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >地址</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="address" value="{$res['address']}" class="form-control" placeholder="请输入地址">
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $_GPC['action'] == 'self_add'}
+<form method="post" action="{php echo $this->createWebUrl('set',array('action'=>'self_add1','id'=>$res1['id']))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">自定义个人中心栏目</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >标题</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="title" value="{$res1['title']}" class="form-control" placeholder="请输入列表标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('images',$res1['images'])}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >链接</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="url" value="{$res1['url']}" class="form-control" placeholder="请输入链接">
+                </div>
+            </div>
+
+           
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+
+{if $_GPC['action'] =='self'}
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>标题</th>
+        <th>图片</th>
+        <th>链接</th>
+        <th>位置</th>
+        <th style="width:250px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res1 $v}
+    <tr>
+        <td>{$v['title']}</td>
+        <td>
+            <img src="{php echo tomedia($v[images])}" style="width: 50px;height: 50px;border-radius:50px;margin: 0 auto;">
+        </td>
+        <td>{$v['url']}</td>
+        <td>{$v['place']}</td>
+
+        <td>
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('set',array('action'=>'self_add', 'id' => $v['id']));}">编辑</a>
+
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('set',array('action'=>'self_delete', 'id' => $v['id']));}">删除</a>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+
+{/if}
+
+
+{if $_GPC['action'] ==''}
+
+<form method="post" action="{php echo $this->createWebUrl('Set',array('action'=>''))}" class="form-horizontal bv-form" role="form" novalidate="novalidate" enctype="multipart/form-data">
+    <div class="panel panel-info">
+        <div class="panel-heading">论坛设置</div>
+        <div class="panel-body">
+        	<div class="form-group">
+	            <label class="col-xs-12 col-sm-3 col-md-2 control-label" >腾讯地图key</label>
+	            <div class="col-sm-9 col-xs-12">
+	                <input type="text" name="qq_address_key" value="{$res['qq_address_key']}" class="form-control" placeholder="">
+	                <a href="https://lbs.qq.com/console/mykey.html?console=mykey" target="_blank">
+	                <div class="col-sm-12 col-xs-12">请输入腾讯地图key，用于发帖时获取地理位置信息。<br />申请地址：https://lbs.qq.com/console/mykey.html?console=mykey<br />key设置中开启WebServiceAPI，并设置域名白名单或者授权IP(服务器IP)</div>
+	                </a>
+	            </div>
+	        </div>
+            
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >论坛名称</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="name" value="{$res['name']}" class="form-control" placeholder="请输入论坛名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >论坛简介</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="jianjie" value="{$res['jianjie']}" class="form-control" placeholder="请输入论坛简介">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >会员数</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="member" value="{$res['member']}" class="form-control" placeholder="请输入会员数">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >管理员</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="admin" value="{$res['admin']}" class="form-control" placeholder="请输入管理员的openid,多个管理员之间用/隔开">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >帖子数</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="thread" value="{$res['thread']}" class="form-control" placeholder="请输入帖子数">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">论坛logo</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('logo',$res['logo']);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">关注二维码</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('erwei',$res['erwei']);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">论坛背景</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('beij',$res['beij']);}
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >发帖积分</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="send" value="{$res['send']}" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >回复积分</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="reply" value="{$res['reply']}" class="form-control" placeholder="">
+                </div>
+            </div>-->
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >打赏手续费</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="shouxu" value="{$res['shouxu']}" class="form-control" placeholder="请输入打赏手续费比例，1代表1%">
+                </div>
+            </div>
+               <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >首次签到积分</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="sign" value="{$res['sign']}" class="form-control" placeholder="首次签到积分 默认1分不能小于1分">
+                </div>
+            </div>
+               <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >后续签到积分</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="sign1" value="{$res['sign1']}" class="form-control" placeholder="后续签到积分 默认1分不能小于1分">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label" >悬赏帖子自动到账时间</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="number" name="award_days" value="{$res['award_days']}" class="form-control" placeholder="">
+                <div class="col-sm-9 col-xs-12">发布悬赏帖的人为悬赏，过多少天系统自动给第一个评论的人 </div>
+            </div>
+        </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >邀请好友可获得积分</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="credit1" value="{$res['credit1']}" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >关注必填biz_id</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="biz_id" value="{$res['biz_id']}" class="form-control" placeholder="开启强制关注公众号后必填参数">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >广告设置</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="mobiletime" value="{$res['mobiletime']}" class="form-control" placeholder="几页显示广告">
+                    <div class="col-sm-9 col-xs-12">广告多少页显示一条，每页5个帖子</div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label" >评论时的模板消息id</label>
+                    <div class="col-sm-9 col-xs-12">
+                     <input type="text" name="mes" value="{$res['mes']}" class="form-control" placeholder="请输入模板消息id">
+                  <div class="col-sm-9 col-xs-12">模版名称：咨询回复消息提醒  编号：OPENTM202109783</div>
+                  </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >审核权限</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="radio" name="state" value="1" {if $res['state'] == 1}checked{/if}> 开启
+                    <input type="radio" name="state" value="0" {if $res['state'] == 0}checked {/if}> 关闭
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >视频开关</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="radio" name="vstate" value="0" {if $res['vstate'] == 0}checked{/if}> 开启
+                    <input type="radio" name="vstate" value="1" {if $res['vstate'] == 1}checked {/if}> 关闭
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >关注公众号开关</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="radio" name="follow" value="1" {if $res['follow'] == 1}checked{/if}> 开启
+                    <input type="radio" name="follow" value="0" {if $res['follow'] == 0}checked {/if}> 关闭
+                </div>
+                <div class="col-sm-9 col-xs-12">开启后必须关注公众号后才能访问</div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >发帖权限</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="radio" name="postauth" value="1" {if $res['postauth'] == 1}checked{/if}> 开启
+                    <input type="radio" name="postauth" value="0" {if $res['postauth'] == 0}checked {/if}> 关闭
+                </div>
+                 <div class="col-sm-9 col-xs-12">开启后只有管理员才能发帖</div>
+            </div>
+            
+            <div class="form-group">
+				<label class="col-sm-2 control-label">最低提现金额</label>
+				<div class="col-sm-10">
+					<input type="text" name="tixian_limit" value="{$res['tixian_limit']}" class="form-control" placeholder="最低提现金额">
+					<span class="help-block"><span style="color:red;">设置最低提现金额</span></span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label">最低打赏金额</label>
+				<div class="col-sm-10">
+					<input type="text" name="dashang_limit" value="{$res['dashang_limit']}" class="form-control" placeholder="最低打赏金额">
+					<span class="help-block"><span style="color:red;">设置最低打赏金额</span></span>
+				</div>
+			</div>
+            
+            <div class="form-group">
+				<label class="col-sm-2 control-label">打赏默认金额</label>
+				<div class="col-sm-10">
+					<input type="text" name="dashang_moneys" value="{$res['dashang_moneys']}" class="form-control">
+					<span class="help-block"><span style="color:red;">设置打赏页面可点击的6个金额面值。请设置6个！并以英文格式逗号","隔开。例如：1,5,10,20,50,100</span></span>
+				</div>
+			</div>
+            
+            <!--<div class="form-group">-->
+                <!--<label class="col-xs-12 col-sm-3 col-md-2 control-label" >发帖增加字段</label>-->
+                <!--<div class="col-sm-9 col-xs-12">-->
+                    <!--<input type="radio" name="dingdan" value="0" {if $res['dingdan'] == 0}checked{/if}> 开启-->
+                    <!--<input type="radio" name="dingdan" value="1" {if $res['dingdan'] == 1}checked {/if}> 关闭-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-xs-12 col-sm-3 col-md-2 control-label" >增加字段名称</label>-->
+                <!--<div class="col-sm-9 col-xs-12">-->
+                    <!--<input type="text" name="zengjia" value="{$res['zengjia']}" class="form-control" placeholder="请输入需要在发布页增加的字段名称">-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+{template 'common/footer'}

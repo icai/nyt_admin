@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript">
+     // 对浏览器的UserAgent进行正则匹配,不含有微信独有标识的则为其他浏览器
+     var useragent = navigator.userAgent;
+     if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
+         // 这里警告框会阻塞当前页面继续加载
+         alert('请登录微信端再反馈!');
+         // 以下代码是用javascript强行关闭当前页面
+         var opened = window.open('about:blank', '_self');
+         opened.opener = null;
+         opened.close();
+     }
+ </script>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script src="https://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>意见反馈</title>
+	{php echo register_jssdk(false);}
+	<link rel="stylesheet" href="{ASSETS_PATH}css/weui2.css"/>
+	<link rel="stylesheet" href="{ASSETS_PATH}css/weui3.css"/>
+	<style>
+		.aa li {border-bottom:1px solid white;padding-bottom:5px;font-size:12px;}
+		.aa img{width:40px;}
+		.top {position:fixed;top:0;width:100%;height: 40px;line-height:40px;text-align:center;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;color:white;}
+		.weui-cells {margin-top:15px;}
+	</style>
+</head>
+<body style="margin:0px;">
+
+<div class="top">
+	<div onclick="javascript :history.back(-1);" style="position: absolute;left:5px;margin-top:5px;"><img src="{ASSETS_PATH}img/zuo.png" width="20px" height="20px"></div>
+	<a href="{php echo $this->createMobileUrl('Index',array('action'=>'user'))}">
+		<div style="position: absolute;right:5px;margin-top:5px;">
+			<img src="{ASSETS_PATH}img/youwo.png" width="20px" height="20px">
+		</div>
+	</a>
+	意见反馈
+</div>
+<div style="height:32px;"></div>
+<form method="post" id="post_form" action="{php echo $this->createMobileUrl('User',array('action'=>'opinion'))}">
+	<div class="weui-cells weui-cells_form">
+		<div class="weui-cell">
+			<div class="weui-cell__bd">
+				<textarea class="weui-textarea" name="info" placeholder="我想说点什么..." rows="5"></textarea>
+			</div>
+		</div>
+	</div>
+<div class="" style="text-align:center;width:100%;position: fixed;bottom:0;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;">
+	<a class="" href="javascript:" id="showTooltips" onclick="$('#post_form').submit()" style="color:white;font-size:14px;height:40px;line-height:40px;">提交反馈</a>
+</div>
+
+</form>
+
+
+</body>
+
+<script type="text/javascript">
+    $(function(){
+        $(".menu-btn").click(function(e){
+            e.preventDefault();
+            if($(".sider").hasClass("open")){
+                $(".sider").removeClass('open');
+                $("body").removeClass("open");
+            }else{
+                $(".sider").addClass("open");
+                $("body").addClass('open');
+            }
+        })
+    });
+
+    $(document).ready(function(){
+        $("#anniu").click(function(){
+            $("#zuoce").toggle();
+
+            $("#zhengti").toggleClass(function(){
+                //rgb(204, 204, 204)==#ccc
+                if( $(this).css("padding-left")=="100px" ){
+                    $(this).css("padding-left","0px");
+                    $(".yuanlai").css("margin-left","0px");
+                }else{
+                    $(this).css("padding-left","100px");
+                    $(".yuanlai").css("margin-left","100px");
+
+                }
+            });
+
+            $("#zheng>img").toggle();
+        });
+    });
+</script>
+</html>

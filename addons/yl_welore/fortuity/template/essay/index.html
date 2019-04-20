@@ -1,0 +1,184 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}.resth button{margin-right:5px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-file-text"></span> 帖子列表
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="turtle('all');"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索标题或用户...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-6">
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs resth">
+                        <button type="button" class="am-btn am-btn-default" onclick="turtle('all');">全部</button>
+                        <button type="button" class="am-btn am-btn-default" onclick="turtle('0');">待审核</button>
+                        <button type="button" class="am-btn am-btn-default" onclick="turtle('1');">已审核</button>
+                        <button type="button" class="am-btn am-btn-default" onclick="turtle('2');">已打回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="7%">ID</th>
+                            <th width="11%">圈子名称</th>
+                            <th width="12%">发帖 标题/内容</th>
+                            <th width="11%">发帖用户</th>
+                            <th width="6%">帖子类型</th>
+                            <th width="7%">浏览次数</th>
+                            <th width="7%">点赞人数</th>
+                            <th width="7%">回复人数</th>
+                            <th width="10%">发帖时间</th>
+                            <th width="7%">审核状态</th>
+                            <th width="7%">内容详情</th>
+                            <th width="8%">跳转链接</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">{$vo.id}</td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('compass/fence')}&hazy_name={$vo.realm_name}&page=1"
+                                   title="{$vo.realm_name}" target="_blank">
+                                    {$vo.realm_name|subtext=6}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.study_title!=''}
+                                    {$vo.study_title|emoji_decode|strip_tags|subtext=6}
+                                {elseif $vo.study_content}
+                                    {$vo.study_content|emoji_decode|strip_tags|subtext=6}
+                                {else}
+                                    无
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_wechat_open_id}&page=1"
+                                   title="{$vo.user_nick_name|emoji_decode}"
+                                   target="_blank">
+                                    {$vo.user_nick_name|emoji_decode|subtext=6}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.study_type==0}
+                                图文
+                                {elseif $vo.study_type==1}
+                                语音
+                                {elseif $vo.study_type==2}
+                                视频
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only">{$vo.study_heat}</td>
+                            <td class="am-hide-sm-only">{$vo.study_laud}</td>
+                            <td class="am-hide-sm-only">{$vo.study_repount}</td>
+                            <td class="am-hide-sm-only">{:date('Y-m-d H:i:s',$vo.adapter_time)}</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.study_status == 0}
+                                <span class="am-text-warning">待审核</span>
+                                {elseif $vo.study_status == 1}
+                                <span class="am-text-success">已通过</span>
+                                {elseif $vo.study_status == 2}
+                                <span class="am-text-secondary">已打回</span>
+                                {/if}
+                            </td>
+                            <td>
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                                onclick="uploof('{$vo.id}');">
+                                            <span class="am-icon-search"></span> 查看
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button" class="am-btn am-btn-default am-btn-xs copys">
+                                            <input type="hidden" value="/yl_welore/pages/packageA/article/index?id={$vo.id}&type={$vo.study_type}">
+                                            复制链接
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script src="assets/js/jquery.zclip.min.js?v=1.0"></script>
+<script>
+
+    $(function () {
+        $('.copys').zclip({
+            path: 'assets/js/ZeroClipboard.swf',
+            copy: function () {
+                var linkUrl = $(this).children('input').eq(0).val();
+                return linkUrl;
+            },
+            afterCopy: function () {
+                layer.alert('链接地址已成功复制到剪贴板，请使用鼠标右键或键盘的 Ctrl+V 组合键 进行粘贴！', {'title': '提示'});
+            }
+        });
+    });
+
+    function uploof(uplid) {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href', "{:url('setails')}&uplid=" + uplid);
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+    function turtle(pigeon) {
+        if (isNaN(pigeon)) {
+            var fz_name = $.trim($('#fz_name').val());
+            if (fz_name)
+                location.href = "{:url('index')}&hazy_name=" + fz_name + "&page={$page}";
+            else
+                location.href = "{:url('index')}&page={$page}";
+        } else {
+            var fz_name = $.trim($('#fz_name').val());
+            var egon = '{$egon}';
+            if ((egon != '' || pigeon != '') && fz_name != '')
+                location.href = "{:url('index')}&egon=" + (pigeon == '' ? egon : pigeon) + "&hazy_name=" + fz_name + "&page={$page}";
+            else if (egon != '' || pigeon != '')
+                location.href = "{:url('index')}&egon=" + (pigeon == '' ? egon : pigeon) + "&page={$page}";
+            else if (fz_name != '')
+                location.href = "{:url('index')}&hazy_name=" + fz_name + "&page={$page}";
+            else
+                location.href = "{:url('index')}&page={$page}";
+        }
+    }
+
+</script>
+{/block}

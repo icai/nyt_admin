@@ -1,0 +1,192 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-user-md"></span> 超级管理员
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-6">
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button type="button" class="am-btn am-btn-default" onclick="saloof();">
+                            <span class="am-icon-plus"></span> 新增超级管理员
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="16.66%">排序</th>
+                            <th width="16.66%">超级管理员头像</th>
+                            <th width="16.66%">超级管理员名称</th>
+                            <th width="16.66%">管理员openid</th>
+                            <th width="16.66%">状态</th>
+                            <th width="16.67%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <input type="text" class="scfixed"
+                                       id="sfixed-{$vo.id}" value="{$vo.scores}" data-score="{$vo.scores}"
+                                       style="width: 50px;margin-top: 8px;"
+                                       onblur="supre('{$vo.id}','#sfixed-{$vo.id}');">
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <img src="{$vo.user_head_sculpture}" onerror="this.src='static/disappear/default.png'" style="width: 50px;height:50px;border-radius: 50%;"/>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_nick_name|emoji_decode|filter_emoji}&page=1"
+                                   title="{$vo.user_nick_name|emoji_decode}" target="_blank">
+                                    {$vo.user_nick_name|emoji_decode|subtext=10}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">{$vo.user_open_id}</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status == 0}
+                                <span style="color: red;cursor: pointer;" title="点击更改状态" onclick="outward('1','{$vo.id}');">禁用</span>
+                                {else}
+                                <span style="color: lightgreen;cursor: pointer;" title="点击更改状态" onclick="outward('0','{$vo.id}');">正常</span>
+                                {/if}
+                            </td>
+                            <td>
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button"
+                                                class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"
+                                                onclick="symbolDel('{$vo.id}')">
+                                            <span class="am-icon-trash-o"></span>
+                                            删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+
+    function outward(oue, usid) {
+        $.ajax({
+            type: "post",
+            url: "{:url('slpust')}",
+            data: {
+                'usid': usid,
+                'status': oue
+            },
+            async: false,
+            success: function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000});
+                }
+            }
+        });
+    }
+
+    function supre(asyId, domId) {
+        var dalue = $(domId).val();
+        var daioe = $(domId).attr('data-score');
+        if (dalue > 2147483646) {
+            layer.msg('排序数字最大不能超过 2147483646');
+            $(domId).val(daioe);
+            return false;
+        }
+        if (dalue != daioe) {
+            var repair = exalter(asyId, dalue);
+            if (repair.code > 0) {
+                layer.msg(repair.msg, {icon: 1, time: 800});
+                $(domId).attr('data-score', dalue);
+            } else {
+                layer.msg(repair.msg, {icon: 5, time: 1600});
+            }
+        }
+    }
+
+    function exalter(asyId, dalue) {
+        var straw = [];
+        $.ajax({
+            type: "post",
+            url: "{:url('slpect')}",
+            data: {
+                asyId: asyId,
+                dalue: dalue
+            },
+            async: false,
+            success: function (data) {
+                straw = data;
+            }
+        });
+        return straw;
+    }
+
+
+    function saloof() {
+        location.href = "{:url('ruinspect')}";
+    }
+
+    function uploof(uplid) {
+        location.href = "{:url('upinspect')}&uplid=" + uplid;
+    }
+
+
+    var lock = false;
+
+    function symbolDel(mid) {
+        if (!lock) {
+            lock = true;
+            layer.confirm('您确定要删除当前超级管理员吗', {
+                btn: ['确定', '取消']
+            }, function () {
+                $.post(
+                    "{:url('spectlint')}",
+                    {'ecid': mid},
+                    function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                                lock = false;
+                            });
+                        }
+                    }, 'json');
+            }, function () {
+                lock = false;
+            });
+        }
+    }
+
+</script>
+{/block}

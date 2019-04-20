@@ -1,0 +1,175 @@
+{template 'common/header'}
+
+<div id="menu">
+    <ul class="nav nav-tabs">
+        <li {if $_GPC['action'] == ''}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('ads', array('action' => ''));}">广告列表</a>
+        </li>
+        <li {if $_GPC['action'] == 'add'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('ads', array('action' => 'add'));}">广告编辑</a>
+        </li>
+        <!--<li {if $_GPC['action'] == 'notice'}class="active"{/if}>-->
+        <!--<a href="{php echo $this->createWebUrl('ads', array('action' => 'notice'));}">公告列表</a>-->
+        <!--</li>-->
+        <!--<li {if $_GPC['action'] == 'notice_add'}class="active"{/if}>-->
+        <!--<a href="{php echo $this->createWebUrl('ads', array('action' => 'notice_add'));}">公告编辑</a>-->
+        <!--</li>-->
+
+    </ul>
+</div>
+
+{if $_GPC['action'] == 'add'}
+<form method="post" action="{php echo $this->createWebUrl('ads',array('action'=>'add1','id'=>$res1['id']))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">广告列表</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >排序</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="display"  required="required"  value="{$res1['display']}" class="form-control" placeholder="数值越大优先显示">
+                </div>
+            </div>
+             <div class="form-group">
+               <label class="col-xs-12 col-sm-3 col-md-2 control-label" >所属模块</label>
+                 <div class="col-sm-9 col-xs-12">
+                  <select name="mobile" id="">
+                  {loop $mobilelist $v}
+                  <option value="{$v['id']}">
+                  {$v['name']}
+                    </option>
+                    {/loop}
+                    </select>
+                  </div>
+              </div>
+             <div class="form-group">
+                 <label class="col-xs-12 col-sm-3 col-md-2 control-label" >标题</label>
+                 <div class="col-sm-9 col-xs-12">
+                <input type="text" name="title"  required="required" value="{$res1['title']}" class="form-control" placeholder="请输入文章标题">
+                  </div>
+             </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告图片</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('images',$res1['images'])}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >广告链接</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="url" value="{$res1['url']}" class="form-control" placeholder="请输入文章链接">
+                </div>
+            </div>
+
+          <!--  <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >广告位置</label>
+                <div class="col-sm-9 col-xs-12">
+                    <select  id="leixing" name="place">
+                        <option value="{$res1['place']}">{$res1['place']}</option>
+                        <option value="首页">首页</option>
+                        <option value="个人中心">个人中心</option>
+                        <option value="详情页">详情页</option>
+                    </select>
+                </div>
+            </div>!-->
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+
+{if $_GPC['action'] ==''}
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>排序</th>
+        <th>标题</th>
+        <th>图片</th>
+        <th>链接</th>
+        <th>所属模块</th>
+       <!-- <th>位置</th>!-->
+        <th style="width:250px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res $v}
+    <tr>
+        <td>{$v['display']}</td>
+        <td>{$v['title']}</td>
+        <td>
+            <img src="{php echo tomedia($v[images])}" style="width: 50px;height: 50px;border-radius:50px;margin: 0 auto;">
+        </td>
+        <td>{$v['url']}</td>
+        <td>{$v['name']}</td>
+       <!-- <td>{$v['place']}</td>!-->
+
+        <td>
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('ads',array('action'=>'add', 'id' => $v['id']));}">编辑</a>
+
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('ads',array('action'=>'delete', 'id' => $v['id']));}">删除</a>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+{/if}
+{if $_GPC['action'] == 'notice_add'}
+<form method="post" action="{php echo $this->createWebUrl('ads',array('action'=>'notice_add1','id'=>$res1['id']))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">公告列表</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >标题</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="title" value="{$res1['title']}" class="form-control" placeholder="请输入文章标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >公告内容</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="info" value="{$res1['info']}" class="form-control" placeholder="请输入文章链接">
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+
+{if $_GPC['action'] =='notice'}
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>标题</th>
+        <th>内容</th>
+        <th style="width:250px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res1 $v}
+    <tr>
+        <td>{$v['title']}</td>
+        <td>{$v['info']}</td>
+        <td>
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('ads',array('action'=>'notice_add', 'id' => $v['id']));}">编辑</a>
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('ads',array('action'=>'notice_delete', 'id' => $v['id']));}">删除</a>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+
+{/if}
+{template 'common/footer'}

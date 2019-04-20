@@ -1,0 +1,75 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-copyright"></span> 版权设置
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-12">
+                <div class="am-form am-form-horizontal" style="width: 670px;height:300px;margin: 0px auto;box-shadow: 0px 0px 10px 0px black;">
+                    <div class="am-form-group" style="padding-top: 80px;margin-left: 30px;">
+                        <label class="am-u-sm-5 am-form-label"> 版权显示</label>
+                        <div class="am-u-sm-1 am-u-end">
+                            <div class="tpl-switch">
+                                <input id="hermit" type="checkbox" style="display: none;" class="ios-switch bigswitch tpl-switch-btn" {if $globalRecluse.hermit==1}checked{/if}>
+                                <div class="tpl-switch-btn-view">
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="am-u-sm-3 am-form-label am-u-end">
+                            当前状态 :
+                            <span id="horite">{if $globalRecluse.hermit==1}打开{else}关闭{/if}</span>
+                        </label>
+                    </div>
+                    <div class="am-form-group" style="padding-bottom:20px;">
+                        <label class="am-u-sm-12 am-form-label" style="color:red;text-align: center;font-weight: bold;">
+                            更改后将用于整站显示
+                        </label>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-7 am-u-sm-push-5">
+                            <button type="button" class="am-btn am-btn-secondary" style="border-radius: 5px;" onclick="holdSave();">保存设置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    !function () {
+        $('.tpl-switch').find('.tpl-switch-btn-view').on('click', function () {
+            $(this).prev('.tpl-switch-btn').prop("checked", function () {
+                if ($(this).is(':checked')) {
+                    $('#horite').text('关闭');
+                    return false;
+                } else {
+                    $('#horite').text('打开');
+                    return true;
+                }
+            });
+        });
+    }();
+
+    function holdSave() {
+        var hermit = $('#hermit').prop('checked') ? 1 : 0;
+        $.post("{:url('copyright/recluse')}", {'hermit': hermit}, function (data) {
+            if (data.code > 0) {
+                layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(data.msg, {icon: 5, time: 2000});
+            }
+        });
+    }
+</script>
+{/block}

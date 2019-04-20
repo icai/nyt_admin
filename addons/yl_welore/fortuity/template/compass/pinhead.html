@@ -1,0 +1,287 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.assous{width:100%;height:500px;overflow:auto;font-size:16px;}.lcassous{width:100%;height:500px;overflow:auto;background-image:url('static/disappear/cleft.png');background-repeat:no-repeat;background-position:center;background-size:30px;cursor:pointer;}.rcassous{width:100%;height:500px;overflow:auto;background-image:url('static/disappear/cright.png');background-repeat:no-repeat;background-position:center;background-size:30px;cursor:pointer;}.gassous{width:100%;height:500px;overflow:auto;font-size:16px;text-align:left;}.gassous button{font-size:12px;margin:3px;}.gassous span{width:100%;word-break:break-all;word-wrap:break-word;white-space:pre-wrap;font-size:14px;}.diligent{width:92%;height:50px;line-height:50px;cursor:pointer;margin:10px;font-size:14px;padding-left:15px;}.airsize{font-size:16px;margin-bottom:10px;text-align:left;}.activent{background:#f3f4f6;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-google-wallet"></span> {$list.realm_name}管理员任命
+        </div>
+        <div style="text-align: right">
+            <button id="usearl" type="button" class="am-btn am-btn-default" style="display: none;" onclick="searly();">申请原因</button>
+            <button type="button" class="am-btn am-btn-default" onclick="holdMinor();">保存设置</button>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g airsize">
+            <div class="am-u-sm-2 am-u-sm-offset-2" style="text-align: center;">管理员列表</div>
+            <div class="am-u-sm-2 am-u-sm-offset-1" style="text-align: center;">管理员申请列表</div>
+            <div class="am-u-sm-2 am-u-sm-offset-1 am-u-end" style="text-align: center;">移除列表</div>
+        </div>
+        <div class="am-g airsize">
+            <div class="am-u-sm-2 am-u-sm-offset-2">
+                <div class="assous"  style="box-shadow: 0px 0px 10px 0px rgba(102, 204, 255, 1);border-radius:10px;">
+                    <form id="sucs_left">
+                        {volist name="list.sulord" id="vo"}
+                        <div class="diligent sulord"  title="{$vo.username|emoji_decode}">
+                            <input type="hidden" name="qulord" value="{$vo.openid}">
+                            <img src="{$vo.userhead}" style="width: 30px;height: 30px;border-radius: 50%;">
+                            {$vo.username|emoji_decode|subtext=20}
+                        </div>
+                        {/volist}
+                    </form>
+                </div>
+            </div>
+            <div class="am-u-sm-1">
+                <div class="lcassous" onclick="sltge('1');"></div>
+            </div>
+            <div class="am-u-sm-2">
+                <div class="assous" style="box-shadow: 0px 0px 10px 0px rgba(204, 153, 51, 1);border-radius:10px;">
+                    <form id="sucs_center">
+                        {volist name="list.envite_sulord" id="vo"}
+                        <div class="diligent sulord"  title="{$vo.username|emoji_decode}">
+                            <input type="hidden" name="qulord" value="{$vo.openid}">
+                            <input type="hidden" name="upshot" value="{$vo.upshot}">
+                            <img src="{$vo.userhead}" style="width: 30px;height: 30px;border-radius: 50%;">
+                            {$vo.username|emoji_decode|subtext=20}
+                        </div>
+                        {/volist}
+                    </form>
+                </div>
+            </div>
+            <div class="am-u-sm-1">
+                <div class="rcassous" onclick="sltge('2');"></div>
+            </div>
+            <div class="am-u-sm-2">
+                <div class="assous" style="box-shadow: 0px 0px 10px 0px rgba(255, 51, 51, 1);border-radius:10px;">
+                    <form id="sucs_right">
+                    </form>
+                </div>
+            </div>
+            <div class="am-u-sm-2">
+                <div class="gassous" style="padding-top: 50%;">
+                    <div style="width: 100%;margin-bottom: 30px;">
+                        <span style="font-size: 14px;">添加申请用户(openid)</span>
+                        <br>
+                        <input id="bincre" type="text" class="am-form-field am-radius" onblur="extolled(this);">
+                        <button type="button" class="am-btn am-btn-default" onclick="gincre();">确定</button>
+                        <br>
+                        <span id="squlord"></span>
+                    </div>
+                    <span>当前选中用户openid：</span><br>
+                    <span id="gopenid" style="color: blue;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    $(function () {
+        $('.sulord').click(function () {
+            var gulord = $(this).hasClass('activent');
+            $('.sulord').removeClass('activent');
+            $('#gopenid').text('');
+            $('#usearl').hide();
+            if (!gulord) {
+                $(this).addClass('activent');
+                $('#gopenid').text($(this).children('input').eq(0).val());
+                var sucsal = $('.activent').children('input').eq(1).val();
+                if(sucsal){
+                    $('#usearl').show();
+                }
+            }
+        });
+    });
+
+    function sltge(rect) {
+        var pessel = $('.activent').parent().attr('id');
+        var ritual = false;
+        if (rect == 1) {
+            if (pessel != 'sucs_left' && pessel == 'sucs_center') {
+                var sucsLeft = $('#sucs_left').serializeArray();
+                var sucsal = $('.activent').children('input').eq(0).val();
+                if (uxclude(sucsLeft, sucsal) == true) {
+                    var currentActivent = $('.activent');
+                    var activentOuterHTML = $(currentActivent).prop("outerHTML");
+                    $('#sucs_left').append(activentOuterHTML);
+                    $(currentActivent).remove();
+                    ritual = true;
+                }
+            } else if (pessel != 'sucs_left' && pessel == 'sucs_right') {
+                var sucsLeft = $('#sucs_left').serializeArray();
+                var sucsal = $('.activent').children('input').eq(0).val();
+                if (uxclude(sucsLeft,sucsal) == true) {
+                    var currentActivent = $('.activent');
+                    var activentOuterHTML = $(currentActivent).prop("outerHTML");
+                    $('#sucs_left').append(activentOuterHTML);
+                    $(currentActivent).remove();
+                    ritual = true;
+                }
+            }
+        } else {
+            if (pessel != 'sucs_right' && pessel == 'sucs_center') {
+                var currentActivent = $('.activent');
+                var activentOuterHTML = $(currentActivent).prop("outerHTML");
+                $('#sucs_right').append(activentOuterHTML);
+                $(currentActivent).remove();
+                ritual = true;
+            } else if (pessel != 'sucs_right' && pessel == 'sucs_left') {
+                var currentActivent = $('.activent');
+                var activentOuterHTML = $(currentActivent).prop("outerHTML");
+                $('#sucs_right').append(activentOuterHTML);
+                $(currentActivent).remove();
+                ritual = true;
+            }
+        }
+        if (ritual) {
+            ulocked();
+        }
+    }
+
+    function ulocked() {
+        $('.activent').on('click', function () {
+            var gulord = $(this).hasClass('activent');
+            $('.sulord').removeClass('activent');
+            $('#gopenid').text('');
+            $('#usearl').hide();
+            if (!gulord) {
+                $(this).addClass('activent');
+                $('#gopenid').text($(this).children('input').eq(0).val());
+                var sucsal = $('.activent').children('input').eq(1).val();
+                if(sucsal){
+                    $('#usearl').show();
+                }
+            }
+        });
+    }
+
+    function extolled(obg) {
+        obg.value = $.trim(obg.value);
+        if (obg.value != '') {
+            $.getJSON("{:url('getopenid')}", {"openid": obg.value}, function (data) {
+                if (data.name != '') {
+                    var gropt = "<span id='sgropt' style='color: lightseagreen;'>" + data.name + "</span>";
+                    gropt += "<span id='sehred' style='display: none;'>" + data.userhead + "</span>";
+                    $("#squlord").html(gropt);
+                } else {
+                    var gropt = "<span id='sgropt' style='color: red;'>openid填写错误</span>";
+                    $("#squlord").html(gropt);
+                    obg.value = '';
+                }
+            });
+        }
+    }
+
+    function uxclude(slurry,sucsal) {
+        var marvel = false;
+        var loathe = 0;
+        for (var i = 0; i < slurry.length; i++) {
+            if(slurry[i]['value']==sucsal){
+                marvel = true;
+                break;
+            }
+            if(slurry[i]['name']=='qulord'){
+                loathe++;
+            }
+        }
+        if (loathe >= 10) {
+            layer.alert('很抱歉，管理员最多只能任命十位！', {'title': '系统提示'});
+            return false;
+        }
+        if (marvel) {
+            layer.alert('此用户已经任命管理员，请不要重复任命！', {'title': '系统提示'});
+            return false;
+        }
+        return true;
+    }
+
+    function teraun(slurry, sucsal) {
+        var marvel = false;
+        var loathe = 0;
+        for (var i = 0; i < slurry.length; i++) {
+            if (slurry[i]['value'] == sucsal) {
+                marvel = true;
+                break;
+            }
+        }
+        if (marvel) {
+            layer.alert('管理员申请列表已存在此用户，请不要重复添加！', {'title': '系统提示'});
+            $('#bincre').val('');
+            $('#squlord').html('');
+            return false;
+        }
+        return true;
+    }
+
+    function gincre() {
+        var bincre = $.trim($('#bincre').val());
+        if (!bincre) {
+            layer.msg('请输入用户的openid');
+            return;
+        } else {
+            var sgropt = $("#sgropt").text();
+            if (sgropt != '' && sgropt != 'openid填写错误') {
+                var sucsCenter = $('#sucs_center').serializeArray();
+                if (teraun(sucsCenter, bincre)) {
+                    $('.sulord').removeClass('activent');
+                    var shtml = '<div class="diligent sulord activent" title="' + sgropt + '">';
+                    shtml += '<input type="hidden" name="qulord" value="' + bincre + '">';
+                    shtml += '<input type="hidden" name="upshot" value="系统管理员添加">' ;
+                    shtml += '<img src="' + $('#sehred').text() + '" style="width: 30px;height: 30px;border-radius: 50%;">' + sgropt;
+                    shtml += '</div>';
+                    var sucsCenter = $('#sucs_center').serializeArray();
+                    $('#sucs_center').append(shtml);
+                    $('#gopenid').text(bincre);
+                    $('#usearl').show();
+                    $('#bincre').val('');
+                    $('#squlord').html('');
+                    ulocked();
+                }
+            }
+        }
+    }
+
+    function searly() {
+        var sucsal = $('.activent').children('input').eq(1).val();
+        if (sucsal) {
+            layer.alert(sucsal, {'title': '申请原因'});
+        }
+    }
+
+    var slock = false;
+    function holdMinor(){
+        if(!slock){
+            var sucsCenter = $('#sucs_center').serializeArray();
+            if (sucsCenter.length > 0) {
+                layer.alert('很抱歉，管理员申请列表还有未处理的数据，请处理完后进行保存！', {'title': '系统提示'});
+                return;
+            }
+            slock = true;
+            var sucsLeft = $('#sucs_left').serializeArray();
+            var newSulord = [];
+            for (var i = 0; i < sucsLeft.length; i++) {
+                if (sucsLeft[i]['name'] == 'qulord') {
+                    newSulord.push(sucsLeft[i]['value']);
+                }
+            }
+            $.post("{:url('pinhead')}", {
+                'toryid': '{$list.tory_id}',
+                'sulord': newSulord
+            }, function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        slock = false;
+                    });
+                }
+            }, 'json');
+        }
+    }
+
+</script>
+{/block}

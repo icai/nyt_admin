@@ -1,0 +1,190 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="row">
+    <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+        <div class="dashboard-stat" style="background: #ff9806;color: #FFF;">
+            <div class="visual">
+                <i class="am-icon-users" style="color: #f8d36f;"></i>
+            </div>
+            <div class="details">
+                <div class="number"> {$new_user_today}</div>
+                <div class="desc"> 今日新增用户人数</div>
+            </div>
+            <a class="more" href="#">
+                <i class="m-icon-swapright"></i>
+            </a>
+        </div>
+    </div>
+    <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+        <div class="dashboard-stat blue">
+            <div class="visual">
+                <i class="am-icon-circle-o"></i>
+            </div>
+            <div class="details">
+                <div class="number"> {$new_toryon_today}</div>
+                <div class="desc"> 今日申请创建圈子数量</div>
+            </div>
+            <a class="more" href="#">
+                <i class="m-icon-swapright"></i>
+            </a>
+        </div>
+    </div>
+    <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+        <div class="dashboard-stat red">
+            <div class="visual">
+                <i class="am-icon-bar-chart-o"></i>
+            </div>
+            <div class="details">
+                <div class="number"> {$new_paper_today}</div>
+                <div class="desc"> 今日发帖数量</div>
+            </div>
+            <a class="more" href="#">
+                <i class="m-icon-swapright"></i>
+            </a>
+        </div>
+    </div>
+    <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+        <div class="dashboard-stat green">
+            <div class="visual">
+                <i class="am-icon-comments-o"></i>
+            </div>
+            <div class="details">
+                <div class="number"> {$new_punch_today}</div>
+                <div class="desc"> 今日签到人数</div>
+            </div>
+            <a class="more" href="#">
+                <i class="m-icon-swapright"></i>
+            </a>
+        </div>
+    </div>
+    <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+        <div class="dashboard-stat purple">
+            <div class="visual">
+                <i class="am-icon-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number"> {$new_sorder_today}</div>
+                <div class="desc">今日商品订单数量</div>
+            </div>
+            <a class="more" href="#">
+                <i class="m-icon-swapright"></i>
+            </a>
+        </div>
+    </div>
+    <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+        <div class="dashboard-stat" style="background: #aac017;color: #FFF;">
+            <div class="visual">
+                <i class="am-icon-rmb" style="color: #ced699;"></i>
+            </div>
+            <div class="details">
+                <div class="number">{$new_userial_today}</div>
+                <div class="desc"> 今日用户充值收益</div>
+            </div>
+            <a class="more" href="#">
+                <i class="m-icon-swapright"></i>
+            </a>
+        </div>
+    </div>
+    <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+        <div class="dashboard-stat" style="background: #5746d3;color: #FFF;">
+            <div class="visual">
+                <i class="am-icon-gift" style="color: #877dd3;"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    {$new_subsicont_today}
+                    <span style="font-size: 14px;">( {$defaultNavigate.currency} )</span>
+                </div>
+                <div class="desc"> 今日送礼总金额</div>
+            </div>
+            <a class="more" href="#">
+                <i class="m-icon-swapright"></i>
+            </a>
+        </div>
+    </div>
+    <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+        <div class="dashboard-stat" style="background: #76be04;color: #FFF;">
+            <div class="visual">
+                <i class="am-icon-stack-overflow" style="color: #9fbc72;"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    {$new_subsidy_today}
+                    <span style="font-size: 14px;">( {$defaultNavigate.currency} )</span>
+                </div>
+                <div class="desc"> 今日送礼平台总扣税额</div>
+            </div>
+            <a class="more" href="#">
+                <i class="m-icon-swapright"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="am-u-md-6 am-u-sm-12 row-mb">
+        <div class="tpl-portlet">
+            <div class="tpl-portlet-title">
+                <div class="tpl-caption font-green ">
+                    <i class="am-icon-line-chart"></i>
+                    <span> 本月用户统计</span>
+                </div>
+            </div>
+
+            <div class="tpl-echarts" id="tpl-echarts-A">
+
+            </div>
+        </div>
+    </div>
+    <div class="am-u-md-6 am-u-sm-12 row-mb">
+        <div class="tpl-portlet">
+            <div class="tpl-portlet-title">
+                <div class="tpl-caption font-red ">
+                    <i class="am-icon-bar-chart"></i>
+                    <span> 本周发帖活跃用户</span>
+                </div>
+            </div>
+            <div class="tpl-scrollable">
+                <div class="number-stats">
+                    <div class="stat-number am-fl am-u-md-12">
+                        <div class="title am-text-center"> 共计 ( 单位：条 )</div>
+                        <div class="number am-text-center am-text-warning"> {$large_total}</div>
+                    </div>
+                </div>
+
+                <table class="am-table tpl-table am-text-center">
+                    <thead>
+                    <tr class="tpl-table-uppercase">
+                        <th class="am-text-center">用户昵称</th>
+                        <th class="am-text-center">发贴次数</th>
+                        <th class="am-text-center">统计百分比</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="large_user" id="vo"}
+                    <tr>
+                        <td title="{$vo.user_nick_name|emoji_decode}"
+                            style="text-align: left;padding-left: 10%;width: 33.33%;">
+                            <img src="{$vo.user_head_sculpture}" width="30px" height="30px" class="user-pic">
+                            <a class="user-name" href="{:url('user/index')}&hazy_name={$vo.user_wechat_open_id}"
+                               target="_blank">{$vo.user_nick_name|emoji_decode|subtext=7}
+                            </a>
+                        </td>
+                        <td style="width: 33.33%;">{$vo.hasty}</td>
+                        <td class="font-green bold" style="width: 33.33%;">{$vo.percentage}%</td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    !function () {
+        console.log('[ rand_code : {$astounding} ]');
+    }();
+</script>
+{/block}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <script src="{ASSETS_PATH}js/zepto.min.js"></script>
+    <script src="{ASSETS_PATH}js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui.css"/>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui2.css"/>
+    <script src="{ASSETS_PATH}js/layer/layer.js"></script>
+    <title>个人中心</title>
+    {php echo register_jssdk(false);}
+    <style>
+        .weui-cell__bd p{margin-top:4px;}
+        .head {width:100%; height:150px;}
+        .weui-cells {margin-top:0;}
+        li {float: left;width:25%;line-height:15px;margin-bottom:5px;}
+        a:link,a:visited{color: #656565;text-decoration: none;}
+        a:hover{color: black;}
+        .weui-cells {font-size: 15px;}
+        .weui-grid__icon {width:100%;text-align:center}
+        .weui-grid__icon+.weui-grid__label{margin-top:-5px;color:#666;}
+        .footer {position: fixed;bottom: 0;z-index:99999;background-color:white;height:50px;width:100%;text-align: center;border-top:1px solid #eee;font-size:14px;padding:2px 0 0 0;}
+        body,ul,li,img,p,div{margin: 0px; padding: 0px;}
+        ul li{list-style: none;}
+        .tips{
+        	display: inline-block;
+		    padding: 0.2rem;
+		    font-size: .290rem;
+		    text-align: center;
+		    color: #fff;
+		    background: #ff5000;
+		    border-radius: .4rem;
+		    line-height: 0.5rem;
+		    margin-right: .25rem;
+        }
+    </style>
+
+</head>
+<body style="margin:0px;background-color:white;">
+<div class="head" style="background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;">
+    <div style="" align="center">
+        <span><img src="{php echo $user['avatar']}" width="80px" height="80px" style="margin-top:30px;border-radius:80px;"></span><br>
+        <span style="color:white">{$user['nickname']}</span>
+    </div>
+</div>
+<!--<div class="weui-grids">-->
+    <!--<a href="{php echo $this->createMobileUrl('User',array('action' => 'money'))}" class="weui-grid">-->
+        <!--<div class="weui-grid__icon" style="color:orange;font-size:16px;font-weight:550;">-->
+            <!--{$gz_count['cc']}-->
+        <!--</div>-->
+        <!--<p class="weui-grid__label">关注</p>-->
+    <!--</a>-->
+    <!--<a href="javascript:;" class="weui-grid">-->
+        <!--<div class="weui-grid__icon" style="color:red;font-size:16px;font-weight:550;">-->
+            <!--{$fs_count['cc']}-->
+        <!--</div>-->
+        <!--<p class="weui-grid__label">粉丝</p>-->
+    <!--</a>-->
+    <!--<a href="javascript:;" class="weui-grid">-->
+        <!--<div class="weui-grid__icon" style="color:green;font-size:16px;font-weight:550;">-->
+            <!--{$tiezi}-->
+        <!--</div>-->
+        <!--<p class="weui-grid__label">帖子</p>-->
+    <!--</a>-->
+<!--</div>-->
+
+<div id="xx1">
+    {if empty($row)}
+    <div align="center" style="margin-top:50px;">
+        您还未发过帖哦~
+    </div>
+    {/if}
+    {loop $row $v}
+    <a href="{php echo $this->createMobileUrl('Index',array('action'=>'info','id'=>$v['id']))}">
+        <div style="width:100%;border-bottom:1px solid #eee;padding-bottom:10px;">
+            <div style="height:60px;">
+                <div><img src="{$v['avatar']}" style="width:40px;height:40px;border-radius:40px;margin:10px;"></div>
+                <div style="font-size:12px;margin-left:60px;margin-top:-55px;color:#666;">
+                    <span style="font-size:14px;color:#28c4fd;font-weight:500">{$v['nickname']}</span> <br>
+                    <span>{$v['time']}</span>&nbsp;&nbsp;<span>浏览{$v['looks']}</span>&nbsp;
+                    <span style="color:#28c4fd">{$v['fenlei']}</span>
+                    {if $v['shstate'] == 1}<span class="tips">待审核</span>{/if}
+                </div>
+            </div>
+            <div style="font-size:14px;margin-left:50px;margin-right:10px;">
+                <!--<span style="font-size:16px;">{$v['title']}</span><br>-->
+                <span>{$v['info1']}</span>
+                <div>
+                    <ul>
+                        {loop $v['images'] $k}
+                        {if isset($k['name'])}
+                        <li style="width:33%;max-height:110px;float: left;overflow:hidden;">
+                            <img src="{php echo $k['name']}" style="width:100%;padding:3px;">
+                        </li>
+                        {else}
+                        <li style="width:33%;max-height:110px;float: left;overflow:hidden;">
+                            <img src="{php echo tomedia($k)}" style="width:100%;padding:3px;">
+                        </li>
+                        {/if}
+                        {/loop}
+                    </ul>
+                    <div style="clear:both;"></div>
+                    {if $v['video']!=''}
+                    <video width="80%" height="200px" style="margin-top: 10px;background-color: #666;" controls poster="{$v['fengmian']}">
+                        <source src="{$v['video']}" type="video/mp4">
+                        <source src="movie.ogg" type="video/ogg" />
+                    </video>
+                    {/if}
+                </div>
+            </div>
+        </div>
+    </a>
+    {/loop}
+</div>
+
+<div style="height:50px;color:white;">1</div>
+{if $auth==0}
+
+{if $blist !=null}
+{template 'buttom'}
+{else}
+<div class="footer" style="z-index: 9999">
+    <ul id="dian">
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>''))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/shouye1.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#ff9000;">首页</span>
+            </li>
+        </a>
+        <a href="{php echo $this->createMobileUrl('User',array('action'=>'opinion'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/dongtai.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">反馈</span>
+            </li>
+        </a>
+
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'fatie'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/fabu.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">发帖</span>
+            </li>
+        </a>
+
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'user'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/wode.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">我的</span>
+            </li>
+        </a>
+    </ul>
+</div>
+{/if}
+
+{else if !empty($admin) && !empty($openid)}
+
+<a href="{php echo $this->createMobileUrl('Index',array('action'=>'fatie'))}">
+<div  align="center"  style="  position: fixed;right: 20px;bottom: 20px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 68px;">
+   <img src="{ASSETS_PATH}img/post.png" width="30px"  >
+</div>
+</a>
+
+{/if}
+</body>
+</html>
+<script type="text/javascript">
+
+       var sroltop = 0;  //用来监听当前的加载事件是否在执行
+        var page1=1;
+        var pagea;
+        $(window).scroll(function(){
+            //layer.msg('123');
+
+            var srollPos = $(window).scrollTop();    //滚动条距顶部距离(页面超出窗口的高度)
+            totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
+            if(($(document).height()) <= totalheight) {
+                if(sroltop == 0)
+                {
+                    page1+=1
+                    pagea=page1
+                    load_data();
+                }
+            }
+        });
+
+
+       function load_data() {
+           $.ajax({
+               url: "{php echo $this->createMobileUrl('index',array('action' => 'data_thread'))}", type: 'post',
+               data: {
+                   page: pagea,
+               },success:function(res){
+                   var data = $.parseJSON(res);
+                   var html = '';
+                   var video = '';
+                   $.each(data, function (k, v) {
+                       var str='';
+                       $.each(v.images, function (x, y) {
+                           if(y.name !=null){
+                               str +='<li style="width:33%;max-height:110px;float: left;overflow:hidden;">'+
+                                   '<img src="{php echo "'+y.name+'"}" style="width:100%;padding:3px;"></li>'
+                           }else{
+                               str +='<li style="width:33%;max-height:110px;float: left;overflow:hidden;">'+
+                                   '<img src="{php echo tomedia("'+y+'")}" style="width:100%;padding:3px;"></li>'
+                           }
+
+
+                       })
+                       if(v.video!=''){
+                           video='<div style="width:88%;;"><video width="100%" height="200px" style="background-color: #666;margin-top:5px;" controls poster="'+ v.fengmian +'"> ' +
+                               '<source src="'+ v.video+'" type="video/mp4"><source src="movie.ogg" type="video/ogg" /></video></div>'
+                       }
+                       html +=
+                           '<a href="{php echo $this->createMobileUrl('Index', array('action' => 'info'))}&id='+ v.id+'">' +
+                       '<div style="width:100%;border-bottom:1px solid #eee;padding-bottom:10px;">'+
+                       '<div style="height:60px;">'+
+                       '<div><img src="'+v.avatar+'" style="width:40px;height:40px;border-radius:40px;margin:10px;"></div>'+
+                       '<div style="font-size:12px;margin-left:60px;margin-top:-55px;color:#666;">'+
+                       '<span style="font-size:14px;color:#28c4fd;font-weight:500">'+v.nickname+'</span> <br>'+
+                       '<span>'+v.time+'</span>&nbsp;&nbsp;<span>浏览'+v.looks+'</span>&nbsp;'+
+                       '<span style="color:#28c4fd">'+v.fenlei+'</span>'+
+                       '</div>'+
+                       '</div>'+
+                       '<div style="font-size:14px;margin-left:50px;margin-right: 10px">'+
+                       // '<span style="font-size:16px;">'+v.title+'</span><br>'+
+                       '<span>'+v.info1+'</span>'+
+                       '<div>'+
+                       '<ul>'+str+'</ul>'+
+                       '<div style="clear:both;"></div>'+video+
+                       '</div></div></div></a>'
+
+
+                   });
+                   $("#xx1").append(html);
+               }
+           })
+       }
+
+    
+</script>

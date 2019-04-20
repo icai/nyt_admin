@@ -1,0 +1,125 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-plus"></span> 新增虚拟用户
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+                    <div class="am-form-group">
+                        <label for="name" class="am-u-sm-3 am-form-label">用户名称</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="name" placeholder="请输入用户名称">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">用户头像</label>
+                        <div class="am-u-sm-9">
+                            <img src="" id="shion" onerror="this.src='static/disappear/default.png'"
+                                 onclick="cuonice();" style="width: 100px;height: 100px;cursor: pointer;border-radius: 50%;"/>
+                            <button type="button" style="margin-left:10px;font-size: 12px;" onclick="cuonice();">
+                                选择图片
+                            </button>
+                            <small>建议图片尺寸：132*132px</small>
+                            <input type="hidden" name="sngimg">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="gender" class="am-u-sm-3 am-form-label">用户性别</label>
+                        <div class="am-u-sm-9">
+                            <select id="gender">
+                                <option value="1">男</option>
+                                <option value="2">女</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="gender" class="am-u-sm-3 am-form-label">用户个性签名</label>
+                        <div class="am-u-sm-9">
+                            <textarea id="autograph" style="height: 300px;resize: none;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdSave();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    function cuonice() {
+        layer.open({
+            type: 2,
+            anim:2,
+            scrollbar: false,
+            area: ['900px', '600px'],
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            content: ["{:url('images/dialogImages')}&gclasid=0", 'no']
+        });
+    }
+    
+    function sutake(eurl) {
+        $('#shion').attr('src', eurl);
+        $("[name='sngimg']").val(eurl);
+        layer.closeAll();
+    }
+    
+
+    var slock = false;
+    function holdSave() {
+        if (!slock) {
+            var name = $.trim($('#name').val());
+            var sngimg = $.trim($("[name='sngimg']").val());
+            var gender = $.trim($('#gender').val());
+            var autograph = $.trim($('#autograph').val());
+            if (name == '') {
+                layer.msg('用户名称不用为空');
+                return;
+            }
+            if (sngimg == '') {
+                layer.msg('用户头像不用为空');
+                return;
+            }
+            slock = true;
+            $.ajax({
+                type: "post",
+                url: "{:url('user/rutheoretic')}",
+                data: {
+                    'name': name,
+                    'headimg': sngimg,
+                    'gender': gender,
+                    'autograph': autograph
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code > 0) {
+                        layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                            location.href = "{:url('user/theoretic')}";
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                            slock = false;
+                        });
+                    }
+                }
+            });
+        }
+    }
+</script>
+{/block}

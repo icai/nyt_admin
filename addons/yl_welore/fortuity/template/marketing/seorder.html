@@ -1,0 +1,409 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-server"></span> 订单详情
+        </div>
+        <div style="text-align: right">
+            <a href="{:url('marketing/sorder')}" style="color: black;">
+                <span style="background: #e6e6e6;padding: 6px;border-radius: 3px;line-height: 10px;font-size: 12px;">返回订单列表</span>
+            </a>
+            {if $list.shipment==''&&$list.status!='3'}
+            <button type="button" id="uship" class="am-btn am-btn-default am-btn-xs"  data-am-modal="{target: '#eship', closeViaDimmer: 0, width: 600, height: 420}">发货</button>
+            {/if}
+            {if $list.status=='1'}
+            <button type="button" id="ument" class="am-btn am-btn-default am-btn-xs"  data-am-modal="{target: '#ement', closeViaDimmer: 0, width: 600, height: 200}">修改物流单号/兑换码</button>
+            {/if}
+            {if $list.status==0}
+            <button type="button" class="am-btn am-btn-default am-btn-xs" onclick="cancelOrder();">取消订单</button>
+            {/if}
+            {if $list.status==2}
+            <button type="button" class="am-btn am-btn-default am-btn-xs" onclick="holdMinor('0');">拒绝退款申请</button>
+            <button type="button" class="am-btn am-btn-default am-btn-xs" onclick="holdMinor('1');">同意退款申请</button>
+            {/if}
+            <?php $timeOut=contract($list['ship_time']); ?>
+            {if $timeOut=='1'&&$list.status=='1'}
+            <button type="button" class="am-btn am-btn-default am-btn-xs" onclick="reving();">确认收货</button>
+            {/if}
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g am-u-md-6 am-u-md-push-3 am-u-md-end"
+             style="margin-top:20px;padding-left: 50px;border: 1px solid;box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 1);">
+            <div class="tpl-form-body tpl-form-line">
+                <div class="am-form tpl-form-line-form">
+                    <div class="am-form-group">
+                        <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default am-u-md-11 am-u-md-push-1"
+                             style="margin-left: -45px;">
+                            <h2 class="am-titlebar-title" style="margin-top: 10px;">
+                                商品信息
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">
+                            <img src="{$list.product_img}" style="width: 100px;height: 100px;">
+                        </label>
+                        <div class="am-u-sm-9" style="margin-top: 28px;">
+                            <small>商品名称 : {$list.product_name}</small>
+                            <br>
+                            <small>购买用户 :
+                                <a href="{:url('user/index')}&hazy_name={$list.user_wechat_open_id}&page=1"
+                                   title="{$list.user_nick_name|emoji_decode}"
+                                   target="_blank">
+                                    {$list.user_nick_name|emoji_decode}
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品价格 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{$list.product_price} ( {$defaultNavigate.currency} )</small>
+                        </div>
+                    </div>
+                    {if $list.is_noble == 1}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">折扣利率 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{$list.product_discount*100} ( 折 )</small>
+                        </div>
+                    </div>
+                    {/if}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">实付金额 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small style="color: indianred;">{$list.actual_price}</small>
+                            <small>( {$defaultNavigate.currency} )</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">赠送{$defaultNavigate.confer} :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small style="color: yellowgreen;">{$list.product_rebate}</small>
+                            <small>( {$defaultNavigate.confer} )</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default am-u-md-11 am-u-md-push-1"
+                             style="margin-left: -45px;">
+                            <h2 class="am-titlebar-title" style="margin-top: 10px;">
+                                订单信息
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">订单编号 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{$list.order_number}</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">创建时间 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{:date('Y-m-d H:i:s',$list.buy_time)}</small>
+                        </div>
+                    </div>
+                    {if $list.ship_time}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">发货时间 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{:date('Y-m-d H:i:s',$list.ship_time)}</small>
+                        </div>
+                    </div>
+                    {/if}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">订单状态 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>
+                                {if $list.status==0}
+                                <span style="color: indianred;">待发货</span>
+                                {elseif $list.status==1}
+                                <span style="color: darkseagreen;">已发货</span>
+                                {elseif $list.status==2}
+                                <span style="color: darkorange;">待退款</span>
+                                {elseif $list.status==3}
+                                <span style="color: palevioletred;">已取消</span>
+                                {elseif $list.status==4}
+                                <span style="color: seagreen;">已完成</span>
+                                {/if}
+                            </small>
+                        </div>
+                    </div>
+                    {if $list.status==2}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">退款理由 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small style="color: orangered;">{if $list.reason_refund}{$list.reason_refund}{else}无{/if}</small>
+                        </div>
+                    </div>
+                    {/if}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">订单备注 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{if $list.remark}{$list.remark}{else}无{/if}</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default am-u-md-11 am-u-md-push-1"
+                             style="margin-left: -45px;">
+                            <h2 class="am-titlebar-title" style="margin-top: 10px;">
+                                收货信息
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">收货姓名 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{$list.buyer_name}</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">收货电话 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{$list.buyer_phone}</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">收货地址 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{$list.buyer_address}</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">物流单号/兑换码 :</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <small>{if $list.shipment}{$list.shipment}{else}无{/if}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-modal am-modal-no-btn" tabindex="-1" id="eship">
+                    <div class="am-modal-dialog" style="text-align: left;">
+                        <div class="am-modal-hd" style="font-size: 16px;margin-top: -10px;">
+                            <strong>收货信息</strong> <small style="color: red;">( 请核对是否有误 )</small>
+                            <a href="javascript: void(0);" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                        </div>
+                        <div class="am-modal-bd">
+                            <div class="am-form tpl-form-line-form">
+                                <div class="am-form-group" style="margin-top: 10px;">
+                                    <label class="am-u-sm-3 am-form-label" style="font-size: 12px;">用户收货姓名 :</label>
+                                    <div class="am-u-sm-9" style="text-align: left;">
+                                        <input type="text" class="tpl-form-input" id="buyer_name">
+                                        <small>如有错误请在此处更改</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group" style="margin-top: 10px;">
+                                    <label class="am-u-sm-3 am-form-label" style="font-size: 12px;">用户收货电话 :</label>
+                                    <div class="am-u-sm-9" style="text-align: left;">
+                                        <input type="text" class="tpl-form-input" id="buyer_phone">
+                                        <small>如有错误请在此处更改</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group" style="margin-top: 10px;">
+                                    <label class="am-u-sm-3 am-form-label" style="font-size: 12px;">用户收货地址 :</label>
+                                    <div class="am-u-sm-9" style="text-align: left;">
+                                        <input type="text" class="tpl-form-input" id="buyer_address">
+                                        <small>如有错误请在此处更改</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group" style="margin-top: 10px;">
+                                    <label class="am-u-sm-3 am-form-label" style="font-size: 12px;">物流单号/兑换码 :</label>
+                                    <div class="am-u-sm-9" style="text-align: left;">
+                                        <input type="text" class="tpl-form-input" id="shipment">
+                                        <small>请填写商品物流单号或虚拟物品兑换码</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-11 am-u-sm-push-1" style="margin-left: -30px;">
+                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-btn-xs" onclick="holdShip();">提交发货</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-modal am-modal-no-btn" tabindex="-1" id="ement">
+                    <div class="am-modal-dialog" style="text-align: left;">
+                        <div class="am-modal-hd" style="font-size: 16px;">
+                            <strong>收货信息</strong> <small style="color: red;">( 请核对是否有误 )</small>
+                            <a href="javascript: void(0);" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                        </div>
+                        <div class="am-modal-bd">
+                            <div class="am-form tpl-form-line-form">
+                                <div class="am-form-group" style="margin-top: 20px;">
+                                    <label class="am-u-sm-3 am-form-label" style="font-size: 12px;">物流单号/兑换码 :</label>
+                                    <div class="am-u-sm-9" style="text-align: left;">
+                                        <input type="text" class="tpl-form-input" id="eshent">
+                                        <small>请填写商品物流单号或虚拟物品兑换码</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-11 am-u-sm-push-1" style="margin-left: -30px;">
+                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success am-btn-xs" onclick="upShip();">保存修改</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    !function () {
+        $('#uship').click(function () {
+            $('#buyer_name').val('{$list.buyer_name}');
+            $('#buyer_phone').val('{$list.buyer_phone}');
+            $('#buyer_address').val('{$list.buyer_address}');
+            $('#shipment').val('{$list.shipment}');
+        });
+        $('#ument').click(function () {
+            $('#eshent').val('{$list.shipment}');
+        });
+    }();
+
+    function excnsor(buyerName, buyerPhone, buyerAddress, shipment) {
+        if (buyerName == '' || buyerName == 'undefined' || buyerName == null) {
+            layer.msg('用户收货姓名不能为空');
+            return false;
+        }
+        if (buyerPhone == '' || buyerPhone == 'undefined' || buyerPhone == null) {
+            layer.msg('用户收货电话不能为空');
+            return false;
+        }
+        if (buyerAddress == '' || buyerAddress == 'undefined' || buyerAddress == null) {
+            layer.msg('用户收货地址不能为空');
+            return false;
+        }
+        if (shipment == '' || shipment == 'undefined' || shipment == null) {
+            layer.msg('物流单号/兑换码不能为空');
+            return false;
+        }
+        return true;
+    }
+    
+    function holdShip() {
+        var buyerName = $.trim($('#buyer_name').val());
+        var buyerPhone = $.trim($('#buyer_phone').val());
+        var buyerAddress = $.trim($('#buyer_address').val());
+        var shipment = $.trim($('#shipment').val());
+        if (excnsor(buyerName, buyerPhone, buyerAddress, shipment)) {
+            $.post("{:url('marketing/shiporder')}", {
+                'usid': '{$list.id}',
+                'buyer_name': buyerName,
+                'buyer_phone': buyerPhone,
+                'buyer_address': buyerAddress,
+                'shipment': shipment,
+            }, function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }, 'json');
+        }
+    }
+
+    function upShip() {
+        var shipment = $.trim($('#eshent').val());
+        if (shipment == '' || shipment == 'undefined' || shipment == null) {
+            layer.msg('物流单号/兑换码不能为空');
+            return;
+        }
+        $.post("{:url('marketing/unshier')}", {
+            'usid': '{$list.id}',
+            'shipment': shipment,
+        }, function (data) {
+            if (data.code > 0) {
+                layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                    location.reload();
+                });
+            }
+        }, 'json');
+    }
+
+
+    
+    function reving() {
+        layer.confirm('您确定要主动帮助用户收货吗？', {
+            btn: ['确定', '取消'], title: '系统提示'
+        }, function(){
+            $.post("{:url('marketing/charger')}", {'usid': '{$list.id}'}, function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }, 'json');
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+    function cancelOrder() {
+        layer.confirm('您确定要取消这笔订单吗？', {
+            btn: ['确定', '取消'], title: '系统提示'
+        }, function(){
+            $.post("{:url('marketing/canlorder')}", {'usid': '{$list.id}'}, function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }, 'json');
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+    
+    function holdMinor(uentreat) {
+        switch (uentreat) {
+            case '0':
+                var title = "您确定要拒绝该用户的退款申请吗？";
+                break;
+            case '1':
+                var title = "您确定要同意该用户的退款申请吗？";
+                break;
+        }
+        layer.confirm(title, {
+            btn: ['确定', '取消'], title: '系统提示'
+        }, function(){
+            $.post("{:url('marketing/refuntreat')}", {'usid': '{$list.id}', 'uentreat': uentreat}, function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }, 'json');
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+</script>
+{/block}

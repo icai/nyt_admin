@@ -1,0 +1,164 @@
+body { background: #EBEBEB; margin: 0; padding: 0; border: 0; font: normal 12px/160% Arial,SimSun; /*text-align: center;*/ width: 100%; height: 100%; }
+textarea { outline: none; }
+textarea:focus { outline: none; }
+.resethide { margin: 0; padding: 0; border: none; font-size: 14px; font-size: 14px; }
+.chat-view-window-history { margin: 0px; border: none; float: none; height: auto; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; line-height: 160%; font-family: Arial, SimSun; font-size: 14px; width: 100%; padding: 0px 0px 52px; }
+.chat-view-widow-list { margin: 0; padding: 0; border: none; font-size: 14px; list-style: none; margin: 0px 5px; }
+.stafftalk { margin: 0px; padding: 9px 30px 0px 0px; border: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; list-style: none outside none; display: block; background-color: transparent; }
+.view-history-left { margin: 0; padding: 0; border: none; color: #000; float: none; }
+.view-history-icon { margin: 0; padding: 0; border: none; color: #000; vertical-align: middle; text-align: center; width: 40px; _width: 40px; height: auto; min-height: 40px; }
+.view-history-icon-div { margin: 0px; padding: 0px; border: none; float: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; text-align: center; width: 35px; height: 35px; overflow: hidden; border: 1px solid #fff; background: url('/content/images/mobileicon.png') -212px -114px; }
+.view-history-icon-div img { }
+.view-history-receive-icon { margin: 0px; padding: 0px; border: none; float: none; width: 35px; height: 35px; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; background-color: transparent; background: url(/Content/images/mobileicon.png); }
+.view-history-receive-cusp { margin: 0; padding: 0; border: none; color: #000; *width: 15px; _width: 15px; vertical-align: middle; }
+.view_history_bgimg { 
+    /*margin: 0; padding: 0; border: none; color: #000; position: relative; right: -1px; z-index: 1; width: 5px; height: 10px; background: url(/Content/images/mobileicon.png) no-repeat -179px -78px;*/ 
+    border:6px solid #EBEBEB;
+    border-right-color:white;
+}
+.view-history-receive-tbody { margin: 0px; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; line-height: 160%; font-family: Arial, SimSun; font-size: 14px; padding: 8px; border-radius: 5px; word-break: break-all; word-wrap: break-word; background: #ffffff;  }/*border: 1px solid #808080;*/
+.view-history-body { margin: 0; padding: 0; border: none; font-size: 14px; display: block; word-break: break-all; word-wrap: break-word; 
+                    
+}
+.view-history-body img { max-width: 200px; vertical-align: middle; }
+.view-history-brline { margin: 0; padding: 0; border: none; color: #000; clear: both; }
+
+.customertalk { margin: 0px; padding: 9px 0px 0px 30px; border: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: right; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; font-family: Arial, SimSun; list-style: none outside none; display: block; background-color: transparent; }
+.view-history-right { margin: 0; padding: 0; border: none; color: #000; float: right; _float: none; }
+.view-history-send-tbody { margin: 0; padding: 0; border: none; font-size: 14px; padding: 8px; border-radius: 5px; background: rgb(167, 217, 79); border-radius: 5px; word-break: break-all; word-wrap: break-word;
+ /*box-shadow:3px 3px 5px  rgb(120, 163, 26);*/
+} /*border: 1px solid rgb(120, 163, 26);*/
+.view-history-send-cusp { margin: 0; padding: 0; border: none; color: #000;width:15px; _width: 15px; vertical-align: middle; }
+.view-history-send-bgimg { /*margin: 0; padding: 0; border: none; color: #000; position: relative; left: -1px; z-index: 1; width: 5px; height: 10px; background: url(/Content/images/mobileicon.png) no-repeat -242px -81px;*/
+    border:6px solid #EBEBEB;
+    border-left-color:#A7D94F;
+     /*box-shadow:3px 3px 5px  rgb(120, 163, 26);*/
+}
+.view-history-send-icon { margin: 0; padding: 0; border: none; color: #000; text-align: center; width: 35px; height: 35px; overflow: hidden; border: 1px solid #fff; background: url(/Content/images/mobileicon.png) no-repeat -212px -158px; }
+
+.view-history-send-selficon { margin: 0; padding: 0; border: none; float: none; width: auto; height: auto; min-width: none; min-height: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: #000; background-color: transparent; font: normal normal normal 0px/0px Arial,SimSun; text-align: center; width: 35px; height: 35px; background: url(/Content/images/mobileicon.png) no-repeat -214px -155px; overflow: hidden; }
+
+.view-history-audio { margin: 0px; padding: 0px; border: none; width: 200px; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; line-height: 160%; font-family: Arial, SimSun; font-size: 14px; float: left; min-width: 1px; height: 40px; overflow: hidden; background-color: transparent; }
+.view-history-audio video { margin: 0px; padding: 0px; border: none; float: none; width: 200px; height: 40px; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; background-color: transparent; }
+.system { margin: 20px 0px 0px; padding: 5px 10px 0px; border: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: center; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; list-style: none outside none; background-color: transparent; }
+.view-history-system { margin: 0; padding: 0; border: none; float: none; width: auto; height: auto; min-width: none; min-height: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: #000; background-color: transparent; font: normal normal normal 0px/0px Arial,SimSun; marign: 20px 0; text-align: center; color: #706E6F; }
+.view-history-system fieldset { margin: 0; padding: 0; border: none; float: none; width: auto; height: auto; min-width: none; min-height: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: #000; background-color: transparent; font: normal normal normal 0px/0px Arial,SimSun; text-align: center; border: 0; border-top: 1px solid #ccc; }
+.view-history-system fieldset legend { margin: 0; padding: 0; border: none; float: none; width: auto; height: auto; min-width: none; min-height: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: #000; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; padding: 0 8px; text-align: center; word-break: break-all; word-wrap: break-word; color: #706e6f; }
+
+.chat-view-face-tag { margin: 0px 0px 0px 5px; padding: 0px; border-style: none solid; border-right-width: 1px; border-left-width: 1px; border-right-color: rgb(241, 241, 241); border-left-color: rgb(241, 241, 241); float: left; width: auto; height: auto; clear: right; clip: auto; position: relative; left: auto; top: 0px; right: auto; bottom: auto; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); background-image: none; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: initial; background-repeat: initial; }
+.chat-view-face-tag-selected { margin: 0px 0px 0px 5px; padding: 0px; border-style: none solid; border-right-width: 1px; border-left-width: 1px; border-right-color: rgb(212, 212, 212); border-left-color: rgb(212, 212, 212); float: left; width: auto; height: auto; clear: right; clip: auto; position: relative; left: auto; top: -1px; right: auto; bottom: auto; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); background: rgb(255, 255, 255); }
+.chat-view-face-tag-hover { margin: 0px 0px 0px 5px; padding: 0px; border-style: none solid; border-right-width: 1px; border-left-width: 1px; border-right-color: rgb(212, 212, 212); border-left-color: rgb(212, 212, 212); float: left; width: auto; height: auto; max-width: none; max-height: none; clear: right; position: relative; left: auto; top: -1px; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; background: none rgb(255, 255, 255); border-top: none; }
+.chat-view-face-group { padding: 0px; border: none; float: none; width: auto; max-width: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; display: block; overflow-x: hidden; overflow-y: auto; margin: 10px 0px 10px 10px; clear: left; height: auto; max-height: 100px; background-color: transparent; }
+.chat-view-face-group span { margin: 0; padding: 0; border: none; font-size: 14px; cursor: pointer; width: 14.2%; padding: 2px 0; display: block; float: left; text-align: center; }
+.chat-view-face-group span img { outline: 0; display: block; float: left; width: 24px; height: 24px; display: inline; box-sizing: content-box; margin: 0; padding: 3px; border: none; background: none; }
+.chat-view-textarea { margin: 0; padding: 0; border: none; clear: none; clip: auto; position: static; left: auto; top: auto; right: auto; bottom: auto; font: normal normal normal 0px/0px Arial,SimSun; text-align: left; box-sizing: content-box; color: #000; background-color: transparent; margin: 5px 50px 5px 5px; padding: 0 40px 0 0; border-bottom: 2px solid #cecfd0; }
+.chat-view-textarea .messageinputbox { margin: 0px; padding: 0px; border: none; float: none; clear: none; clip: auto; position: static; left: auto; top: auto; right: auto; bottom: auto; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; line-height: 160%; font-family: Arial, SimSun; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-size: 14px; height: 37px; width: 100%; resize: none; overflow-y: hidden; background: rgb(255, 255, 255); }
+.win-btns { height: 39px; border-top: 1px solid #F6F6F6; background-color: #F6F6F6; text-align: right; padding-top: 10px; }
+
+a.win-btn { background: url(/Images/btn.gif) no-repeat; display: inline-block; height: 20px; margin-right: 10px; padding-left: 2px; vertical-align: middle; color: #0099EE; width: 50px; text-align: center; }
+a.win-btn span { background: transparent url(/Images/btn.gif) no-repeat scroll right top; cursor: pointer; height: 20px; left: 2px; line-height: 20px; padding-right: 10px; position: relative; vertical-align: middle; display: block; }
+
+/*左侧最近联系人列表*/
+.contactlist { background-color: white; width: 100%; z-index: 1000; overflow: hidden; _position: absolute; _bottom: auto; _top: expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0))); }
+.contactlist_tit { display: block; text-align: center; width: 100%; position: relative; height: 42px; }
+.contactlist_tit b { color: white; }
+
+.contactlist_box { height: 100%; width: 100%; overflow-y: auto; position: relative; display: block; }
+.contactlist_box_li { background: #fff; border-bottom: 1px solid #d4d4d4; height: 38px; padding: 8px; clear: both; cursor: pointer; }
+
+.contactlist_box_li em { width: 30px; height: 30px; display: block; float: left; position: relative; }
+.contactlist_box_li em a { width: 30px; height: 30px; display: block; position: absolute; left: 0; top: 0; z-index: 1; }
+.contactlist_box_li em i { background: url(/Content/skin/ypwk/images/im/ico_common.png) no-repeat 0 -120px; width: 10px; height: 10px; display: block; overflow: hidden; position: absolute; right: -5px; bottom: -5px; z-index: 2; }
+.contactlist_box_li em i.online { background: url(/Content/skin/ypwk/images/im/ico_common.png) no-repeat 0 -90px; }
+
+.contactlist_box_li .namemsg { float: left !important; margin-left: 10px; width: 60%; }
+.contactlist_box_li .namemsg .msg { color: #999999; }
+.contactlist_box_li .timecount { float: right; margin-right: 20px; }
+.contactlist_box_li .timecount .time { color: #999999; float: right; }
+
+.contactlist_box_li p { width: 100%; height: 20px; padding: 0px; margin: 0px; line-height: 20px; display: block; overflow: hidden; white-space: nowrap; padding-left: 10px; text-overflow: ellipsis; }
+.contactlist_box_li p a { text-decoration: none; color: black; }
+.contactlist_box_li p a:hover { color: #eb2626; }
+.contactlist_box_li span > i.delete {display:none!important; background: url(/Content/skin/ypwk/images/im/ico_common.png) no-repeat 0 -30px; width: 9px; height: 9px; display: block; float: right; margin-top: 8px; cursor: pointer; }
+.contactlist_box_li span > i.message { background: url(/Content/skin/ypwk/images/im/ico_common.png) no-repeat 0 -150px; width: 15px; height: 15px; display: none; float: left; margin-top: 3px; line-height: 15px; margin-right: 9px; text-align: center; color: #fff; font-family: "宋体"; font-size: 10px; font-style: normal; position: inherit !important; border: none !important; padding: 1px 3px; border-radius: 10px; background-color: #ED3D3D; }
+.contactlist_box_li.select { background: #f4f4f4; }
+.contactlist_box_li.on { background: #f4f4f4; }
+.contactlist_box_li.select i.delete { background-position: 0 -60px; display:none;}
+.contactlist_off { padding: 15px 10px 0 10px; display: none; }
+.contactlist_off p { color: #666; line-height: 20px; }
+.contactlist_box_li .list-span-fl { display: block; float: right; color: #999999; }
+
+/*聊天窗口头部*/
+.chat-view-window-header { border-bottom: 1px solid rgb(66, 151, 224); float: none; width:100%; height: 42px; position: fixed; z-index: 999; background-color: rgb(66, 151, 224); }
+.chat-view-window-header-back { font-size: 14px; color: #FFF; border-radius: 3px; padding: 0 0 0 26px; height: 29px; line-height: 29px; position: absolute; left: 10px; top: 7px; border: none; cursor: pointer; background: url(/Content/images/mobileicon.png) no-repeat -317px -54px; }
+.chat-view-window-header-title { color: white; font-size: 16px; margin: 0 85px; font-weight: bold; text-align: center; line-height: 41px; height: 41px; overflow: hidden; }
+.chat-view-window-header-title a { color: white; text-decoration: none; }
+.chat-view-window-header-close { color: rgb(0, 0, 0); font-size: 14px; border-radius: 3px; padding: 0px 8px; height: 29px; line-height: 29px; position: absolute; right: 10px; top: 5px; border: 1px solid rgb(212, 212, 212); cursor: pointer; background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(rgb(255, 255, 255)), to(rgb(237, 237, 237))); }
+.chat-view-window-header-contacts{color: rgb(0, 0, 0); font-size: 14px; border-radius: 3px; padding: 0px 8px; height: 29px; line-height: 29px; position: absolute; right: 10px; top: 5px;cursor: pointer;background:url(/Content/images/users.png) no-repeat center center;width:36px;height:33px;}
+/*聊天窗口Body*/
+.chat-view-window { margin: 0px; padding: 0px; border: none; float: none; width: 100%; height: auto; max-width: none; max-height: none; clear: none; position: absolute; left: auto; top: 42px; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 14px; line-height: 160%; font-family: Arial, SimSun; display: block; background-color: transparent; }
+.chat-view-window-status-info{color: rgb(0, 0, 0); font-size: 14px; overflow: hidden; width: 100%; line-height: 32px; height: 32px; position: fixed;z-index:2; top: 42px; display: none; opacity: 0.8; cursor:pointer; background: #FBEA9D;}
+.chat-view-system-message{color:#333333;background-color:transparent;font-size:14px;margin:0 10px 0 20px; text-align:center;}
+.chat-view-system-close{color:#333333;background-color:transparent;position:absolute;right:15px;top:8px;width:10px;height:10px;background:url(/Content/images/mobileicon.png) no-repeat -24px -158px;}
+
+.chat-view-window-bottom { margin: 0px; padding: 0px; border-style: solid none none; border-top-width: 1px; border-top-color: rgb(202, 202, 202); float: none; width: 100%; height: auto; max-width: none; max-height: none; clear: none; position: fixed; left: auto; top: auto; right: auto; bottom: 0px; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; min-height: 49px; z-index: 999; display: block; background: rgb(255, 255, 255); }
+.chat-view-window-audio { margin: 0px; padding: 0px; border: none; max-width: none; max-height: none; clear: none; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; position: relative; display: none; visibility: visible; opacity: 1; background-color: transparent; }
+.chat-view-button-text { color: #000; background-color: transparent; font: normal normal normal 0px/0px Arial,SimSun; width: 32px; height: 32px; position: absolute; left: 5px; top: 3px; background: url(/Content/images/mobileicon.png) no-repeat -253px -20px; cursor: pointer; }
+.pressandsay { color: #000; background-color: transparent; font: normal normal normal 0px/0px Arial,SimSun; margin: 5px 5px 5px 45px; "><input type="button" style="margin: 0px; padding: 0px; float: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; line-height: 160%; font-family: Arial, SimSun; font-size: 14px; height: 37px; width: 100%; resize: none; border: 1px solid rgb(204, 204, 204); text-align: center; background-color: transparent; }
+.chat-view-window-editor { margin: 0px; padding: 0px; border: none; max-width: none; max-height: none; clear: none; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; position: relative; display: block; visibility: visible; opacity: 1; background-color: transparent; }
+.chat-view-button-face { margin: 0px; padding: 0px; float: none; max-width: none; max-height: none; clear: none; left: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; line-height: 160%; font-family: Arial, SimSun; font-size: 14px; width: 32px; height: 32px; border: 0px solid rgb(204, 204, 204); border-radius: 25px; position: absolute; right: 50px; top: 3px; cursor: pointer; background-image: url(/Content/images/mobileicon.png); background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: -14px -48px; background-repeat: no-repeat; }
+.chat-view-button-action { color: #000; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; background: #fff; width: 32px; height: 32px; margin: 3px 4px; border: 0px solid #ccc; border-radius: 25px; position: absolute; right: 8px; top: 0px; text-align: center; cursor: pointer; background: url(/Content/images/mobileicon.png) no-repeat -51px -51px; }
+/*灰色发送*/
+/*.chat-view-button-send{float: none; max-width: none; max-height: none; clear: none; left: auto; bottom: auto; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-family: Arial, SimSun; font-size: 14px; width: auto; margin: 3px 7px 5px 0px; padding: 0px 5px; border: 1px solid rgb(204, 204, 204); border-radius: 7px; position: absolute; right: 0px; top: 0px; height: 32px; line-height: 32px; text-align: center; cursor: pointer; display: none; background: rgb(224, 224, 224);}*/
+/*蓝色发送*/
+.chat-view-button-send { float: none; max-width: none; max-height: none; clear: none; left: auto; bottom: auto; box-sizing: content-box; color: #fff; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-family: Arial, SimSun; font-size: 14px; width: auto; margin: 5px 7px 3px 0px; padding: 0px 5px; border: 1px solid #00AFFF; border-radius: 7px; position: absolute; right: 0px; top: 0px; height: 28px; line-height: 28px; text-align: center; cursor: pointer; display: none; background: #00AFFF; }
+
+.chat-view-window-face { margin: 0px; padding: 0px; border-style: solid none none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; border-top-width: 1px; border-top-color: rgb(204, 204, 204); display: none; background-color: transparent; }
+
+/*标签*/
+.chat-view-window-action { margin: 0px; padding: 0px; border-style: solid none none; float: none; width: auto; height: auto; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; border-top-width: 1px; border-top-color: rgb(204, 204, 204); display: none; background-color: transparent; }
+.chat-view-evaluate { padding: 0px; border: none; height: auto; max-width: none; max-height: none; clear: none; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; margin: 5px 5px 0px 20px; float: left; width: 56px; position: relative; display: block; background-color: transparent; }
+
+.chat-view-face-tags { color: #000; background-color: transparent; font: normal normal normal 0px/0px Arial,SimSun; background: #F1F1F1; clear: both; padding: 0 5px; height: 38px; border-top: 1px solid #D4D4D4; }
+.chat-view-face-tags .chat-view-face-tag { outline: 0; display: block; float: left; width: 23px; height: 23px; display: inline; box-sizing: content-box; margin-right: 5px; padding: 7px 8px; border: 1px solid #F1F1F1; overflow: hidden; }
+.chat-view-face-tags .chat-view-face-tag-selected { border: 1px solid #D4D4D4; border-top: 1px solid #fff; }
+.chat-view-face-tags .chat-view-face-tag-hover { border: 1px solid #D4D4D4; border-top: 1px solid #fff; }
+
+.chat-view-action-button { color: #000; background-color: transparent; font: normal normal normal 0px/0px Arial,SimSun; margin: 5px 5px 0 20px; float: left; width: 56px; height: auto; position: relative; background: none; }
+.chat-view-evaluate-button { margin: 0; padding: 0; border: none; float: none; width: auto; height: auto; min-width: none; min-height: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: #000; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; text-align: center; width: 56px; height: 56px; background: url(/Content/images/mobileicon.png) no-repeat -94px -8px; border: 1px solid #ccc; border-radius: 10px; }
+.chat-view-action-button .pingjia { color: #000; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; position: relative; bottom: 0; text-align: center; }
+
+.chat-view-image-button { color: #000; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; text-align: center; width: 56px; height: 56px; background: url(/Content/images/mobileicon.png) no-repeat -357px -52px; border: 1px solid #ccc; border-radius: 10px; }
+.chat-view-image-button input { margin: 0px; padding: 0px; border: none; float: none; width: 56px; height: 56px; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 14px; line-height: 160%; font-family: Arial, SimSun; overflow: hidden; opacity: 0; background-color: transparent; }
+.chat-view-transfer-image .tupian { color: #000; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; position: relative; bottom: 0; text-align: center; }
+
+
+.chat-view-file-button { color: #000; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; text-align: center; width: 56px; height: 56px; background: url(/Content/images/mobileicon.png) no-repeat -357px 0px; border: 1px solid #ccc; border-radius: 10px; }
+.chat-view-file-button input { margin: 0px; padding: 0px; border: none; float: none; width: 56px; height: 56px; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 14px; line-height: 160%; font-family: Arial, SimSun; overflow: hidden; opacity: 0; background-color: transparent; }
+.chat-view-transfer-file{display:none;}
+.chat-view-transfer-file .fujian { color: #000; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; position: relative; bottom: 0; text-align: center; }
+.chat-view-action-txt { margin: 0; padding: 0; border: none; float: none; width: auto; height: auto; min-width: none; min-height: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; text-align: left; box-sizing: content-box; color: #666666; background-color: transparent; font: normal normal normal 12px/160% Arial,SimSun; font-size: 14px; position: relative; bottom: 0; text-align: center; }
+
+samp.history { display: block; text-align: center; color: #999999; margin: 5px auto; }
+samp.historytime { display: block; text-align: center; color: #999999; margin: 5px auto; }
+.chat-end { margin: 10px 0; }
+.contactlist-empty{text-align:center;line-height:40px;font-size:14px;color:dimgray; display:none;}
+
+/*消息中的图片*/
+.view-history-send-tbody-img .view-history-body{position:relative;}
+.view-history-send-tbody-img  .view-history-send-bgimg-img{width:5px;height:100%;position:absolute;right:0!important;top:0;background:url(/Content/images/imgjianjiao.png) no-repeat left top;}
+.view-history-icon-img { margin: 0; padding: 0; border: none; color: #000; text-align: center; width: 40px; _width: 40px; height: auto; min-height: 40px; }
+.view-history-icon-div { margin: 0px; padding: 0px; border: none; float: none; max-width: none; max-height: none; clear: none; position: static; left: auto; top: auto; right: auto; bottom: auto; box-sizing: content-box; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 0px; line-height: 0px; font-family: Arial, SimSun; text-align: center; width: 35px; height: 35px; overflow: hidden; border: 1px solid #fff; background: url('/content/images/mobileicon.png') -212px -114px; }
+.view-history-icon-div img { }
+.view-history-send-cusp-img { margin: 0; padding: 0; border: none; color: #000;width:10px; _width: 10px; vertical-align: middle; }
+.view-history-send-tbody-img img{max-width:200px;max-height:300px;}
+
+
+.view-history-receive-tbody-img .view-history-body{position:relative;}
+.view-history-receive-tbody-img .view_history_bgimg-img{width:5px;height:100%;position:absolute;left:0!important;top:0;background:url(/Content/images/imgjianjiao_l.png) no-repeat left top;}
+.view-history-receive-tbody-img img{max-width:200px;max-height:300px;}
+.view-history-receive-cusp-img { margin: 0; padding: 0; border: none; color: #000;width:8px;}
+
+/*时间行*/
+.timeline{text-align:center;padding-top:9px;}
+.timeline span{background-color: #D4D4D4; border-radius: 5px; padding: 5px 10px;color: white;font-size: 12px;}

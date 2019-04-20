@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=no, width=device-width">
+    <title>{$set['name']}</title>
+    <link href="{ASSETS_PATH}css/amazeui.css" rel="stylesheet">
+  <!--  <script src="{ASSETS_PATH}js/amazeui.js"></script>-->
+    <script src="{ASSETS_PATH}js/layer/layer.js"></script>
+    <style>
+        .footer ul li {list-style: none;line-height: 15px;}
+        .footer {position: fixed;bottom: 0;background-color:white;line-height:45px;height:45px;width:100%;border-top:1px solid #eee;font-size:14px;}
+        .footer li {float: left;}
+        body,ul,li,img,p,div{margin: 0px; padding: 0px;list-style:none;}
+        #share_2{float:right;width:49%;}
+        #mess_share img{width:22px;height:22px;}
+        #cover{display:none;position:absolute;left:0;top:0;z-index:18888;background-color:#000000;opacity:0.7;}
+        #guide{display:none;position:absolute;right:18px;top:5px;z-index:19999;}
+        #guide img{width:260px;height:180px;}
+        .top {position:fixed;top:0;width:100%;height: 40px;line-height:40px;text-align:center;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;color:white;}
+    </style>
+    {php echo register_jssdk(false);}
+    <script>
+        $(document).ready(function (e) {
+            var counter = 0;
+            if (window.history && window.history.pushState) {
+                $(window).on('popstate', function () {
+                    window.history.pushState('forward', null, '#');
+                    window.history.forward(1);
+//                    alert("不可回退");  //如果需在弹框就有它
+
+                    location.href="{php echo $this->createMobileUrl('Index',array('action'=>'','page'=>$_GPC['page'],'title'=>$_GPC['title'],'fenlei'=>$_GPC['fenlei']))}"; //如查需要跳转页面就用它
+                });
+            }
+
+            window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+            window.history.forward(1);
+        });
+
+/*$(window).scroll(function () {
+var str = window.location.href;
+str = str.substring(str.lastIndexOf("/") + 1);
+var top = $(document).scrollTop();
+$.cookie(str, top, { path: '/' });
+return $.cookie(str);
+})*/
+    </script>
+    <script>
+        wx.ready(function () {
+        	//过滤内容中的回车
+        	var desc = "{php echo mb_substr(colationStr($res['info1']),0,30,'utf-8')}";
+            sharedata = {
+                title: "{php echo $res['title']?$res['title']:$set['name']}",
+                desc: desc,
+                link: '',
+                imgUrl: "{php echo tomedia($set['logo'])}",
+                success: function(){
+                    $.ajax({
+                        url : "{php echo $this->createMobileUrl('Index',array('action'=>'share'))}",
+                        type:"post",
+                        data:{
+                            id : {$res['id']}
+                        }, success: function (res) {
+                            if(res==1) {
+                                layer.msg('分享成功', {time:2000});
+                                window.location.reload();
+
+                            }else{
+                                layer.msg('分享失败', {time:2000})
+                            }
+                        }
+                    });
+                },
+                cancel: function(){
+                    layer.msg('分享失败', {time:4000})
+                }
+            };
+            wx.onMenuShareAppMessage(sharedata);
+            //wx.onMenuShareTimeline(sharedata);
+        });
+    </script>
+
+    <script>
+        wx.ready(function () {
+            //过滤内容中的回车
+            var desc = "{php echo mb_substr(colationStr($res['info1']),0,30,'utf-8')}";
+            sharedata = {
+                title: "{php echo $res['title']?$res['title']:mb_substr(colationStr($res['info1']),0,30,'utf-8')}",
+                desc: desc,
+                link: '',
+                imgUrl: "{php echo tomedia($set['logo'])}",
+                success: function(){
+                    $.ajax({
+                        url : "{php echo $this->createMobileUrl('Index',array('action'=>'share'))}",
+                        type:"post",
+                        data:{
+                            id : {$res['id']}
+                        }, success: function (res) {
+                            if(res==1) {
+                                layer.msg('分享成功', {time:2000});
+                                window.location.reload();
+
+                            }else{
+                                layer.msg('分享失败', {time:2000})
+                            }
+                        }
+                    });
+                },
+                cancel: function(){
+                    layer.msg('分享失败', {time:4000})
+                }
+            };
+            //wx.onMenuShareAppMessage(sharedata);
+            wx.onMenuShareTimeline(sharedata);
+        });
+    </script>
+    <!--<script>-->
+
+        <!--wx.ready(function () {-->
+            <!--sharedata = {-->
+                <!--title: "{$res['info']}",-->
+                <!--desc: "{php echo $res['title']?$res['title']:mb_substr($res['info'], 0,20, 'utf-8')}",-->
+                <!--link: '',-->
+                <!--imgUrl: "{php echo tomedia($set['logo'])}",-->
+                <!--success: function(){-->
+                    <!--$.ajax({-->
+                        <!--url : "{php echo $this->createMobileUrl('Index',array('action'=>'share'))}",-->
+                        <!--type:"post",-->
+                        <!--data:{-->
+                            <!--id : {$res['id']}-->
+                        <!--}, success: function (res) {-->
+                            <!--if(res==1) {-->
+                                <!--layer.msg('分享成功', {time:2000});-->
+                                <!--window.location.reload();-->
+
+                            <!--}else{-->
+                                <!--layer.msg('分享失败', {time:2000})-->
+                            <!--}-->
+                        <!--}-->
+                    <!--});-->
+                <!--},-->
+                <!--cancel: function(){-->
+                    <!--layer.msg('分享失败', {time:4000})-->
+                <!--}-->
+            <!--};-->
+            <!--wx.onMenuShareTimeline(sharedata);-->
+        <!--});-->
+    <!--</script>-->
+</head>
+
+<body style="width: 100%">
+
+<div id="cover"></div>
+<div id="guide"><img src="{ASSETS_PATH}img/guide1.png"></div>
+<div class="top" style="z-index: 100">
+    <a href="{php echo $this->createMobileUrl('Index',array('action'=>'','page'=>$_GPC['page'],'fenlei'=>$_GPC['fenlei']))}">
+    <div  style="position: absolute;left:5px;">
+        <img src="{ASSETS_PATH}img/zuo.png" width="16px" height="16px">
+        <span style="color:white;font-size:13px;margin-left:-5px;">首页</span>
+    </div>
+    </a>
+    {if empty($auth)}
+    <a href="{php echo $this->createMobileUrl('Index',array('action'=>'user'))}">
+    <div style="position: absolute;right:5px;">
+        <img src="{ASSETS_PATH}img/youwo.png" width="20px" height="20px">
+    </div>
+    </a>
+    {/if}
+    帖子详情
+</div>
+<div style="height:40px;"></div>
+<div style="margin-top:10px;">
+    {if $res['avatar'] == ""}
+    <div>
+        <span><img src="{php echo tomedia($set['logo'])}" style="margin:10px;width:40px;height: 40px;border-radius:40px;"></span>
+    </div>
+    {else}
+    <div>
+        <span><img src="{if $res['tbiaoshi']==1}{php echo tomedia($res['avatar'])}{else}{$res['avatar']}{/if}" style="margin:10px;width:40px;height: 40px;border-radius:40px;"></span>
+    </div>
+    {/if}
+<!--<div style="width: 350px;height: 280px;text-align: center;"><textarea id="msg" style="margin-top: 2rem;width: 91%;height: 60%;" name="" required lay-verify="required" placeholder="请输入举报内容" class="layui-textarea"></textarea><button style="margin-top:3rem;" class="layui-btn" lay-submit lay-filter="formDemo" onclick="subreport(({$res['id']}))">立即提交</button></div>-->
+    <div style="margin-left:55px;margin-top:-40px;font-size:14px;font-weight:500;">
+        <span>{$res['nickname']}</span>
+        <span style="color:#999;font-size:12px;">{$res['time']}</span>&nbsp;
+        <span style="color:#999;font-size:12px;">浏览{$res['looks']}</span>&nbsp;
+        <span style="color:#28c4fd;font-size:12px;">{$fen}</span>
+        <span style="color:rgb(255,144,0);;font-size:15px;float: right; padding-right: 2.5rem;"onclick="jubao({$res['id']})">举报</span>&nbsp;
+    </div>
+    <div style="margin-left:10px;font-size:14px;margin-right:10px;margin-top:15px;">
+    	{if $res['title']}
+        <span style="font-size:16px;font-weight: bold;">{$res['title']}</span><br>
+        {/if}
+        <span>
+            {php echo str_replace("\n","<br>",$res['info1'])}
+		</span>
+    </div>
+    <div style="margin-left:10px;"id="previewImage">
+        {loop $res['images'] $k $v}
+        {if isset($v['name']) }
+        <li style="width:100%;margin-right:1.2%;max-height:100%;">
+        	{if !empty($v['name'])}
+            <img  src="{php echo $v['name']}" style="width:100%;margin-top:10px;padding-right:10px;">
+            {/if}
+        </li>
+        {else}
+        <li style="width:100%;margin-right:1.2%;max-height:100%;">
+        	{if !empty($v)}
+            <img  src="{php echo tomedia($v)}" style="width:100%;margin-top:10px;padding-right:10px;">
+            {/if}
+        </li>
+        {/if}
+
+        {/loop}
+    </div>
+
+    {if $res['video']!=''}
+    <video id="video" width="90%" height="200px" style="margin-left:5%;margin-top:20px;background-color: #666;" controls poster="{$res['fengmian']}">
+        <source src="{$res['video']}" type="video/mp4">
+        <source src="movie.ogg" type="video/ogg" />
+    </video>
+    {/if}
+
+<div id="output"></div>
+<script type="text/javascript">
+    (function(){
+        var video, output;
+        var scale = 0.3;
+        var initialize = function() {
+            output = document.getElementById("output");
+            video = document.getElementById("video");
+            video.addEventListener('click',captureImage);
+        };
+        var captureImage = function() {
+            var canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth * scale;
+            canvas.height = video.videoHeight * scale;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            var img = document.createElement("img");
+            img.src = canvas.toDataURL("image/png");
+            output.appendChild(img);
+        };
+
+        initialize();
+    })();
+</script>
+
+    {if $res['address'] != ""}
+    <div style="margin-left:10px;margin-top:10px;">
+        <span style="font-size:12px;color:#666;">发布于：{$res['address']}</span>
+    </div>
+    {/if}
+    {if $res['checkd'] ==0}
+    <div align="center" style="margin-top:15px;">
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'dashang','id'=>$res['id']))}">
+            <span style="color:white;padding:5px 30px;background-color: #dd3d31;border-radius:5px;">赞赏</span>
+        </a>
+    </div>
+
+    <div style="font-size:12px;color:#666;text-align: center;margin-top:20px;" >
+        <span>{if $sumpay == ""}0{else}{$sumpay}{/if}人赞赏</span><br>
+        {loop $pay $v}
+        <span><img src="{$v['avatar']['avatar']}" style="width:30px;border-radius:30px;"></span>
+        {/loop}
+    </div>
+    {/if}
+</div>
+
+
+<div style="color:#eee;background-color:#eee;height:40px;margin-top:30px;">
+    1
+</div>
+<a name="hudong"><div style="border-bottom: 1px solid #eee;">
+    <div style="height:40px;line-height: 40px;margin-left:10px;color:#28c4fd">全部互动</div>
+</div></a>
+<div style="">
+    {loop $pl $k=>$v}
+    <div style="border-bottom: 1px solid #eee;margin-top:10px;padding-bottom:8px;position: relative">
+
+        {if !empty($openid) && ($openid==$v['user_id'] || $openid==$admin) }
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'del_pl','id'=>$v['id'],'thread_id'=>$res['id']))}">
+        <div style="position: absolute;top: 5px;right: 20px;">删除</div>
+        </a>
+        {/if}
+        {if !empty($openid) && $openid==$res['openid'] && $res['award'] !=0.00 && $res['award_id'] ==0  }
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'award_pl','id'=>$v['id'],'thread_id'=>$res['id']))}">
+            <div style="position: absolute;top: 30px;right: 20px;">赏:{$res['award']} </div>
+        </a>
+        {/if}
+        {if $res['award_id'] == $v['id'] }
+            <div style="position: absolute;top: 30px;right: 20px;">已赏:{$res['award']} </div>
+        {/if}
+        <!--{if $admin !='' && $info_admin ==''}-->
+        <!--<a href="{php echo $this->createMobileUrl('Index',array('action'=>'del_pl','id'=>$v['id'],'thread_id'=>$res['id']))}">-->
+        <!--<div style="position: absolute;top: 10px;right: 20px;">删除</div>-->
+        <!--</a>-->
+        <!--{/if}-->
+        <div style="margin-left:10px;">
+            <span><img src="{$v['avatar']}" style="width:30px;height:30px;border-radius:25px;"></span>
+        </div>
+        <div style="margin-left:50px;margin-top:-30px;line-height:14px;">
+
+            <span style="font-size:14px;color:#28c4fd;">{$v['nickname']}</span><span style="margin-left: 10px;font-size:14px;color:#666;">{if $v['user_id']==$res['openid']}楼主{else}{php echo $k+1}楼{/if}</span><br>
+            <span style="font-size:12px;color:#999;">{$v['time']}</span>
+        </div>
+        <div style="margin-left:50px;margin-right:10px;margin-bottom:10px;font-size:14px;" onclick="huifu({$res['id']},{$v['id']},'{$v['username']}','{$v[user_id]}')">
+            <span class="aa">{$v['info']}</span><br>
+        </div>
+        <div style="margin-left:50px" id="previewImage1" >
+        {loop $v['images'] $a}
+        {if isset($a['name'])}
+            <li style="float:left;width:28%;margin-right:1.2%;max-height:110px;overflow: hidden;margin-bottom: 20px">
+                <img  src="{php echo $a['name']}" style="width:100%;padding-top:5px;height: auto;">
+            </li>
+        {else}
+        <li style="float:left;width:28%;margin-right:1.2%;max-height:110px;overflow: hidden;margin-bottom: 20px">
+            <img  src="{php echo tomedia($a)}" style="width:100%;padding-top:5px;height: auto;">
+        </li>
+        {/if}
+        {/loop}
+        </div>
+        <div style="width:100%;font-size:13px;color:#666;overflow: hidden;">
+            <ul>
+                <!--<li style="float:left;width:33.33%;" align="center">-->
+                    <!--<span><img src="{ASSETS_PATH}img/dashang.png" style="width:20px;height:20px;"></span>-->
+                    <!--<a href="#"><span style="color:#666">赏</span></a>-->
+                <!--</li>-->
+                <li onclick="huifu({$res['id']},{$v['id']},'{$v['nickname']}','{$v[user_id]}')" style="float:left;width:50%;border-left:1px solid #eee;" align="center">
+                    <span><img src="{ASSETS_PATH}img/pinglun.png" style="width:20px;height:20px;"></span>
+
+                    <span>回复</span>
+                </li>
+                <li style="float:left;width:50%;border-left:1px solid #eee;" align="center">
+                    <span onclick="redict1({$v['id']},this)"><img {if $v['dianzan']!=''}src="{ASSETS_PATH}img/dianzan_y.png"{else}src="{ASSETS_PATH}img/dianzan.png"{/if} style="width:20px;height:20px;"></span>
+                    <span>{$v['zan']}</span>
+                </li>
+            </ul>
+        </div>
+        <div style="clear:both;margin-bottom:10px;"></div>
+        {loop $v['hui1'] $k}
+        <div style="background:#eee;margin-left:45px;margin-right:10px;padding:5px;">
+
+            <div style="font-size:13px;">
+
+                <span><span style="color:#28c4fd;">{$k['nickname']}</span> 回复 <span style="color:#28c4fd;">{$k['hname']}</span>:</span>
+
+                <span onclick="huifua({$res['id']},{$v['id']},'{$k['nickname']}','{$k['id']}','{$k[user_id]}')">{$k['info']}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="font-size:12px;color:#999;">{$k['time']}</span>
+            </div>
+            <div style="border-bottom: 1px solid #eee;margin-left:60px;"></div>
+        </div>
+        {/loop}
+    </div>
+    {/loop}
+
+</div>
+{if empty($adminstr)}
+{php $adminstr = array('asdfadfasdf','qwuiefaiawjh')}
+{/if}
+{if ( $openid==$admin || $res['openid']==$openid || in_array($res['fenlei'], $adminstr)) && !empty($openid)}
+
+<div onclick="tg()" align="center"  style="position: fixed;right: 20px;bottom: 70px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 45px; z-index: 888">
+    <img src="{ASSETS_PATH}img/auth.png" width="30px"  >
+</div>
+
+<div align="center" id="show"  style="display: none;">
+<a onclick="  var de=confirm('确定删除此条信息!' );
+                                if(de==true){
+                                   return true;
+                                }else{
+                                   return false;
+                                }
+                      " href="{php echo $this->createMobileUrl('Index',array('action'=>'de_thread','id'=>$res['id']))}">
+
+    <span  style=" position: fixed;right: 80px;bottom: 70px; width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 50px;z-index: 9999999999999999999999 ;color:white;font-size: 16px " >删除</span>
+</a>
+ <a href="{php echo $this->createMobileUrl('Index',array('action'=>'upd','id'=>$res['id']))}">
+    <span  style=" position: fixed;right: 140px;bottom: 70px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 50px;z-index: 9999999999999999999999 ;color:white;font-size: 16px " >修改</span>
+    </a>
+
+    {if  $openid==$admin  || in_array($res['fenlei'], $adminstr) }
+{if $res['zdstate']==1}
+    <span class="did"  onclick="zhiding({$res['id']},{$res['zdstate']})" style=" position: fixed;right: 200px;bottom: 70px; width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 50px;z-index: 9999999999999999999999 ;color:white;font-size: 16px " >取置</span>
+    {else}
+    <span class="did"  onclick="zhiding({$res['id']},{$res['zdstate']})" style=" position: fixed;right: 200px;bottom: 70px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 50px;z-index: 9999999999999999999999 ;color:white;font-size: 16px " >置顶</span>
+    {/if}
+    {if $res['shstate'] == 1}
+    <a href="{php echo $this->createMobileUrl('Index',array('action'=>'tgsh','id'=>$res['id'],'adminstr'=>$_GPC['adminstr']))}">
+    <span  style=" position: fixed;right: 260px;bottom: 70px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 50px;z-index: 9999999999999999999999 ;color:white;font-size: 16px " >审通</span>
+    </a>
+    {/if}
+
+    {/if}
+   <!-- <span  style=" position: fixed;right: 20px;bottom: 350px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 50px;z-index: 100 ;color:white;font-size: 16px " >审核</span>!-->
+
+</div>
+
+<script >
+
+function tg() {
+    $("#show").toggle(1000);
+}
+function zhiding(id,zhiding) {
+            $.ajax({
+                       url : "{php echo $this->createMobileUrl('Index',array('action'=>'zhiding'))}",
+                       type:"post",
+                       data:{
+                           id : id,
+                           zhiding:zhiding
+                       }, success: function (res) {
+                               console.log(res);
+                           if (res==1){
+
+                               alert('置顶成功');
+                           }else{
+
+                               alert('取消置顶');
+                           }
+                           }
+
+                  })
+}
+
+</script>
+
+{/if}
+<!--{if $openid==$admin || $user['openid']==$moudel['admin']}
+{php echo $this->createMobileUrl('Index',array('action'=>'de_thread','id'=>$res['id']))}
+<a href="{php echo $this->createMobileUrl('Index',array('action'=>'lahei','openid'=>$res['openid']))}" >
+    <div align="center"  style="position: fixed;left: 20px;bottom: 110px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 50px;z-index: 100">
+        <span style="color:white;font-size: 12px">拉黑</span>
+    </div>
+</a>
+{/if}!-->
+
+{if $_W['fans']['follow'] != 1}
+<div style="width:100%;height:60px;z-index:999999;border:1px solid #eee;background-color:white;">
+    <div>
+        <img src="{php echo tomedia($set['logo'])}" style="width:50px;height:50px;margin:5px;">
+    </div>
+    <div style="margin-left:70px;margin-top:-60px;">
+        <span onclick="guanzhu1()" style="border-radius:3px;font-size:12px;color:#ff5000;border:1px solid #ff5000;float:right;margin-right:20px;margin-top:8px;padding:1px 10px;">关注</span>
+        <div style="font-size:14px;margin-top:10px;">{$set['name']}</div>
+        <div style="color:#666;font-size:12px;line-height:20px;">{$set['jianjie']}</div>
+    </div>
+</div>
+{/if}
+<div style="height:50px;color:white;">
+    1
+</div>
+<div class="footer" style="color:#969696;">
+    {if $res['checkp'] ==0}
+    <div onclick="pinglun({$res['id']})" style="float:left;border:1px solid #eee;width:50%;height:35px;line-height:35px;margin-top:5px;margin-left:10px;border-radius:4px;padding-left:10px;">我来说两句...</div>
+    {/if}
+    <div style="float:right;width:40%">
+        <ul> {if $collection == ''}
+            <li style="float:left;width:33.33%;margin-top:13px;">
+                <a onclick="collection({$res['id']})" >
+                    <span><img src="{ASSETS_PATH}img/shoucang.png" style="width:20px;height:20px;"></span>
+                </a>
+            </li>
+            {else}
+            <li style="float:left;width:33.33%;margin-top:13px;">
+                <a onclick="quxiao({$res['id']})">
+                    <span><img src="{ASSETS_PATH}img/shoucang2.png" style="width:20px;height:20px;"></span>
+                </a>
+            </li>
+            {/if}
+            <script>
+
+            //举报弹出层
+            function jubao(res) {
+                 var t=true;
+                        $.ajax({
+                        async: false,
+                        url : "{php echo $this->createMobileUrl('index',array('action'=>'jubaos'))}",
+                        type:"post",
+                        data:{
+                            id : res,
+                        }, success: function (res) {
+                            var ress=JSON.parse(res);
+                            if(ress.code==1) {
+                                layer.msg(ress.msg, {time:3000});
+                                layer.closeAll('page');
+                                t= false;
+                            }
+                        }
+                    });
+                        if (t==false){
+                            return false
+                        }
+                         layer.open({
+                            type: 1,
+                            title: '举报窗口',
+                            closeBtn: 0,
+                            shadeClose: true,
+                            skin: 'yourclass',
+                            content: '<div style="width: 320px;height: 280px;text-align: center;"><textarea id="msg" style="margin-top: 2rem;width: 91%;height: 60%;" name="" required lay-verify="required" placeholder="请输入举报内容" class="layui-textarea"></textarea><button style="margin-top:3rem;" class="layui-btn" lay-submit lay-filter="formDemo" onclick="subreport('+res+')">立即提交</button></div>'
+                             });
+
+            }
+
+            function subreport(id) {
+                var msg= $("#msg").val();
+                        $.ajax({
+                        url : "{php echo $this->createMobileUrl('index',array('action'=>'jubao'))}",
+                        type:"post",
+                        data:{
+                            id : id,
+                            msg:msg
+                        }, success: function (res) {
+                           var ress=JSON.parse(res);
+                            if(ress.code==99) {
+                                layer.msg(ress.msg, {time:3000});
+                                 layer.closeAll('page'); //关闭所有页面层
+                            }else{
+                                layer.msg(ress.msg, {time:3000})
+                            }
+
+                        }
+                    });
+            }
+                function collection(id) {
+                    $.ajax({
+                        url : "{php echo $this->createMobileUrl('index',array('action'=>'collection'))}",
+                        type:"post",
+                        data:{
+                            id : id
+                        }, success: function (res) {
+                            if(res==1) {
+                                window.location.reload();
+                            }else{
+                                window.location.reload();
+                            }
+                        }
+                    });
+                }
+
+                function quxiao(id) {
+                    $.ajax({
+                        url : "{php echo $this->createMobileUrl('index',array('action'=>'quxiao'))}",
+                        type:"post",
+                        data:{
+                            id : id
+                        }, success: function (res) {
+                            if(res==1) {
+                                window.location.reload();
+                            }else{
+                                window.location.reload();
+                            }
+                        }
+                    });
+                }
+            </script>
+            <li style="float:left;width:33.33%;margin-top:13px;">
+                <span onclick="redict({$res['id']},this)"><img {if $res['dianzan']!=''}src="{ASSETS_PATH}img/dianzan_y.png"{else}src="{ASSETS_PATH}img/dianzan.png"{/if} style="width:20px;height:20px;"></span><span>{$res['zan']}</span>
+            </li>
+            <li style="float:left;width:33.33%;margin-top:13px;" onclick="_system._guide(true)">
+                <span><img src="{ASSETS_PATH}img/zhuanfa.png" style="width:20px;height:20px;"></span>{$res['share']}
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+
+</html>
+<script>
+
+
+    $(document).on('click', '#previewImage img',function(event) {
+        var imgArray = [];
+        var curImageSrc = $(this).attr('src');
+        var oParent = $(this).parent();
+        if (curImageSrc && !oParent.attr('href')) {
+            $('#previewImage img').each(function(index, el) {
+                var itemSrc = $(this).attr('src');
+                imgArray.push(itemSrc);
+            });
+            wx.previewImage({
+                current: curImageSrc,
+                urls: imgArray
+            });
+        }
+    });
+    $(document).on('click', '#previewImage1 img',function(event) {
+        var imgArray = [];
+        var curImageSrc = $(this).attr('src');
+        var oParent = $(this).parent();
+        if (curImageSrc && !oParent.attr('href')) {
+            $('#previewImage1 img').each(function(index, el) {
+                var itemSrc = $(this).attr('src');
+                imgArray.push(itemSrc);
+            });
+            wx.previewImage({
+                current: curImageSrc,
+                urls: imgArray
+            });
+        }
+    });
+    function show_img(obg) {
+        var src = $(obg).attr('src');
+        var list = [];
+        $(obg).parent().find('img').each(function (index, el) {
+            list.push($(this).attr('src'));
+        });
+
+        wx.ready(function () {
+            wx.previewImage({
+                current: src, // 当前显示图片的http链接
+                urls: list// 需要预览的图片http链接列表
+            });
+        });
+    }
+
+</script>
+<script>
+    function redict(tid,obj) {
+        event.preventDefault();
+        //接下来使用js代码进行页面跳转
+        $.ajax({
+            url : '{php echo $this->createMobileUrl('Index',array('action'=>'zan'))}',
+            type:"post",
+            data:{
+                tid : tid
+            }, success: function (res) {
+                if(res=='yes') {
+                    $(obj).parent().addClass('checked');
+                    $(obj).children().attr("src","{ASSETS_PATH}img/dianzan_y.png");
+                    var  val = $(obj).next().text();
+                    $(obj).next().text(parseInt(val)+1);
+                    layer.msg('点赞成功', {time:2000})
+                }else{
+                    layer.msg('您已经赞过了', {time:3000})
+                }
+            }
+        });
+    }
+    function redict1(pid,obj) {
+
+        event.preventDefault();
+        //alert(pid);
+        //接下来使用js代码进行页面跳转
+        $.ajax({
+            url : "{php echo $this->createMobileUrl('Index',array('action'=>'zan1'))}",
+            type:"post",
+            data:{
+                pid : pid
+            }, success: function (res) {
+                if(res==2) {
+                    $(obj).parent().addClass('checked');
+                    $(obj).children().attr("src","{ASSETS_PATH}img/dianzan_y.png");
+                    var  val = $(obj).next().html();
+                    $(obj).next().html(parseInt(val)+1);
+                    layer.msg('点赞成功', {time:2000})
+                }else{
+                    layer.msg('您已经赞过了', {time:3000})
+                }
+            }
+        });
+    }
+
+    function shoucang(id) {
+        event.preventDefault();
+        //接下来使用js代码进行页面跳转
+        $.ajax({
+            url : '{php echo $this->createMobileUrl('Index',array('action'=>'shoucang'))}',
+            type:"post",
+            data:{
+                id : id
+            }, success: function (res) {
+                if(res==1) {
+                    //var data = $.parseJSON(res);
+                    var html = '';
+                    html='<span><img src="{ASSETS_PATH}img/shoucang.png" style="width: 14px;margin-top:-4px;"></span><span style="color: #red;">已收藏</span>'
+                    $("#shoucang").html(html);
+                }else{
+                    alert('您已经收藏了');
+                }
+            }
+        });
+    }
+
+    function pinglun(tid){
+        location.href='{php echo $this->createMobileUrl('Index',array('action'=>'pinglun1','hi'=>0))}&tid='+ tid+''
+    }
+    function huifu(tid,pid,hname,userid){
+        location.href='{php echo $this->createMobileUrl('Index',array('action'=>'huifu','hi'=>1))}&tid='+ tid+'&pid='+ pid+'&userid='+ userid+'&hname='+ hname+'"'
+    }
+    function huifua(tid,pid,hname,hid,userid){
+        //alert(hid);return false;
+        location.href='{php echo $this->createMobileUrl('Index',array('action'=>'huifu2','hi'=>2))}&tid='+ tid+'&pid='+ pid+'&userid='+ userid+'&hname='+ hname+'&hid='+ hid+'"'
+
+    }
+</script>
+
+<script type="text/javascript">
+    function show_img1(obg) {
+        var list = [];
+        $(obg).parent().find('img').each(function () {
+            list.push($(this).attr('src'));
+        });
+        var src = $(this).attr('src');
+        wx.ready(function () {
+            wx.previewImage({
+                current: src, // 当前显示图片的http链接
+                urls: list// 需要预览的图片http链接列表
+            });
+        });
+    }
+    var _system={
+        $:function(id){return document.getElementById(id);},
+        _client:function(){
+            return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
+        },
+        _scroll:function(){
+            return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
+        },
+        _cover:function(show){
+            if(show){
+                this.$("cover").style.display="block";
+                this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
+                this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
+            }else{
+                this.$("cover").style.display="none";
+            }
+        },
+        _guide:function(click){
+            this._cover(true);
+            this.$("guide").style.display="block";
+            this.$("guide").style.top=(_system._scroll().y+5)+"px";
+            window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
+            if(click){_system.$("cover").onclick=function(){
+                _system._cover();
+                _system.$("guide").style.display="none";
+                _system.$("cover").onclick=null;
+                window.onresize=null;
+            };}
+        },
+        _zero:function(n){
+            return n<0?0:n;
+        }
+    }
+</script>
+
+<script>
+    function guanzhu(obj,bopenid) {
+        event.preventDefault();
+        //接下来使用js代码进行页面跳转
+        $.ajax({
+            url : '{php echo $this->createMobileUrl('User',array('action'=>'guanzhu'))}',
+            type:"post",
+            data:{
+                bopenid : bopenid
+            }, success: function (res) {
+                if(res==1) {
+                    $(obj).html("已关注");
+                    $(obj).prev().html(str)
+                    layer.msg('关注成功', {time:3000})
+                }else{
+                    layer.msg('取消成功', {time:3000})
+                    $(obj).html("关注TA");
+                    $(obj).prev().html(str)
+                }
+            }
+        });
+    }
+</script>
+
+<script>
+    function guanzhutie(obj,sid) {
+        event.preventDefault();
+        //接下来使用js代码进行页面跳转
+        $.ajax({
+            url : '{php echo $this->createMobileUrl('Index',array('action'=>'guanzhu'))}',
+            type:"post",
+            data:{
+                sid : sid
+            }, success: function (res) {
+                //alert(res);
+                if(res==1) {
+                    $(obj).html("已关注");
+                    $(obj).prev().html(str)
+                    layer.msg('关注成功', {time:3000})
+                }else{
+                    layer.msg('取消成功', {time:3000})
+                    $(obj).html("关注TA");
+                    $(obj).prev().html(str)
+                }
+            }
+        });
+    }
+    function guanzhu1(){
+        var erwei = "{php echo tomedia($set['erwei'])}"
+        layer.open({
+            type: 1,
+            title: "扫一扫关注我们",
+            area: ['300px', '360px'], //宽高
+            shadeClose: true, //开启遮罩关闭
+            content: '<div style="width:280px;margin-left:10px;">' +
+            '<img src="'+erwei+'" style="width:280px;height:280px;">' +
+            '<div style="text-align:center;font-size:15px;margin-top:-10px;">长按二维码关注我们</div></div>'
+        });
+    }
+</script>

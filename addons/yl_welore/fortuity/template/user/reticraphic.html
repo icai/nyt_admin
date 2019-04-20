@@ -1,0 +1,174 @@
+{extend name="/base"/}
+{block name="main"}
+<link href="static/umeditor/themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
+<style>.am-modal-hd .am-close{top:-5px;right:-3px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-edit"></span> 发布图文贴
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">发帖用户昵称</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input title="{$userInfo.user_nick_name|emoji_decode}" type="text" value="{$userInfo.user_nick_name|emoji_decode}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">帖子标题</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="text" id="title">
+                            <small>请输入帖子标题</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">圈子</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <select id="toryid">
+                                {volist name="toryInfo" id="vo"}
+                                <option value="{$vo.id}">{$vo.realm_name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">帖子内容</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <textarea id="content" style="height: 400px;resize: none;"></textarea>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">帖子图片</label>
+                        <div class="am-u-sm-9">
+                            <div id="shion">
+                                <div class="multiple-img" style="width:120px;height:120px;margin:10px 20px 10px 0px;position: relative;float: left;">
+                                    <img src="" name="sngimg" onerror="this.src='static/disappear/default.png'"
+                                         style="width: 120px;height: 120px;margin: 7px 0px 0px 3px;"/>
+                                    <div style="width: 126px;height: 126px;position: absolute;top: 4px;border: 1px solid #cccccc;border-radius: 3px;">
+                                        <div class="am-modal-hd" style="text-align: left;">
+                                            <a href="javascript: void(0);" class="am-close am-close-spin"
+                                               style="color:#2D93CA;opacity:1;" onclick="multipleClose(this);">×</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="am-u-sm-9" style="margin-top: 30px;">
+                            <button type="button" style="font-size: 12px;" onclick="cuonice();">选择图片</button>
+                            <small>帖子图片可以通过拖拽进行排序</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group" style="margin-top: 20px;">
+                        <div class="am-u-sm-8 am-u-end am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdSave();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script src="assets/js/jquery.dad.min.js"></script>
+<script>
+
+    function cuonice() {
+        layer.open({
+            type: 2,
+            anim:2,
+            scrollbar: false,
+            area: ['900px', '600px'],
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            content: ["{:url('images/dialogImages')}&gclasid=0", 'no']
+        });
+    }
+
+    function sutake(eurl) {
+        var multipleImg = $.trim($('.multiple-img').eq(0).attr('data-multiple-img'));
+        if (multipleImg == '') {
+            $('#shion').html('');
+        }
+        var shtml = '<div class="multiple-img" style="width:120px;height:120px;margin:10px 20px 10px 0px;position: relative;float: left;" data-multiple-img="' + eurl + '">';
+        shtml += '<img src="' + eurl + '" name="sngimg" onerror="this.src=\'static/disappear/default.png\'" style="width: 120px;height: 120px;margin: 7px 0px 0px 3px;"/>';
+        shtml += '<div style="width: 126px;height: 126px;position: absolute;top: 4px;border: 1px solid #cccccc;border-radius: 3px;">';
+        shtml += '<div class="am-modal-hd" style="text-align: left;">';
+        shtml += '<a href="javascript: void(0);" class="am-close am-close-spin" style="color:#2D93CA;opacity:1;" onclick="multipleClose(this);">×</a>';
+        shtml += '</div>';
+        shtml += '</div>';
+        shtml += '</div>';
+        $('#shion').append(shtml);
+        $('#shion').dad();
+        layer.closeAll();
+    }
+
+    function multipleClose(obj) {
+        $(obj).parent().parent().parent().remove();
+        setTimeout(function () {
+            if ($('.multiple-img').length < 1) {
+                var shtml = '<div class="multiple-img" style="width:120px;height:120px;margin:10px 20px 10px 0px;position: relative;float: left;">';
+                shtml += '<img src="" name="sngimg" onerror="this.src=\'static/disappear/default.png\'" style="width: 120px;height: 120px;margin: 7px 0px 0px 3px;"/>';
+                shtml += '<div style="width: 126px;height: 126px;position: absolute;top: 4px;border: 1px solid #cccccc;border-radius: 3px;">';
+                shtml += '<div class="am-modal-hd" style="text-align: left;">';
+                shtml += '<a href="javascript: void(0);" class="am-close am-close-spin" style="color:#2D93CA;opacity:1;" onclick="multipleClose(this);">×</a>';
+                shtml += '</div>';
+                shtml += '</div>';
+                shtml += '</div>';
+                $('#shion').append(shtml);
+            }
+        }, 500);
+    }
+
+    var slock = false;
+    function holdSave() {
+        if (!slock) {
+            var title = $.trim($('#title').val());
+            if (title == '') {
+                layer.msg('帖子标题不能为空');
+                return;
+            }
+            var toryid = $.trim($('#toryid').val());
+            var content = $.trim($('#content').val());
+            if (content == '') {
+                layer.msg('帖子内容不能为空');
+                return;
+            }
+            var multipleImg = [];
+            $('.multiple-img').each(function () {
+                multipleImg.push($.trim($(this).attr('data-multiple-img')));
+            });
+            slock = true;
+            $.ajax({
+                type: "post",
+                url: "{:url('user/reticraphic')}",
+                data: {
+                    'userid': '{$userInfo.id}',
+                    'title': title,
+                    'toryid': toryid,
+                    'content': content,
+                    'multipleImg': multipleImg
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code > 0) {
+                        layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                            location.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                            slock = false;
+                        });
+                    }
+                }
+            });
+        }
+    }
+</script>
+{/block}

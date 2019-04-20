@@ -1,0 +1,144 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:86px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}.resth button{margin-right:5px;}.cust-btn{font-size:14px;padding:5px 10px;}.cust-btn-one{margin-left:-20px;}.cust-btn-activate{border-bottom:solid 2px cornflowerblue;}.cust-aver-img{width:82px;height:82px;position:absolute;top:11px;border:1px solid #cccccc;border-radius:3px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-reorder"></span> 商品订单
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right" style="width: 200px;margin-left: -80px;">
+                    <i class="am-icon-search" onclick="turtle('all');"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索订单号或商品名称...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-6 am-u-md-7">
+                <div class="am-btn-toolbar" style="margin: 10px 0px 5px 20px;">
+                    <div class="am-btn-group am-btn-group-xs resth">
+                        <a href="{:url('marketing/sorder')}&egon=0" class="cust-btn cust-btn-one {if $egon==0}cust-btn-activate{/if}">全部</a>
+                        <a href="{:url('marketing/sorder')}&egon=1" class="cust-btn {if $egon==1}cust-btn-activate{/if}">待发货</a>
+                        <a href="{:url('marketing/sorder')}&egon=2" class="cust-btn {if $egon==2}cust-btn-activate{/if}">已发货</a>
+                        <a href="{:url('marketing/sorder')}&egon=3" class="cust-btn {if $egon==3}cust-btn-activate{/if}">待退款</a>
+                        <a href="{:url('marketing/sorder')}&egon=4" class="cust-btn {if $egon==4}cust-btn-activate{/if}">已完成</a>
+                        <a href="{:url('marketing/sorder')}&egon=5" class="cust-btn {if $egon==5}cust-btn-activate{/if}">已退款</a>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div class="am-u-sm-6 am-u-md-5" style="text-align: right;">
+                {if egon==5}
+                <button type="button" class="am-btn am-btn-default am-btn-xs am-btn-danger" onclick="rebatch('0');">
+                    批量删除
+                </button>
+                {else}
+                <button type="button" class="am-btn am-btn-default am-btn-xs am-btn-danger" onclick="rebatch('1');">
+                    批量彻底删除
+                </button>
+                {/if}
+            </div>
+            -->
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="11.75%">订单编号</th>
+                            <th width="11.75%">商品缩略图</th>
+                            <th width="11.75%">商品名称</th>
+                            <th width="11.75%">购买用户</th>
+                            <th width="11.75%">创建时间</th>
+                            <th width="11.75%">实付价格</th>
+                            <th width="11.75%">状态</th>
+                            <th width="11.75%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">{$vo.order_number}</td>
+                            <td class="am-hide-sm-only" style="position: relative;">
+                                <img src="{$vo.product_img}"
+                                     style="width: 78px;height: 78px;border-radius: 3px;margin: 1.5px">
+                                <div class="cust-aver-img"></div>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('marketing/shop')}&egon=0&hazy_name={$vo.product_name}&page=1"
+                                   title="{$vo.product_name}"
+                                   target="_blank">
+                                    {$vo.product_name}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_wechat_open_id}&page=1"
+                                   title="{$vo.user_nick_name|emoji_decode}"
+                                   target="_blank">
+                                    {$vo.user_nick_name|emoji_decode|subtext=10}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">{:date('Y-m-d H:i:s',$vo.buy_time)}</td>
+                            <td class="am-hide-sm-only">{$vo.actual_price} ( {$defaultNavigate.currency} )</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status==0}
+                                <span style="background: indianred; color: white;padding: 5px;border-radius: 3px;">待发货</span>
+                                {elseif $vo.status==1}
+                                <span style="background: darkseagreen; color: white;padding: 5px;border-radius: 3px;">已发货</span>
+                                {elseif $vo.status==2}
+                                <span style="background: darkorange; color: white;padding: 5px;border-radius: 3px;">待退款</span>
+                                {elseif $vo.status==3}
+                                <span style="background: palevioletred; color: white;padding: 5px;border-radius: 3px;">已退款</span>
+                                {elseif $vo.status==4}
+                                <span style="background: seagreen; color: white;padding: 5px;border-radius: 3px;">已完成</span>
+                                {/if}
+                            </td>
+                            <td>
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                        onclick="unute('{$vo.id}');">订单详情
+                                </button>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+    <textarea id="editor" style="width: 600px;display: none;"></textarea>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+
+    function unute(usid) {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href', "{:url('marketing/seorder')}&usid=" + usid);
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+    function turtle() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('sorder')}&egon={$egon}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('sorder')}&egon={$egon}&page={$page}";
+    }
+
+</script>
+{/block}

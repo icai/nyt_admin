@@ -1,0 +1,211 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-plus"></span> 新增轮播广告
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+                    <div class="am-form-group">
+                        <label for="sngpic" class="am-u-sm-3 am-form-label"> 幻灯片图片</label>
+                        <div class="am-u-sm-9">
+                            <form id="snup" style="display: none;">
+                                <input type="file" id="sngpic" name="sngpic" onchange="snuload();">
+                            </form>
+                            <img src="" id="shion" onerror="this.src='static/wechat/image_vip_top.jpg'"
+                                 onclick="cuonice();" style="width: 200px;height: 80px;cursor: pointer;"/>
+                            <button type="button" style="margin-left:10px;margin-right:10px; font-size: 12px;"
+                                    onclick="cuonice();">
+                                选择图片
+                            </button>
+                            <small>建议图片尺寸：420*170px</small>
+                            <input type="hidden" name="sngimg">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">选择跳转路径</label>
+                        <div class="am-u-sm-9">
+                            <select id="sgrant">
+                                <option value="0">内部网页跳转</option>
+                                <!--<option value="1">外部网页跳转</option>-->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="exhibit-0" class="supply" style="display: none;">
+                        <div class="am-form-group">
+                            <label class="am-u-sm-3 am-form-label">内部链接</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="supply-url-0">
+                                <small>
+                                    *跳转到帖子详情页面请按以下格式填写,id值在帖子列表中获取( /yl_welore/pages/packageA/article/index?id=1&type=0 ) ( type 帖子类型 0.文字 1.语音 ) <br>
+                                    <!--*跳转到视频播放页面请按以下格式填写,id值在帖子列表中获取( /yl_welore/pages/packageA/play/index?id=1 )<br>-->
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="exhibit-1" class="supply" style="display: none;">
+                        <div class="am-form-group">
+                            <label class="am-u-sm-3 am-form-label">外部链接</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="supply-url-1">
+                                <small>*此链接为网页外部跳转链接，需要在小程序后台配置业务域名。</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="exhibit-2" class="supply" style="display: none;">
+                        <div class="am-form-group">
+                            <label class="am-u-sm-3 am-form-label">跳转小程序appid</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="supply-url-2">
+                                <small>*要跳转的小程序appid ( 只有同一公众号下的关联的小程序之间才可相互跳转 )</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="status" class="am-u-sm-3 am-form-label">状态</label>
+                        <div class="am-u-sm-9">
+                            <select id="status">
+                                <option value="0">隐藏</option>
+                                <option value="1">显示</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="scores" class="am-u-sm-3 am-form-label">排序</label>
+                        <div class="am-u-sm-9">
+                            <input type="number" id="scores" value="0" placeholder="请输入排序数字">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdNav();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    $(function () {
+        var shing = $('#sgrant').val();
+        if (shing == 0) {
+            $('#exhibit-0').show();
+        } else if (shing == 1) {
+            $('#exhibit-1').show();
+        } else if (shing == 2) {
+            $('#exhibit-2').show();
+        }
+        $('#sgrant').change(function () {
+            $('.supply').hide();
+            var catype = $(this).val();
+            if (catype == 0) {
+                $('#exhibit-0').show();
+            } else if (catype == 1) {
+                $('#exhibit-1').show();
+            } else if (catype == 2) {
+                $('#exhibit-2').show();
+            }
+        });
+    });
+
+    function cuonice() {
+        layer.open({
+            type: 2,
+            anim:2,
+            scrollbar: false,
+            area: ['900px', '600px'],
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            content: ["{:url('images/dialogImages')}&gclasid=0", 'no']
+        });
+    }
+
+    function sutake(eurl) {
+        $('#shion').attr('src', eurl);
+        $("[name='sngimg']").val(eurl);
+        layer.closeAll();
+    }
+
+
+    function excheck(sngimg, supplyUrl, scores) {
+        if (sngimg == '' || sngimg == 'undefined' || sngimg == null) {
+            layer.msg('请上传广场图标');
+            return false;
+        }
+        /*
+        if (supplyUrl == '' || supplyUrl == 'undefined' || supplyUrl == null) {
+            layer.msg('跳转路径不能为空');
+            return false;
+        }
+        */
+        if (scores == '' || scores == 'undefined' || scores == null) {
+            layer.msg('排序不能为空');
+            return false;
+        }
+        if (scores > 2147483646) {
+            layer.msg('排序数字最大不能超过 2147483646');
+            return false;
+        }
+        return true;
+    }
+
+    var slock = false;
+
+    function holdNav() {
+        if (!slock) {
+            var sngimg = $.trim($("[name='sngimg']").val());
+            var sgrant = $.trim($('#sgrant').val());
+            if (sgrant == 0) {
+                var supplyUrl = $('#supply-url-0').val();
+            } else {
+                var supplyUrl = $('#supply-url-1').val();
+            }
+            var status = $.trim($('#status').val());
+            var scores = $.trim($('#scores').val());
+            if (excheck(sngimg, supplyUrl, scores)) {
+                slock = true;
+                $.ajax({
+                    type: "post",
+                    url: "{:url('rusymbol')}",
+                    data: {
+                        'playbill_url': sngimg,
+                        'practice_type': sgrant,
+                        'url': supplyUrl,
+                        'status': status,
+                        'scores': scores
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.href = "{:url('symbol')}";
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                                slock = false;
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+{/block}

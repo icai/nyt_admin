@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.8,1.0">
+	<application setting="true">
+		<name><![CDATA[微论坛]]></name>
+		<identifie><![CDATA[wyt_luntan]]></identifie>
+		<version><![CDATA[2.7.3]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[微论坛]]></ability>
+		<description><![CDATA[微论坛]]></description>
+		<author><![CDATA[微擎]]></author>
+		<url><![CDATA[https://www.we7.cc]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+			<message type="text" />
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+		<supports>
+			<item type="app" />
+                </supports>
+	</platform>
+	<bindings>
+		<cover>
+			<entry title="首页" do="index" state="" direct="false" />
+		</cover>
+		<menu>
+			<entry title="参数设置" do="set" state="" direct="false" />
+			<entry title="广告管理" do="ads" state="" direct="false" />
+			<entry title="帖子管理" do="thread" state="" direct="false" />
+			<entry title="用户管理" do="user" state="" direct="false" />
+			<entry title="模块管理" do="module" state="" direct="false" />
+			<entry title="信息统计" do="information" state="" direct="false" />
+			<entry title="海报设置" do="postersetting" state="" direct="false" />
+			<entry title="底部菜单" do="list" state="" direct="false" />
+		</menu>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[CREATE TABLE IF NOT EXISTS `ims_wyt_dayusms_base` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `weid` int(11) unsigned DEFAULT NULL,
+  `appkey` varchar(100) DEFAULT NULL,
+  `secretKey` varchar(100) DEFAULT NULL,
+  `format` varchar(100) DEFAULT NULL,
+  `freesignname` varchar(100) DEFAULT NULL,
+  `templatecode` varchar(100) DEFAULT NULL,
+  `safetycode` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_ads` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `display` int(11) NOT NULL,
+  `mobile` varchar(100) NOT NULL,
+  `title` varchar(32) NOT NULL COMMENT '广告标题',
+  `images` text NOT NULL COMMENT '广告图片',
+  `url` varchar(128) NOT NULL COMMENT '广告链接',
+  `place` varchar(32) NOT NULL COMMENT '广告位置',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_browse` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `openid` varchar(40) NOT NULL,
+  `add_time` int(11) NOT NULL,
+  `thread_id` int(11) NOT NULL,
+  `uniacid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_collection` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `openid` varchar(32) NOT NULL COMMENT '用户openid',
+  `thread_id` int(11) NOT NULL COMMENT '收藏的帖子的id',
+  `date` varchar(32) NOT NULL COMMENT '收藏的时间',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL,
+  `settings` text NOT NULL,
+  `other_setting` text NOT NULL,
+  `share_setting` text NOT NULL,
+  `poster_setting` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_guanzhu` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `openid` varchar(32) NOT NULL COMMENT '用户openid',
+  `bopenid` varchar(32) NOT NULL COMMENT '被关注的用户id',
+  `date` varchar(32) NOT NULL COMMENT '关注的时间',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_huifu` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `pl_id` int(11) NOT NULL COMMENT '评论id',
+  `user_id` varchar(64) NOT NULL COMMENT '回复人的openid',
+  `buser_id` varchar(64) NOT NULL COMMENT '被回复人的openid',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_information` (
+  `id` int(11) unsigned NOT NULL COMMENT 'id',
+  `fangwen` int(11) NOT NULL COMMENT '站点访问统计',
+  `send` int(11) NOT NULL COMMENT '发帖数统计',
+  `user` int(11) NOT NULL COMMENT '用户统计',
+  `acid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_list` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(128) NOT NULL COMMENT '标题',
+  `logo` text NOT NULL COMMENT 'logo',
+  `url` text NOT NULL COMMENT 'url',
+  `xuhao` int(11) NOT NULL COMMENT '序号',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_looked` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `openid` varchar(32) NOT NULL COMMENT '用户openid',
+  `thread_id` int(11) NOT NULL COMMENT '帖子id',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_module` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(32) NOT NULL COMMENT '模块名称',
+  `images` text NOT NULL COMMENT '模块图标',
+  `admin` varchar(32) NOT NULL COMMENT '管理员',
+  `send` int(11) NOT NULL COMMENT '发帖权限',
+  `reply` int(11) NOT NULL COMMENT '回帖权限',
+  `jifen` int(11) NOT NULL COMMENT '发帖积分',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_notice` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `title` varchar(32) NOT NULL COMMENT '公告标题',
+  `info` varchar(64) NOT NULL COMMENT '公告内容',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_opinion` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `info` varchar(256) NOT NULL,
+  `openid` varchar(32) NOT NULL,
+  `acid` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_pay` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `topenid` varchar(64) NOT NULL COMMENT '发表文章的人的openid',
+  `dopenid` varchar(64) NOT NULL COMMENT '打赏的人',
+  `thread_id` int(11) NOT NULL COMMENT '帖子的id',
+  `money` float NOT NULL COMMENT '打赏的金额',
+  `serial` varchar(32) NOT NULL COMMENT '订单号',
+  `state` int(11) NOT NULL DEFAULT '0' COMMENT '支付状态',
+  `time` varchar(32) NOT NULL COMMENT '支付时间',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_pinglun` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `thread_id` int(11) NOT NULL COMMENT '帖子id',
+  `user_id` varchar(64) NOT NULL COMMENT '用户openid',
+  `info` varchar(64) NOT NULL COMMENT '评论内容',
+  `images` text NOT NULL COMMENT '评论的图片',
+  `avatar` text NOT NULL COMMENT '评论用户的头像',
+  `nickname` varchar(32) NOT NULL COMMENT '评论用户的昵称',
+  `hname` varchar(32) NOT NULL,
+  `hid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `time` varchar(32) NOT NULL COMMENT '评论的时间',
+  `zan` int(11) NOT NULL COMMENT '点赞人数',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_qiandao` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `openid` varchar(64) NOT NULL COMMENT '用户标识',
+  `time` varchar(32) NOT NULL COMMENT '时间',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_report` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `openid` varchar(50) NOT NULL,
+  `msg` text NOT NULL,
+  `add_time` int(11) NOT NULL,
+  `thread_id` int(11) NOT NULL,
+  `uniacid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_self` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `title` varchar(32) NOT NULL COMMENT '广告标题',
+  `images` text NOT NULL COMMENT '广告图片',
+  `url` varchar(128) NOT NULL COMMENT '广告链接',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_set` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `credit1` int(11) NOT NULL,
+  `name` varchar(32) NOT NULL COMMENT '论坛名称',
+  `jianjie` text NOT NULL COMMENT '论坛简介',
+  `member` int(11) NOT NULL COMMENT '会员数',
+  `thread` int(11) NOT NULL COMMENT '帖子数',
+  `logo` text NOT NULL COMMENT '论坛logo',
+  `beij` text NOT NULL COMMENT '背景图',
+  `send` int(11) NOT NULL COMMENT '发帖积分',
+  `reply` int(11) NOT NULL COMMENT '回复积分',
+  `state` int(11) NOT NULL COMMENT '审核状态',
+  `vstate` int(11) NOT NULL COMMENT '视频状态',
+  `admin` text NOT NULL COMMENT '管理员',
+  `sign1` int(11) NOT NULL,
+  `sign` int(11) NOT NULL,
+  `biz_id` varchar(50) NOT NULL,
+  `follow` tinyint(4) NOT NULL,
+  `mobiletime` int(11) NOT NULL,
+  `postauth` varchar(100) NOT NULL,
+  `nickname` varchar(32) NOT NULL COMMENT '管理员昵称',
+  `avatar` text NOT NULL COMMENT '管理员头像',
+  `address` varchar(64) NOT NULL COMMENT '管理员地址',
+  `openid` varchar(64) NOT NULL COMMENT '管理员openid',
+  `shouxu` int(10) NOT NULL COMMENT '手续费比例',
+  `mes` text NOT NULL COMMENT '模版消息ID',
+  `erwei` text NOT NULL COMMENT '二维码',
+  `dingdan` int(1) NOT NULL COMMENT '11',
+  `zengjia` varchar(128) NOT NULL COMMENT '11',
+  `uid` int(11) NOT NULL,
+  `partnerkey` varchar(128) NOT NULL,
+  `mch_id` varchar(128) NOT NULL,
+  `appsecret` varchar(128) NOT NULL,
+  `tstate` int(10) NOT NULL,
+  `acid` int(11) NOT NULL,
+  `tixian_limit` float NOT NULL COMMENT '最低提现金额',
+  `dashang_limit` float NOT NULL COMMENT '最低打赏金额',
+  `dashang_moneys` varchar(128) NOT NULL COMMENT '打赏页面默认金额列表(6个)',
+  `award_days` int(11) NOT NULL COMMENT '悬赏回复有效时间',
+  `qq_address_key` varchar(255) DEFAULT NULL COMMENT '腾讯地图key',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_thread` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `fengmian` text,
+  `mobile` varchar(100) NOT NULL,
+  `title` varchar(32) NOT NULL COMMENT '帖子标题',
+  `info` text NOT NULL COMMENT '帖子内容',
+  `images` text NOT NULL COMMENT '文章图片',
+  `nickname` varchar(32) NOT NULL,
+  `openid` varchar(64) NOT NULL COMMENT '用户标识',
+  `lv` int(11) NOT NULL COMMENT '等级',
+  `uid` int(11) NOT NULL,
+  `avatar` text NOT NULL COMMENT '头像',
+  `time` varchar(32) NOT NULL,
+  `address` varchar(32) NOT NULL COMMENT '发帖位置',
+  `fenlei` varchar(32) NOT NULL COMMENT '类别',
+  `zan` int(11) NOT NULL COMMENT '点赞人数',
+  `share` int(11) NOT NULL COMMENT '转发次数',
+  `pl` int(11) NOT NULL COMMENT '评论的数量',
+  `pl_time` varchar(64) NOT NULL COMMENT '评论的最新时间',
+  `looks` int(11) NOT NULL COMMENT '访问量',
+  `money` float NOT NULL COMMENT '打赏金额',
+  `biaoshi` int(11) NOT NULL,
+  `shstate` int(11) NOT NULL,
+  `zdstate` int(11) NOT NULL,
+  `ggstate` int(10) NOT NULL,
+  `video` text NOT NULL COMMENT '视频',
+  `tbiaoshi` int(10) NOT NULL,
+  `zengjia` varchar(128) NOT NULL,
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  `checkp` int(11) NOT NULL,
+  `checkd` int(11) NOT NULL,
+  `award` decimal(10,2) NOT NULL COMMENT '悬赏金额',
+  `award_id` int(11) NOT NULL DEFAULT '0' COMMENT '获得悬赏用户id',
+  `award_time` datetime NOT NULL COMMENT '悬赏到期时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_tixian` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `openid` varchar(64) NOT NULL COMMENT '用户openid',
+  `uid` int(11) NOT NULL COMMENT '用户uid',
+  `money` float NOT NULL COMMENT '提现金额',
+  `zhanghao` varchar(32) NOT NULL COMMENT '提现账号',
+  `time` varchar(64) NOT NULL COMMENT '时间',
+  `state` int(11) NOT NULL COMMENT '提现状态',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `pid` int(11) NOT NULL,
+  `uid` int(10) NOT NULL COMMENT 'uid',
+  `openid` varchar(64) NOT NULL COMMENT '用户标识',
+  `nickname` varchar(32) NOT NULL COMMENT '昵称',
+  `avatar` text NOT NULL COMMENT '头像',
+  `send` int(11) NOT NULL COMMENT '发帖数',
+  `jifen` int(11) NOT NULL COMMENT '积分数',
+  `lv` int(11) NOT NULL COMMENT '等级',
+  `state` int(11) NOT NULL DEFAULT '0' COMMENT '状态',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_luntan_zan` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `user_id` varchar(32) NOT NULL COMMENT '用户openid',
+  `thread_id` int(11) NOT NULL COMMENT '帖子id',
+  `pl_id` int(11) NOT NULL COMMENT '评论id',
+  `time` varchar(32) NOT NULL COMMENT '点赞时间',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_mm_set` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `title` varchar(20) NOT NULL COMMENT '标题',
+  `images` text NOT NULL COMMENT '图片',
+  `info` text NOT NULL COMMENT '内容',
+  `acid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_mm_yuyue` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(20) NOT NULL COMMENT '姓名',
+  `phone` varchar(20) NOT NULL COMMENT '电话',
+  `diqu` varchar(20) NOT NULL COMMENT '地区',
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '时间',
+  `acid` int(11) NOT NULL COMMENT '公众号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `ims_wyt_zoulang_set` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tu` text NOT NULL,
+  `rank` int(10) NOT NULL,
+  `wen` text NOT NULL,
+  `acid` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_wyt_dayusms_base`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_ads`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_browse`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_collection`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_config`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_guanzhu`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_huifu`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_information`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_list`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_looked`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_module`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_notice`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_opinion`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_pay`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_pinglun`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_qiandao`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_report`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_self`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_set`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_thread`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_tixian`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_user`;
+DROP TABLE IF EXISTS `ims_wyt_luntan_zan`;
+DROP TABLE IF EXISTS `ims_wyt_mm_set`;
+DROP TABLE IF EXISTS `ims_wyt_mm_yuyue`;
+DROP TABLE IF EXISTS `ims_wyt_zoulang_set`;
+]]></uninstall>
+	<upgrade><![CDATA[upgrade.php]]></upgrade>
+</manifest>

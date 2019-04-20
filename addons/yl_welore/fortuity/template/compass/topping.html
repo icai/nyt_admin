@@ -1,0 +1,124 @@
+{extend name="/base"/}
+{block name="main"}
+<style>
+    .am-table-striped > tbody > tr:nth-child(odd) > td, .am-table > tbody > tr > td {
+        line-height: 45px;
+        text-align: center;
+    }
+    .am-table > thead:first-child > tr:first-child > th {
+        text-align: center;
+    }
+</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-location-arrow"></span> {$realmName} 置顶列表
+        </div>
+
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="fuzzy();"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索帖子...">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <form class="am-form">
+                    <table class="am-table table-main">
+                        <thead>
+                        <tr>
+                            <th width="18%">发帖用户</th>
+                            <th width="18%">发帖 标题 / 内容</th>
+                            <th width="10%">帖子类型</th>
+                            <th width="18%">发帖时间</th>
+                            <th width="18%">置顶时间</th>
+                            <th width="18%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td>
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_wechat_open_id}&page=1"
+                                   target="_blank" title="{$vo.user_nick_name|emoji_decode}">
+                                    {$vo.user_nick_name|emoji_decode|subtext=15}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{:url('essay/setails')}&uplid={$vo.id}" target="_blank">
+                                {if $vo.study_title}
+                                    {$vo.study_title|emoji_decode|subtext=15}
+                                {elseif $vo.study_content}
+                                    {$vo.study_content|emoji_decode|subtext=15}
+                                {else}
+                                    无
+                                {/if}
+                                </a>
+                            </td>
+                            <td>
+                                {if $vo.study_type==0} 图文 {elseif $vo.study_type==1} 语音 {elseif $vo.study_type==2} 视频 {/if}
+                            </td>
+                            <td>{:date('Y-m-d H:i:s',$vo.adapter_time)}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo.topping_time)}</td>
+                            <td>
+                                <span style="cursor: pointer;" onclick="cancelStrike('{$vo.id}');" >取消置顶</span>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    var cancelStrike = function (prid) {
+        layer.confirm('您确定要取消置顶当前帖子吗？', {
+            btn: ['确定', '取消'], title: '提示'
+        }, function () {
+            $.ajaxSettings.async = false;
+            $.post("{:url('compass/topping')}", {'prid': prid}, function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }, 'json');
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+    var fuzzy = function () {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name) {
+            location.href = "{:url('compass/topping')}&tory_id={$tory_id}&hazy_name=" + fz_name + "&page={$page}";
+        } else {
+            location.href = "{:url('compass/topping')}&tory_id={$tory_id}&page={$page}";
+        }
+    }
+
+</script>
+{/block}

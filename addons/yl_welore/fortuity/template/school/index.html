@@ -1,0 +1,179 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-ticket"></span> 学校列表
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="fuzzy();"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索学校...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-6">
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button type="button" class="am-btn am-btn-default" onclick="saloof();">
+                            <span class="am-icon-plus"></span> 新增学校
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="25%">排序</th>
+                            <th width="25%">学校名称</th>
+                            <th width="25%">状态</th>
+                            <th width="25%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <input type="text" class="scfixed"
+                                       id="sfixed-{$vo.id}" value="{$vo.scores}" data-score="{$vo.scores}"
+                                       style="width: 50px;margin-top: 8px;"
+                                       onblur="supre('{$vo.id}','#sfixed-{$vo.id}');">
+                            </td>
+                            <td class="am-hide-sm-only">{$vo.school_name}</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status == 0}
+                                <span style="color: red;">隐藏</span>
+                                {else}
+                                <span style="color: lightgreen;">正常</span>
+                                {/if}
+                            </td>
+                            <td>
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                                onclick="uploof('{$vo.id}');">
+                                            <span class="am-icon-pencil-square-o"></span> 编辑
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}0
+{block name="script"}
+<script>
+
+    function supre(asyId, domId) {
+        var dalue = $(domId).val();
+        var daioe = $(domId).attr('data-score');
+        if (dalue > 2147483646) {
+            layer.msg('排序数字最大不能超过 2147483646');
+            $(domId).val(daioe);
+            return false;
+        }
+        if (dalue != daioe) {
+            var repair = exalter(asyId, dalue);
+            if (repair.code > 0) {
+                layer.msg(repair.msg, {icon: 1, time: 800});
+                $(domId).attr('data-score', dalue);
+            } else {
+                layer.msg(repair.msg, {icon: 5, time: 1600});
+            }
+        }
+    }
+
+    function exalter(asyId, dalue) {
+        var straw = {};
+        $.ajax({
+            type: "post",
+            url: "{:url('school/slue')}",
+            data: {
+                asyId: asyId,
+                dalue: dalue
+            },
+            async: false,
+            success: function (data) {
+                straw = data;
+            }
+        });
+        return straw;
+    }
+
+
+    function saloof() {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href',"{:url('school/ruschool')}");
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+    function uploof(uplid) {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href', "{:url('upschool')}&uplid=" + uplid);
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+
+    var lock = false;
+
+    function navlintDel(mid, vname) {
+        if (!lock) {
+            lock = true;
+            layer.confirm('您确定要删除 <span style="color: blue;">' + vname + '</span> 广场吗？<br>请确保该广场下没有所关联的圈子，<br>用户创建圈子申请也会被关联删除。', {
+                btn: ['确定', '取消'], "title": "提示"
+            }, function () {
+                $.post(
+                    "{:url('navlint')}",
+                    {'ecid': mid},
+                    function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                                lock = false;
+                            });
+                        }
+                    }, 'json');
+            }, function () {
+                lock = false;
+            });
+        }
+    }
+
+    function fuzzy() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('school/index')}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('school/index')}&page={$page}";
+    }
+
+</script>
+{/block}

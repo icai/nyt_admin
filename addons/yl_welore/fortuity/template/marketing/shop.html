@@ -1,0 +1,339 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:86px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}.resth button{margin-right:5px;}.cust-btn{font-size:14px;padding:5px 10px;}.cust-btn-one{margin-left:-20px;}.cust-btn-activate{border-bottom:solid 2px cornflowerblue;}.cust-aver-img{width:82px;height:82px;position:absolute;top:11px;border:1px solid #cccccc;border-radius:3px;}.cust-noble-img{background-image:url('static/disappear/icon_coupon.png');background-size:40px;background-repeat:no-repeat;width:82px;height:82px;position:absolute;top:11px;border:1px solid #cccccc;border-radius:3px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-shopping-cart"></span> 商品列表
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="turtle('all');"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索商品名称...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-6 am-u-md-7">
+                <div class="am-btn-toolbar" style="margin-top: -10px;">
+                    <a href="{:url('marketing/rushop')}" target="_blank" class="cust-btn" style="background: #e7e7e7;border-radius: 5px;color: #474545;">新增商品</a>
+                </div>
+                <div class="am-btn-toolbar" style="margin: 10px 0px 5px 20px;">
+                    <div class="am-btn-group am-btn-group-xs resth">
+                        <a href="{:url('marketing/shop')}&egon=0" class="cust-btn cust-btn-one {if $egon==0}cust-btn-activate{/if}">全部</a>
+                        <a href="{:url('marketing/shop')}&egon=1" class="cust-btn {if $egon==1}cust-btn-activate{/if}">已上架</a>
+                        <a href="{:url('marketing/shop')}&egon=2" class="cust-btn {if $egon==2}cust-btn-activate{/if}">已下架</a>
+                        <a href="{:url('marketing/shop')}&egon=3" class="cust-btn {if $egon==3}cust-btn-activate{/if}">已售罄</a>
+                        <a href="{:url('marketing/shop')}&egon=4" class="cust-btn {if $egon==4}cust-btn-activate{/if}">会员专属</a>
+                        <a href="{:url('marketing/shop')}&egon=5" class="cust-btn {if $egon==5}cust-btn-activate{/if}">回收站</a>
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-6 am-u-md-5" style="text-align: right;">
+                {if $egon==5}
+                <button type="button" class="am-btn am-btn-default am-btn-xs am-btn-danger" onclick="rebatch('0');">
+                    批量彻底删除
+                </button>
+                {else}
+                <button type="button" class="am-btn am-btn-default am-btn-xs am-btn-danger" onclick="rebatch('1');">
+                    批量删除
+                </button>
+                {/if}
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="7%">
+                                <input id="withole" type="checkbox" class="tpl-table-fz-check">全选
+                            </th>
+                            <th width="7%">排序</th>
+                            <th width="10%">商品缩略图</th>
+                            <th width="10%">商品名称</th>
+                            <th width="10%">商品类型</th>
+                            <th width="10%">商品销量</th>
+                            <th width="10%">商品库存</th>
+                            <th width="10%">商品价格</th>
+                            <th width="12%">状态</th>
+                            <th width="14%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <input type="checkbox" class="tpl-table-fz-check elctive" value="{$vo.id}">
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <input type="text" class="scfixed"
+                                       id="sfixed-{$vo.id}" value="{$vo.scores}" data-score="{$vo.scores}"
+                                       style="width: 50px;margin-top: 24px;"
+                                       onblur="supre('{$vo.id}','#sfixed-{$vo.id}');">
+                            </td>
+                            <td class="am-hide-sm-only" style="position: relative;">
+                                <img src="{$vo.product_img|athumbnail}"
+                                     style="width: 78px;height: 78px;border-radius: 3px;margin: 1.5px">
+                                <div class="{if $vo.noble_exclusive==1}cust-noble-img{else}cust-aver-img{/if}"></div>
+                            </td>
+                            <td class="am-hide-sm-only">{$vo.product_name}</td>
+                            <td class="am-hide-sm-only">{$vo.tpname}</td>
+                            <td class="am-hide-sm-only">{$vo.sales_volume}</td>
+                            <td class="am-hide-sm-only">{$vo.product_inventory}</td>
+                            <td class="am-hide-sm-only">{$vo.product_price} ( {$defaultNavigate.currency} )</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status == 0}
+                                <span style="background: red; color: white;padding: 5px;border-radius: 3px;">已下架</span>
+                                {elseif $vo.status == 1}
+                                <span style="background: lightseagreen; color: white;padding: 5px;border-radius: 3px;">已上架</span>
+                                {/if}
+                                {if $vo.product_inventory==0}
+                                <span style="background: orange; color: white;padding: 5px;border-radius: 3px;">已售罄</span>
+                                {/if}
+                            </td>
+                            <td>
+                                {if $vo.trash==0}
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                        onclick="unute('{$vo.id}');">
+                                    <span class="am-icon-pencil-square-o"></span>编辑
+                                </button>
+                                {else}
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                        onclick="uecover('{$vo.id}');">
+                                    <span class="am-icon-mail-reply"></span>恢复
+                                </button>
+                                {/if}
+                                {if $vo.trash==0}
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger"
+                                        onclick="uknow('{$vo.id}','0','0');">
+                                    <span class="am-icon-trash-o"></span>删除
+                                </button>
+                                {else}
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger"
+                                        onclick="uknow('{$vo.id}','0','1');">
+                                    <span class="am-icon-trash-o"></span>彻底删除
+                                </button>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+    <textarea id="editor" style="width: 600px;display: none;"></textarea>
+</div>
+{/block}
+{block name="script"}
+<script>
+    !function () {
+        $('#withole').click(function () {
+            var wecked = $(this).prop('checked');
+            if (wecked) {
+                $('.elctive').prop('checked', true);
+            } else {
+                $('.elctive').prop('checked', false);
+            }
+        });
+        $('.elctive').click(function () {
+            var jack = 1;
+            $('.elctive').each(function () {
+                var weck = $(this).prop('checked');
+                if (weck == false) {
+                    jack = 0;
+                    return false;
+                }
+            });
+            if (jack) {
+                $('#withole').prop('checked', true);
+            } else {
+                $('#withole').prop('checked', false);
+            }
+        });
+    }();
+
+    function rebatch(thorough) {
+        var tired = false;
+        $('.elctive').each(function () {
+            if ($(this).prop('checked')) {
+                tired = true;
+                return false;
+            }
+        });
+        if (!tired) {
+            layer.alert('很抱歉，当前没有选中要操作的数据', {'title': '系统提示'});
+            return;
+        }
+        if (thorough == 0) {
+            var rough = "您确定要批量删除选中的数据吗？";
+        } else {
+            var rough = "批量彻底删除后数据将不可恢复，您还要继续吗？";
+        }
+        layer.confirm(rough, {
+            btn: ['确定', '取消']
+        }, function (index) {
+            var i = 0;
+            var j = 0;
+            $('.elctive').each(function () {
+                if ($(this).prop('checked')) {
+                    var suid = $(this).val();
+                    i++;
+                    j += setrike(suid, '1', '1');
+                }
+            });
+            if (i == j) {
+                layer.close(index);
+                layer.msg('批量删除成功', {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg('未知错误', {icon: 5, time: 1600}, function () {
+                    location.reload();
+                });
+            }
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+    function supre(asyId, domId) {
+        var dalue = $(domId).val();
+        var daioe = $(domId).attr('data-score');
+        if (dalue > 2147483646) {
+            layer.msg('排序数字最大不能超过 2147483646');
+            $(domId).val(daioe);
+            return false;
+        }
+        if (dalue != daioe) {
+            var repair = exalter(asyId, dalue);
+            if (repair.code > 0) {
+                layer.msg(repair.msg, {icon: 1, time: 800});
+                $(domId).attr('data-score', dalue);
+            } else {
+                layer.msg(repair.msg, {icon: 5, time: 1600});
+            }
+        }
+    }
+
+    function exalter(asyId, dalue) {
+        var straw = {};
+        $.ajax({
+            type: "post",
+            url: "{:url('dopslue')}",
+            data: {
+                asyId: asyId,
+                dalue: dalue
+            },
+            async: false,
+            success: function (data) {
+                straw = data;
+            }
+        });
+        return straw;
+    }
+
+    function unute(usid) {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href', "{:url('marketing/upshop')}&usid=" + usid);
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+    function uknow(suid, batch, thorough) {
+        if (thorough == 0) {
+            var rough = "您确定要删除选中的数据吗？";
+        } else {
+            var rough = "彻底删除后数据将不可恢复，您还要继续吗？";
+        }
+        layer.confirm(rough, {
+            btn: ['确定', '取消'], 'title': '系统提示'
+        }, function (index) {
+            layer.close(index);
+            setrike(suid, batch, thorough);
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+    function uecover(suid) {
+        layer.confirm("您确定要恢复这条数据吗？", {
+            btn: ['确定', '取消'], 'title': '系统提示'
+        }, function (index) {
+            layer.close(index);
+            $.post("{:url('resume')}",{'suid':suid},function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 1600});
+                }
+            })
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+    
+
+    var ulock = false;
+    function setrike(suid, batch, thorough) {
+        if (!ulock) {
+            ulock = true;
+            var recode = 0;
+            $.ajax({
+                type: "post",
+                url: "{:url('shoplint')}",
+                async: false,
+                data: {'suid': suid, 'thorough': thorough},
+                dataType: 'json',
+                success: function (data) {
+                    if (batch == 1) {
+                        ulock = false;
+                        if (data.code > 0) {
+                            recode = 1;
+                        } else {
+                            recode = 0;
+                        }
+                    } else {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1600}, function () {
+                                ulock = false;
+                            });
+                        }
+                    }
+                }
+            });
+            return recode;
+        }
+    }
+
+
+    function turtle() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('shop')}&egon={$egon}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('shop')}&egon={$egon}&page={$page}";
+    }
+
+</script>
+{/block}

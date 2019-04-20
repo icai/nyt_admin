@@ -1,0 +1,93 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-trello"></span> 积分设置
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-12">
+                <div class="am-form am-form-horizontal" style="width: 670px;height:350px;margin: 0px auto;box-shadow: 0px 0px 10px 0px black;">
+
+                    <div class="am-form-group" style="padding: 50px 0px 10px 0px;margin-left: 30px;">
+                        <label class="am-u-sm-4 am-form-label">用户每日签到获得积分范围</label>
+                        <div class="am-u-sm-3">
+                            <input type="number" id="averMin" value="{$list.aver_min}" placeholder="">
+                        </div>
+                        <div class="am-u-sm-1">—</div>
+                        <div class="am-u-sm-3 am-u-end">
+                            <input type="number" id="averMax" value="{$list.aver_max}" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group" style="margin-left: 30px;">
+                        <label class="am-u-sm-4 am-form-label">会员每日签到获得积分范围</label>
+                        <div class="am-u-sm-3">
+                            <input type="number" id="nobleMin" value="{$list.noble_min}" placeholder="">
+                        </div>
+                        <div class="am-u-sm-1">—</div>
+                        <div class="am-u-sm-3 am-u-end">
+                            <input type="number" id="nobleMax" value="{$list.noble_max}" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group" style="padding: 10px 0px 40px 0px;margin-left: 30px;">
+                        <label class="am-u-sm-4 am-form-label">邀请注册获得积分范围</label>
+                        <div class="am-u-sm-3">
+                            <input type="number" id="inviteMin" value="{$list.invite_min}" placeholder="">
+                        </div>
+                        <div class="am-u-sm-1">—</div>
+                        <div class="am-u-sm-3 am-u-end">
+                            <input type="number" id="inviteMax" value="{$list.invite_max}" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-7 am-u-sm-push-5">
+                            <button type="button" class="am-btn am-btn-secondary" style="border-radius: 5px;" onclick="holdSave();">保存设置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+    function holdSave() {
+        var averMin = Number($('#averMin').val().match(/^\d+(?:\.\d{0,2})?/));
+        var averMax = Number($('#averMax').val().match(/^\d+(?:\.\d{0,2})?/));
+        var nobleMin = Number($('#nobleMin').val().match(/^\d+(?:\.\d{0,2})?/));
+        var nobleMax = Number($('#nobleMax').val().match(/^\d+(?:\.\d{0,2})?/));
+        var inviteMin = Number($('#inviteMin').val().match(/^\d+(?:\.\d{0,2})?/));
+        var inviteMax = Number($('#inviteMax').val().match(/^\d+(?:\.\d{0,2})?/));
+        $.ajax({
+            type: "post",
+            url: "{:url('punch')}",
+            data: {
+                'usid': '{$list.id}',
+                'averMin': averMin,
+                'averMax': averMax,
+                'nobleMin': nobleMin,
+                'nobleMax': nobleMax,
+                'inviteMin': inviteMin,
+                'inviteMax': inviteMax
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000});
+                }
+            }
+        });
+    }
+</script>
+{/block}

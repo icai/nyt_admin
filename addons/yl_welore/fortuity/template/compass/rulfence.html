@@ -1,0 +1,229 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-plus"></span> 新增圈子
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+                    <div class="am-form-group">
+                        <label for="name" class="am-u-sm-3 am-form-label">圈子名称</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="name" placeholder="请输入圈子名称">
+                            <small>输入圈子名称</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">圈子图标</label>
+                        <div class="am-u-sm-9">
+                            <img src="" id="shion" onerror="this.src='static/disappear/default.png'"
+                                 onclick="cuonice();" style="width: 100px;height: 100px;cursor: pointer;"/>
+                            <button type="button" style="font-size: 12px;" onclick="cuonice();">选择图片</button>
+                            <small>建议图片尺寸：200*200px</small>
+                            <input type="hidden" name="sngimg">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="needle_id" class="am-u-sm-3 am-form-label">圈子类型</label>
+                        <div class="am-u-sm-9">
+                            <select id="needle_id">
+                                <option value="0">请选择</option>
+                                {volist name="needleList" id="vo"}
+                                <option value="{$vo.id}">{$vo.name}</option>
+                                {/volist}
+                            </select>
+                            <small>选择圈子属于的广场</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="intro" class="am-u-sm-3 am-form-label">圈子简介</label>
+                        <div class="am-u-sm-9">
+                            <textarea rows="5" id="intro" style="resize: none;" placeholder="请输入圈子简介"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="status" class="am-u-sm-3 am-form-label">圈子权限</label>
+                        <div class="am-u-sm-9">
+                            <select id="attention">
+                                <option value="0">关闭审核</option>
+                                <option value="1">开启审核</option>
+                            </select>
+                            <small>说明：只有加入圈子的人才可以看到圈子里发布的内容，加入圈子，需要通过圈子管理员审核</small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group" style="display: none;">
+                        <label for="atence" class="am-u-sm-3 am-form-label">暗号状态</label>
+                        <div class="am-u-sm-9">
+                            <select id="atence">
+                                <option value="0">关闭暗号</option>
+                                <option value="1">开启暗号</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group" style="display: none;">
+                        <label for="atcipher" class="am-u-sm-3 am-form-label">暗号</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="atcipher" placeholder="请输入暗号">
+                            <small>输入加入圈子的暗号</small>
+                        </div>
+                    </div>
+
+
+                    <div class="am-form-group">
+                        <label for="status" class="am-u-sm-3 am-form-label">圈子状态</label>
+                        <div class="am-u-sm-9">
+                            <select id="status">
+                                <option value="0">暂停访问</option>
+                                <option value="1">正常访问</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="concern" class="am-u-sm-3 am-form-label">关注人数</label>
+                        <div class="am-u-sm-9">
+                            <input type="number" id="concern" value="0" placeholder="请输入关注人数">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="scores" class="am-u-sm-3 am-form-label">排序</label>
+                        <div class="am-u-sm-9">
+                            <input type="number" id="scores" value="0" placeholder="请输入排序数字">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdSave();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    !function () {
+        $('#attention').change(function () {
+            if ($(this).val() == 1) {
+                $('#atence').parent().parent().show();
+            } else {
+                $('#atence').parent().parent().hide();
+                $('#atence').val('0');
+                $('#atcipher').parent().parent().hide();
+            }
+        });
+
+        $('#atence').change(function () {
+            if ($(this).val() == 1) {
+                $('#atcipher').parent().parent().show();
+            } else {
+                $('#atcipher').parent().parent().hide();
+            }
+        });
+    }();
+
+
+
+    function cuonice() {
+        layer.open({
+            type: 2,
+            anim:2,
+            scrollbar: false,
+            area: ['900px', '600px'],
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            content: ["{:url('images/dialogImages')}&gclasid=0", 'no']
+        });
+    }
+
+    function sutake(eurl) {
+        $('#shion').attr('src', eurl);
+        $("[name='sngimg']").val(eurl);
+        layer.closeAll();
+    }
+
+    function excheck(name, sngimg, needle_id, intro, concern, scores) {
+        if (name == '' || name == 'undefined' || name == null) {
+            layer.msg('广场名称不能为空');
+            return false;
+        }
+        if (sngimg == '' || sngimg == 'undefined' || sngimg == null) {
+            layer.msg('请上传广场图标');
+            return false;
+        }
+        if (needle_id == 0) {
+            layer.msg('请选择圈子类型');
+            return false;
+        }
+        if (intro == '' || intro == 'undefined' || intro == null) {
+            layer.msg('圈子简介不能为空');
+            return false;
+        }
+        if (concern == '' || concern == 'undefined' || concern == null) {
+            layer.msg('关注人数不能为空');
+            return false;
+        }
+
+        if (scores == '' || scores == 'undefined' || scores == null) {
+            layer.msg('排序不能为空');
+            return false;
+        }
+        if (scores > 2147483646) {
+            layer.msg('排序数字最大不能超过 2147483646');
+            return false;
+        }
+        return true;
+    }
+
+
+    var slock = false;
+
+    function holdSave() {
+        if (!slock) {
+            var name = $.trim($('#name').val());
+            var sngimg = $.trim($("[name='sngimg']").val());
+            var needle_id = $.trim($('#needle_id').val());
+            var intro = $.trim($('#intro').val());
+            var attention = $.trim($('#attention').val());
+            var atence = $.trim($('#atence').val());
+            var atcipher = $.trim($('#atcipher').val());
+            var status = $.trim($('#status').val());
+            var concern = $.trim($('#concern').val());
+            var scores = $.trim($('#scores').val());
+            if (excheck(name, sngimg, needle_id, intro, concern, scores)) {
+                slock = true;
+                $.ajax({
+                    type: "post",
+                    url: "{:url('rulfence')}",
+                    data: {'name': name, 'sngimg': sngimg, 'needle_id': needle_id, 'intro': intro, 'attention': attention,'atence':atence,'atcipher':atcipher, 'status': status, 'concern': concern, 'scores': scores},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.href = "{:url('fence')}";
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                                slock = false;
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+{/block}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <script src="{ASSETS_PATH}js/layer/layer.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>个人中心</title>
+    {php echo register_jssdk(false);}
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui3.css"/>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/example.css"/>
+    <style>
+        .weui-cell__bd p{margin-top:4px;}
+        .head {width:100%; height:150px;}
+        .weui-cells {margin-top:0;}
+        li {float: left;width:25%;line-height:15px;margin-bottom:5px;}
+        a:link,a:visited{color: #656565;text-decoration: none;}
+        a:hover{color: black;}
+        .weui-cells {font-size: 15px;}
+        .weui-grid__icon {width:100%;text-align:center}
+        .weui-grid__icon+.weui-grid__label{margin-top:-5px;color:#666;}
+        .footer {position: fixed;bottom: 0;z-index:99999;background-color:white;height:50px;width:100%;text-align: center;border-top:1px solid #eee;font-size:14px;padding:2px 0 0 0;}
+        body,ul,li,img,p,div{margin: 0px; padding: 0px;}
+        ul li{list-style: none;}
+        input[type=submit]{
+            -webkit-appearance:none;
+            outline:none
+        }
+    </style>
+</head>
+<script>
+    wx.ready(function () {
+        sharedata = {
+            title: '我的个人中心',
+            desc: '{$user['nickname']}',
+            link: '',
+            imgUrl: '{php echo tomedia($set['logo'])}',
+            success: function(){
+                alert('分享成功');
+            },
+            cancel: function(){
+                alert('分享失败');
+            }
+        };
+        wx.onMenuShareAppMessage(sharedata);
+        wx.onMenuShareTimeline(sharedata);
+    });
+</script>
+<body style="margin:0px;background-color:white;">
+
+<div class="head" style="background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;">
+    <div style="" align="center">
+        <span><img src="{php echo $_W['fans']['avatar']}" width="80px" height="80px" style="margin-top:30px;border-radius:80px;"></span><br>
+
+        <span style="color:white">{$user['nickname']} <span style="font-size:12px;"></span></span>
+    </div>
+</div>
+<div class="weui-grids">
+    <div href="" class="weui-grid" {if $set['tstate']== 1}onclick="tixian1('{$user[openid]}','{$user[uid]}') {else} onclick="tixian('{$user[openid]}','{$user[uid]}'){/if}">
+        <div class="weui-grid__icon" style="color:#ff9000;font-size:16px;font-weight:550;">
+            {php echo $_W['member']['credit2']}元
+        </div>
+        <p class="weui-grid__label">我的余额</p>
+    </div>
+    <a href="{php echo $this->createMobileUrl('index',array('action'=>'my_index','openid'=>$_W['fans']['openid']))}" class="weui-grid">
+        <div class="weui-grid__icon" style="color:red;font-size:16px;font-weight:550;">
+            {$sum_thread}帖
+        </div>
+        <p class="weui-grid__label">我的帖子</p>
+    </a>
+    <div href="" class="weui-grid">
+        <div class="weui-grid__icon" style="color:green;font-size:16px;font-weight:550;">
+            {php echo $_W['member']['credit1']}
+        </div>
+        <p class="weui-grid__label">我的积分</p>
+    </div>
+</div>
+<div class="weui-cells" style="">
+
+{if !empty($adminstr)}
+  <a href="{php echo $this->createMobileUrl('index',array('action'=>'sh','adminstr'=>$adminstr))}" class="weui-cell weui-cell_access">
+        <div class="weui-cell__hd"><img src="http://wx.juwu168.com/addons/tj_business/Assets/img/wodedingdan.png" alt="" style="width:19px;margin-right:5px;margin-top:2px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>审核帖子</p>
+        </div>
+        <div class="weui-cell__ft" style="color:#2bb8aa;font-size: 12px;"></div>
+    </a>
+{/if}
+    <a href="{php echo $this->createMobileUrl('index',array('action'=>'my_index','openid'=>$_W['fans']['openid']))}" class="weui-cell weui-cell_access">
+        <div class="weui-cell__hd"><img src="http://wx.juwu168.com/addons/tj_business/Assets/img/wodedingdan.png" alt="" style="width:19px;margin-right:5px;margin-top:2px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>我的帖子</p>
+        </div>
+        <div class="weui-cell__ft" style="color:#2bb8aa;font-size: 12px;"></div>
+    </a>
+    <!--邀请好友-->
+    <a href="{php echo $this->createMobileUrl('Yaoqing')}" class="weui-cell weui-cell_access">
+            <div class="weui-cell__hd"><img src="http://wx.juwu168.com/addons/tj_business/Assets/img/wodedingdan.png" alt="" style="width:19px;margin-right:5px;margin-top:2px;display:block"></div>
+            <div class="weui-cell__bd">
+                <p>邀请好友</p>
+            </div>
+            <div class="weui-cell__ft" style="color:#2bb8aa;font-size: 12px;"></div>
+        </a>
+
+    <a href="{php echo $this->createMobileUrl('user',array('action'=>'collection')) }" class="weui-cell weui-cell_access">
+        <div class="weui-cell__hd"><img src="{ASSETS_PATH}img/shoucc.png" alt="" style="width:19px;margin-right:5px;margin-top:2px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>我的收藏</p>
+        </div>
+        <div class="weui-cell__ft" style="color:#2bb8aa;font-size: 12px;"></div>
+    </a>
+    <a href="{php echo $this->createMobileUrl('user',array('action'=>'guanzhu')) }" class="weui-cell weui-cell_access">
+        <div class="weui-cell__hd"><img src="{ASSETS_PATH}img/shoucang2.png" alt="" style="width:19px;margin-right:5px;margin-top:2px;display:block"></div>
+        <div class="weui-cell__bd">
+            <p>我的关注</p>
+        </div>
+        <div class="weui-cell__ft" style="color:#2bb8aa;font-size: 12px;"></div>
+    </a>
+    {loop $self $v}
+    <a class="weui-cell weui-cell_access" href="{$v['url']}">
+        <div class="weui-cell__hd"><img src="{php echo tomedia($v['images'])}" alt="" style="width:16px;margin-right:5px;margin-top:1px;display:block"></div>
+        <div class="weui-cell__bd" style="padding-left:3px;">
+            <p>{$v['title']}</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    {/loop}
+    <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('User',array('action'=>'opinion'))}">
+        <div class="weui-cell__hd"><img src="{ASSETS_PATH}img/dongtai.png" alt="" style="width:16px;margin-right:5px;margin-top:1px;display:block"></div>
+        <div class="weui-cell__bd" style="padding-left:3px;">
+            <p>意见反馈</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('User',array('action'=>'dashangjl'))}">
+        <div class="weui-cell__hd"><img src="{ASSETS_PATH}img/shangge.png" alt="" style="width:16px;margin-right:5px;margin-top:1px;display:block"></div>
+        <div class="weui-cell__bd" style="padding-left:3px;">
+            <p>打赏记录</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+
+    <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('Index',array('action'=>'tixianjl'))}">
+        <div class="weui-cell__hd"><img src="{ASSETS_PATH}img/tixian.png" alt="" style="width:16px;margin-right:5px;margin-top:1px;display:block"></div>
+        <div class="weui-cell__bd" style="padding-left:3px;">
+            <p>提现记录</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <div style="border-bottom:10px solid #eee;"></div>
+
+    <div>
+
+    </div>
+</div>
+
+<!--<div style="color:#666;font-size:12px;margin-top:6px;line-height:20px;" align="center">-->
+    <!--阿里云提供计算服务 ©2016-2018三元壶庄-->
+<!--</div>-->
+<div style="height:55px;color:white;">1</div>
+{if $auth==0}
+
+{if $blist !=null}
+{template 'buttom'}
+{else}
+<div class="footer" style="z-index: 9999">
+    <ul id="dian">
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>''))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/shouye.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">首页</span>
+            </li>
+        </a>
+        <a href="{php echo $this->createMobileUrl('User',array('action'=>'opinion'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/dongtai.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">反馈</span>
+            </li>
+        </a>
+
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'fatie'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/fabu.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">发帖</span>
+            </li>
+        </a>
+
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'user'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/wode1.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#ff9000;">我的</span>
+            </li>
+        </a>
+    </ul>
+</div>
+{/if}
+
+{else if !empty($admin) && !empty($openid)}
+
+<a href="{php echo $this->createMobileUrl('Index',array('action'=>'fatie'))}">
+<div  align="center"  style="  position: fixed;right: 20px;bottom: 20px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 68px;">
+   <img src="{ASSETS_PATH}img/post.png" width="30px"  >
+</div>
+</a>
+
+{/if}
+</body>
+</html>
+
+<script>
+    function tixian(openid,uid) {
+    	var tixian_limit = "{php echo $set['tixian_limit']}";
+        layer.open({
+            type: 1,
+            title: "提现（最低提现金额："+tixian_limit+"）",
+            anim:'up',
+            shadeClose: true, //开启遮罩关闭
+            area: ['300px', '220px'], //宽高
+            time:'',
+            content: '<form action="{php echo $this->createMobileUrl('Index',array('action'=>'tixian'))}" method="post">' +
+            '<div style="width:90%;margin-left:5%;height:140px;color:#666;">' +
+            '<div style="margin-bottom:10px;margin-top:20px;"><input type="number" step="0.01" name="money" placeholder="请输入提现金额" style="font-size:15px;border-radius:5px;border:1px solid #ff8500;width:97%;height:35px;line-height:35px;padding-left:3%"></div>' +
+            '<input name="openid" value="'+openid+'" hidden>'+
+            '<input name="uid" value="'+uid+'" hidden>'+
+            '<div style="margin-bottom:10px;"><input type="text" placeholder="请输入支付宝帐号" name="zhanghao" style="font-size:15px;border-radius:5px;border:1px solid #ff8500;width:97%;height:35px;line-height:35px;padding-left:3%"></div>' +
+            '<div style="margin-top:15px;"><input type="submit" value="提现" style="border-radius:5px;font-size:15px;width:60%;margin-left:20%;border:none;text-align:center;background-color:#ff8500;color:white;height:35px;line-height:35px;"></div></div></form>'
+        });
+    }
+
+    function tixian1(openid,uid) {
+    	var tixian_limit = "{php echo $set['tixian_limit']}";
+        layer.open({
+            type: 1,
+            title: "提现（最低提现金额："+tixian_limit+"）",
+            anim:'up',
+            shadeClose: true, //开启遮罩关闭
+            area: ['300px', '200px'], //宽高
+            time:'',
+            content: '<form action="{php echo $this->createMobileUrl('Index',array('action'=>'tixian'))}" method="post">' +
+            '<div style="width:90%;margin-left:5%;height:140px;color:#666;">' +
+            '<div style="margin-bottom:10px;margin-top:20px;"><input type="number" step="0.01" name="money" placeholder="请输入提现金额" style="font-size:15px;border-radius:5px;border:1px solid #ff8500;width:97%;height:35px;line-height:35px;padding-left:3%"></div>' +
+            '<input name="openid" value="'+openid+'" hidden>'+
+            '<input name="uid" value="'+uid+'" hidden>'+
+            '<div style="margin-top:15px;"><input type="submit" value="提现" style="border-radius:5px;font-size:15px;width:60%;margin-left:20%;border:none;text-align:center;background-color:#ff8500;color:white;height:35px;line-height:35px;"></div></div></form>'
+        });
+    }
+</script>
+ <script type="text/javascript">
+     // 对浏览器的UserAgent进行正则匹配,不含有微信独有标识的则为其他浏览器
+     var useragent = navigator.userAgent;
+     if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
+         // 这里警告框会阻塞当前页面继续加载
+         alert('请登录微信端进行反馈!');
+         // 以下代码是用javascript强行关闭当前页面
+         var opened = window.open('about:blank', '_self');
+         opened.opener = null;
+         opened.close();
+     }
+ </script>
+

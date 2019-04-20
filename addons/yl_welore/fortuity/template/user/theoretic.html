@@ -1,0 +1,285 @@
+{extend name="/base"/}
+{block name="main"}
+<style>
+    .am-table-striped > tbody > tr:nth-child(odd) > td, .am-table > tbody > tr > td {
+        line-height: 45px;
+        text-align: center;
+    }
+
+    .am-table-striped > tbody > tr:nth-child(odd) > td a, .am-table > tbody > tr > td a {
+        margin: 0px 8%;
+    }
+
+    .am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle), .am-btn-group > .am-btn:last-child:not(:first-child), .am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle), .am-btn-group > .am-btn:first-child {
+        margin-top: 8px;
+    }
+
+    .bunch {
+        border: 1px solid;
+        padding: 3px 6px;
+        border-radius: 5px;
+        font-size: 12px;
+    }
+    .am-table>thead:first-child>tr:first-child>th{text-align: center;}
+</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-user"></span> 虚拟用户
+        </div>
+
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="fuzzy();"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索用户名...">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="tpl-block">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs" style="margin: -10px 0px 10px 30px;">
+                <button type="button" class="am-btn am-btn-default" onclick="saloof();">
+                    <span class="am-icon-plus"></span> 新增虚拟用户
+                </button>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table table-main">
+                        <thead>
+                        <tr>
+                            <th width="15%">用户昵称</th>
+                            <th width="15%">用户头像</th>
+                            <th width="5%">性别</th>
+                            <th width="15%">添加时间</th>
+                            <th width="25%">社交功能</th>
+                            <th width="15%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <span title="{$vo.user_nick_name|emoji_decode}">
+                                    {$vo.user_nick_name|emoji_decode|subtext=10}
+                                </span>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <img src="{$vo.user_head_sculpture}" style="width: 50px;height: 50px;border-radius: 50%;">
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.gender==2}
+                                    女
+                                {else}
+                                    男
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only"> {:date('Y-m-d H:i:s',$vo.user_reg_time)}</td>
+                            <td class="am-hide-sm-only">
+                                <span style="border: solid 1px #cccccc;padding: 2px 5px;margin: 0px 3px;cursor: pointer;" onclick="urelease('0','{$vo.id}');">
+                                    发表图文贴
+                                </span>
+                                <!--
+                                <span style="border: solid 1px #cccccc;padding: 2px 3px;margin: 0px 3px;cursor: pointer;" onclick="urelease('1','{$vo.id}');">
+                                    发表语音贴
+                                </span>
+                                <span style="border: solid 1px #cccccc;padding: 2px 3px;margin: 0px 3px;cursor: pointer;" onclick="urelease('2','{$vo.id}');">
+                                    发表视频贴
+                                </span>
+                                -->
+                                <span style="border: solid 1px #cccccc;padding: 2px 5px;margin: 0px 3px;cursor: pointer;" onclick="urelease('3','{$vo.id}');">
+                                    回复帖子
+                                </span>
+                                <span class="euModalOpen" data-euid="{$vo.id}" style="border: solid 1px #cccccc;padding: 2px 5px;margin: 0px 3px;cursor: pointer;"
+                                      data-am-modal="{target: '#shandsel', closeViaDimmer: 0, width: 400, height: 295}" >
+                                    赠送礼物
+                                </span>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <span style="cursor: pointer; border: 1px solid; padding: 2px 5px;" onclick="uploof('{$vo.id}');">
+                                    <span class="am-icon-pencil-square-o"></span>编辑
+                                </span>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="shandsel">
+        <div class="am-modal-dialog" style="background:#fefffe;">
+            <div class="am-modal-hd">
+                <span style="font-size: 14px;position: absolute;left:12px;top:7px;">赠送礼物</span>
+                <a id="euModalClose" href="javascript: void(0);" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <input id="virtual-user" type="hidden" value="0"/>
+            <div class="am-modal-bd am-form tpl-form-line-form">
+                <div class="am-form-group" style="margin-top:20px;">
+                    <label class="am-u-sm-4 am-form-label" style="font-size: 15px;margin:2px 0 0 -5px;">受赠用户</label>
+                    <div class="am-u-sm-8">
+                        <input type="text" id="user-openid" oninput="extolled(this);" class="tpl-form-input" style="margin:3px 0 0 -20px;" placeholder="请输入用户openid">
+                        <span id="sehred" style="position: absolute;left: 0px; color: blue;font-size: 12px;">　</span>
+                    </div>
+                </div>
+                <div class="am-form-group" style="margin-top:20px;">
+                    <label class="am-u-sm-4 am-form-label" style="font-size: 15px;margin:2px 0 0 -5px;">礼物列表</label>
+                    <div class="am-u-sm-8">
+                        <select id="tribute-number" style="margin:3px 0 0 -20px;">
+                            {volist name="tribute" id="vo"}
+                            <option value="{$vo.id}" style="padding-left: 5px;">{$vo.tr_name} {$vo.tr_conch} ( {$defaultNavigate.currency} )</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="am-form-group" style="margin-top:10px;">
+                    <label class="am-u-sm-4 am-form-label" style="font-size: 15px;margin:2px 0 0 -5px;">礼物数量</label>
+                    <div class="am-u-sm-8">
+                        <input type="text" id="tribute-quantity" oninput="digitalCheck(this);" class="tpl-form-input" style="margin:3px 0 0 -20px;" placeholder="请输入赠送礼物数量">
+                    </div>
+                </div>
+                <div class="am-u-sm-9 am-u-sm-push-1" style="margin-top:10px;">
+                    <button type="button" class="am-btn am-btn-sm" class="am-btn" onclick="sendGifts();">确定赠送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    !function () {
+        $('.euModalOpen').click(function () {
+            var euid = $(this).attr('data-euid');
+            $('#virtual-user').val(euid);
+        });
+        $('#euModalClose').click(function () {
+            $('#virtual-user').val('0');
+        });
+    }();
+
+    var saloof = function () {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href', "{:url('user/rutheoretic')}");
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+    var uploof =function (usid) {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href', "{:url('user/uptheoretic')}&usid=" + usid);
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+    var urelease = function (ecosa, usid) {
+        switch (ecosa) {
+            case '0':
+                var dynamicUrl = $('<a></a>');
+                dynamicUrl.attr('href', "{:url('user/reticraphic')}&usid=" + usid);
+                dynamicUrl.attr('target', '_blank');
+                dynamicUrl.get(0).click();
+                break;
+            /*
+            case '1':
+                var dynamicUrl = $('<a></a>');
+                dynamicUrl.attr('href', "{:url('user/reticrvoice')}&usid=" + usid);
+                dynamicUrl.attr('target', '_blank');
+                dynamicUrl.get(0).click();
+                break;
+            case '2':
+                var dynamicUrl = $('<a></a>');
+                dynamicUrl.attr('href', "{:url('user/reticrvideo')}&usid=" + usid);
+                dynamicUrl.attr('target', '_blank');
+                dynamicUrl.get(0).click();
+                break;
+           */
+            case '3':
+                var dynamicUrl = $('<a></a>');
+                dynamicUrl.attr('href', "{:url('user/reticrpaper')}&usid=" + usid);
+                dynamicUrl.attr('target', '_blank');
+                dynamicUrl.get(0).click();
+                break;
+        }
+    }
+
+    var extolled = function (obj) {
+        obj.value = $.trim(obj.value);
+        if (obj.value != '') {
+            $.getJSON("{:url('compass/getopenid')}", {"openid": obj.value}, function (data) {
+                if (data.name != '') {
+                    $('#sehred').css('color', 'blue');
+                    $('#sehred').text(data.name);
+                } else {
+                    $('#sehred').css('color', 'red');
+                    $('#sehred').text('\u53d7\u8d60\u7528\u6237\u0020\u006f\u0070\u0065\u006e\u0069\u0064\u0020\u586b\u5199\u9519\u8bef');
+                }
+            });
+        }
+    }
+
+    var digitalCheck = function (obj) {
+        obj.value = Number($.trim($(obj).val()).match(/^\d+(?:\.\d{0,0})?/));
+    }
+
+
+    var sendGifts = function () {
+        var sehredInfo = $.trim($('#sehred').text());
+        if (sehredInfo == '\u53d7\u8d60\u7528\u6237\u0020\u006f\u0070\u0065\u006e\u0069\u0064\u0020\u586b\u5199\u9519\u8bef') {
+            layer.msg('\u53d7\u8d60\u7528\u6237\u0020\u006f\u0070\u0065\u006e\u0069\u0064\u0020\u586b\u5199\u9519\u8bef');
+            return;
+        }
+        layer.confirm('您确定要赠送礼物吗？', {
+            btn: ['确定', '取消'], title: '提示'
+        }, function () {
+            var virtualUser = $.trim($('#virtual-user').val());
+            var userOpenid = $.trim($('#user-openid').val());
+            var tributeNumber = $.trim($('#tribute-number').val());
+            var tributeQuantity = $.trim($('#tribute-quantity').val());
+            $.ajaxSettings.async = false;
+            $.post("{:url('user/virtualSendGifts')}", {
+                'virtualUser': virtualUser,
+                'userOpenid': userOpenid,
+                'tributeNumber': tributeNumber,
+                'tributeQuantity': tributeQuantity
+            }, function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }, 'json');
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+    function fuzzy() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('index')}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('index')}&page={$page}";
+    }
+
+</script>
+{/block}

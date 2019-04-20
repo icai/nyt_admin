@@ -1,0 +1,222 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.shild button{margin:-5px 2% 0px 5%;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-circle-o"></span> 圈子列表
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="fuzzy();"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索圈子...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12 am-u-md-6">
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button type="button" class="am-btn am-btn-default" onclick="saloof();">
+                            <span class="am-icon-plus"></span> 新增圈子
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table table-main">
+                        <thead>
+                        <tr>
+                            <th width="12.5%">排序</th>
+                            <th width="12.5%">圈子图标</th>
+                            <th width="12.5%">圈子名称</th>
+                            <th width="12.5%">圈子类型</th>
+                            <th width="12.5%">关注人数</th>
+                            <th width="12.5%">圈子状态</th>
+                            <th width="12.5%">创建时间</th>
+                            <th width="12.5%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <input type="text" class="scfixed"
+                                       id="sfixed-{$vo.id}" value="{$vo.scores}" data-score="{$vo.scores}"
+                                       style="width: 50px;margin-top: 8px;"
+                                       onblur="supre('{$vo.id}','#sfixed-{$vo.id}');">
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <img src="{$vo.realm_icon}" onerror="this.src='static/disappear/default.png'"
+                                     style="width: 50px;height:50px;"/>
+                            </td>
+                            <td class="am-hide-sm-only">{$vo.realm_name|subtext=10}</td>
+                            <td class="am-hide-sm-only">{$vo.name}</td>
+                            <td class="am-hide-sm-only">{$vo.concern|formatNumber}人</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status == 0}
+                                <span style="color: red;">暂停访问</span>
+                                {else}
+                                <span style="color: lightgreen;">正常访问</span>
+                                {/if}
+                            </td>
+                            <td> {:date('Y-m-d H:i:s',$vo.rising_time)}</td>
+                            <td>
+                                <span class="am-icon-angle-down am-icon-sm" style="cursor: pointer;margin-left: 8px;"
+                                      onclick="gains(this,'{$vo.id}');"></span>
+                            </td>
+                        </tr>
+                        <tr id="kshatri-{$vo.id}" class="shild"
+                            style="display: none;background: #f3f4f6;text-align: center;">
+                            <td colspan="8">
+                                <button type="button" class="am-btn am-btn-default am-btn-xs"
+                                        onclick="uploof('1','{$vo.id}');" >
+                                    <span class="am-icon-google-wallet"></span> 圈主列表
+                                </button>
+                                <button type="button" class="am-btn am-btn-default am-btn-xs"
+                                        onclick="uploof('2','{$vo.id}');">
+                                    <span class="am-icon-slack"></span> 管理员列表
+                                </button>
+                                <button type="button" class="am-btn am-btn-default am-btn-xs"
+                                        onclick="uploof('5','{$vo.id}');">
+                                    <span class="am-icon-ioxhost"></span> 关注审核列表
+                                </button>
+                                <button type="button" class="am-btn am-btn-default am-btn-xs"
+                                        onclick="uploof('4','{$vo.id}','{$vo.realm_name}');">
+                                    <span class="am-icon-search"></span> 查看帖子
+                                </button>
+                                <button type="button" class="am-btn am-btn-default am-btn-xs"
+                                        onclick="uploof('6','{$vo.id}','{$vo.realm_name}');">
+                                    <span class="am-icon-location-arrow"></span> 置顶帖子
+                                </button>
+                                <button type="button" class="am-btn am-btn-default am-btn-xs"
+                                        onclick="uploof('3','{$vo.id}');">
+                                    <span class="am-icon-pencil-square-o"></span> 编辑圈子
+                                </button>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    function gains(obj, suid) {
+        var brahman = $(obj).attr('class');
+        $('.am-icon-angle-up').attr('class', 'am-icon-angle-down am-icon-sm');
+        $('.shild').hide();
+        if (brahman != 'am-icon-angle-up am-icon-sm') {
+            $(obj).attr('class', 'am-icon-angle-up am-icon-sm');
+            $('#kshatri-' + suid).show();
+        }
+    }
+
+    function supre(asyId, domId) {
+        var dalue = $(domId).val();
+        var daioe = $(domId).attr('data-score');
+        if (dalue > 2147483646) {
+            layer.msg('排序数字最大不能超过 2147483646');
+            $(domId).val(daioe);
+            return false;
+        }
+        if (dalue != daioe) {
+            var repair = exalter(asyId, dalue);
+            if (repair.code > 0) {
+                layer.msg(repair.msg, {icon: 1, time: 800});
+                $(domId).attr('data-score', dalue);
+            } else {
+                layer.msg(repair.msg, {icon: 5, time: 1600});
+            }
+        }
+    }
+
+    function exalter(asyId, dalue) {
+        var straw = new Array();
+        $.ajax({
+            type: "post",
+            url: "{:url('utsun')}",
+            data: {
+                asyId: asyId,
+                dalue: dalue
+            },
+            async: false,
+            success: function (data) {
+                straw = data;
+            }
+        });
+        return straw;
+    }
+
+
+    function saloof() {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href', "{:url('rulfence')}");
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+    function uploof(guard, uplid, realmName) {
+        if (guard == 1) {
+            var dynamicUrl = $('<a></a>');
+            dynamicUrl.attr('href', "{:url('compass/sminor')}&uplid=" + uplid);
+            dynamicUrl.attr('target', '_blank');
+            dynamicUrl.get(0).click();
+        } else if (guard == 2) {
+            var dynamicUrl = $('<a></a>');
+            dynamicUrl.attr('href', "{:url('compass/pinhead')}&uplid=" + uplid);
+            dynamicUrl.attr('target', '_blank');
+            dynamicUrl.get(0).click();
+        } else if (guard == 3) {
+            var dynamicUrl = $('<a></a>');
+            dynamicUrl.attr('href', "{:url('compass/uplfence')}&uplid=" + uplid);
+            dynamicUrl.attr('target', '_blank');
+            dynamicUrl.get(0).click();
+        } else if (guard == 4) {
+            var dynamicUrl = $('<a></a>');
+            dynamicUrl.attr('href', "{:url('essay/index')}&hazy_name=" + realmName + "&page=1");
+            dynamicUrl.attr('target', '_blank');
+            dynamicUrl.get(0).click();
+        } else if (guard == 5) {
+            var dynamicUrl = $('<a></a>');
+            dynamicUrl.attr('href', "{:url('compass/savour')}&hazy_bering=" + uplid + "&egon=0");
+            dynamicUrl.attr('target', '_blank');
+            dynamicUrl.get(0).click();
+        } else if (guard == 6) {
+            var dynamicUrl = $('<a></a>');
+            dynamicUrl.attr('href', "{:url('compass/topping')}&tory_id=" + uplid);
+            dynamicUrl.attr('target', '_blank');
+            dynamicUrl.get(0).click();
+        }
+    }
+
+    function fuzzy() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('fence')}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('fence')}&page={$page}";
+    }
+
+</script>
+{/block}

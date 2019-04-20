@@ -1,0 +1,43 @@
+{template 'common/header'}
+
+<div id="menu">
+    <ul class="nav nav-tabs">
+        <li {if $_GPC['action'] == ''}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('sign', array('action' => ''));}">签到列表</a>
+        </li>
+    </ul>
+</div>
+
+
+
+{if $_GPC['action'] ==''}
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>昵称</th>
+        <th>头像</th>
+        <th>积分</th>
+        <th>签到时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res $v}
+    <tr>
+        <td>{$v['member']['nickname']}</td>
+        <td>
+            <img src="{php echo $v['member']['avatar']}" style="width: 50px;height: 50px;border-radius:50px;margin: 0 auto;">
+        </td>
+        <td>{$v['member']['credit1']}</td>
+        <td>{$v['time']}</td>
+
+
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+<div class="col-xs-12">
+    {php echo $pager}
+</div>
+{/if}
+
+{template 'common/footer'}

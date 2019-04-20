@@ -1,0 +1,108 @@
+{template 'common/header'}
+
+<div id="menu">
+    <ul class="nav nav-tabs">
+        <li {if $_GPC['action'] == ''}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('module', array('action' => ''));}">模块列表</a>
+        </li>
+        <li {if $_GPC['action'] == 'add'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('module', array('action' => 'add'));}">添加模块</a>
+
+    </ul>
+</div>
+
+{if $_GPC['action'] == 'add'}
+<form method="post" action="{php echo $this->createWebUrl('module',array('action'=>'add1','id'=>$res1['id']))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">板块管理</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >板块名称</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="name" value="{$res1['name']}" class="form-control" placeholder="请输入模板名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">板块图标</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('images',$res1['images'])}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >管理员</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="admin" value="{$res1['admin']}" class="form-control" placeholder="请输入管理员openid">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >发帖积分</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="jifen" value="{$res1['jifen']}" class="form-control" placeholder="发此类帖子可获得的积分">
+                	<span class="help-block">说明：设置为负数如：-10 则可在用户发帖是扣除用户10积分</span>                    
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >回帖权限</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="reply" value="{$res1['reply']}" class="form-control" placeholder="请输入回帖权限">
+                </div>
+            </div>-->
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >发帖权限</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="send" value="{$res1['send']}" class="form-control" placeholder="发此类帖子需要拥有的积分">
+                	<span class="help-block">说明：用户积分需要达到此设定的值才能发帖，只是一个发帖的门槛。</span>                    
+                </div>                
+            </div>
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+
+{if $_GPC['action'] ==''}
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>模块图标</th>
+        <th>模块名称</th>
+        <th>管理员</th>
+        <th>发帖积分</th>
+        <th>回帖权限</th>
+        <th>发帖权限</th>
+
+        <th style="width:250px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res $v}
+    <tr>
+        <td>
+            <img src="{php echo tomedia($v[images])}" style="width: 50px;height: 50px;border-radius:50px;margin: 0 auto;">
+        </td>
+        <td>{$v['name']}</td>
+        <td>{$v['admin']}</td>
+        <td>{$v['jifen']}</td>
+        <td>{$v['reply']}</td>
+        <td>{$v['send']}</td>
+        <td>
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('module',array('action'=>'add', 'id' => $v['id']));}">编辑</a>
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('module',array('action'=>'delete', 'id' => $v['id']));}">删除</a>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+
+{/if}
+
+{template 'common/footer'}

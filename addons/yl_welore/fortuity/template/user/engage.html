@@ -1,0 +1,78 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}.resth button{margin-right:5px;}.cust-btn{font-size:14px;padding:5px 10px;}.cust-btn-one{margin-left:-20px;}.cust-btn-activate{border-bottom:solid 2px cornflowerblue;}.cust-aver-img{width:82px;height:82px;position:absolute;top:11px;border:1px solid #cccccc;border-radius:3px;}.am-table>thead:first-child>tr:first-child>th,.am-table > tbody > tr > td{text-align:center;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-cc-discover"></span> 邀请排行
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="fuzzy();"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索用户名...">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <form class="am-form">
+                    <table class="am-table table-main">
+                        <thead>
+                        <tr>
+                            <th width="20%">用户名称</th>
+                            <th width="20%">用户openid</th>
+                            <th width="20%">用户邀请码</th>
+                            <th width="20%">邀请人数</th>
+                            <th width="20%">总共获得{$defaultNavigate.confer}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_wechat_open_id}&page=1"
+                                   target="_blank" title="{$vo.user_nick_name|emoji_decode}">
+                                    {$vo.user_nick_name|emoji_decode|subtext=15}
+                                </a>
+                            </td>
+                            <td>{$vo.user_wechat_open_id}</td>
+                            <td>{$vo.code}</td>
+                            <td>{$vo.uri_people} 人</td>
+                            <td>{if $vo.uri_reward}{$vo.uri_reward}{else}0.00{/if} {$defaultNavigate.confer}</td>
+                            <!--<td class="am-hide-sm-only">{:date('Y-m-d H:i:s',$vo.add_time)}</td>-->
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    function fuzzy() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('user/engage')}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('user/engage')}&page={$page}";
+    }
+
+</script>
+{/block}

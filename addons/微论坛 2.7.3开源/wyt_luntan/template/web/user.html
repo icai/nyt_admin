@@ -1,0 +1,289 @@
+{template 'common/header'}
+
+<div id="menu">
+    <ul class="nav nav-tabs">
+        <li {if $_GPC['action'] == ''}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('user', array('action' => ''));}">用户列表</a>
+        </li>
+        <li {if $_GPC['action'] == 'add'}class="active"{/if}>
+        <a href="#">用户编辑</a>
+        </li>
+        <li {if $_GPC['action'] == 'tixian'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('user', array('action' => 'tixian'));}">提现列表</a>
+        </li>
+        <li {if $_GPC['action'] == 'heimingdan'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('user', array('action' => 'heimingdan'));}">黑名单</a>
+        </li>
+        <li {if $_GPC['action'] == 'invite'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('user', array('action' => 'heimingdan'));}">邀请列表</a>
+        </li>
+    </ul>
+</div>
+
+{if $_GPC['action'] == 'add'}
+<form method="post" action="{php echo $this->createWebUrl('user',array('action'=>'add1','id'=>$res1['id']))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">帖子管理</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >昵称</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="nickname" value="{$userinfo['nickname']}" class="form-control" placeholder="请输入文章标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">头像</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('images',$userinfo['avatar'])}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >发帖数</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="send" value="{$userinfo['send']}" class="form-control" placeholder="">
+                </div>
+            </div>
+
+            <input type="hidden" value="{$_GPC['id']}" name="id">
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >积分数</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="jifen" value="{$userinfo['credit1']}" class="form-control" placeholder="">
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $_GPC['action'] =='tixian'}
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>openid</th>
+        <th>提现金额</th>
+        <th>提现账号</th>
+        <th>提现日期</th>
+        <th>提现状态</th>
+        <th style="width:250px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $tixian $v}
+    <tr>
+
+        <td>{$v['openid']}</td>
+        <td>{$v['money']}</td>
+        <td>{$v['zhanghao']}</td>
+        <td>{$v['time']}</td>
+        <td>{if $v['state'] ==2}已提现{else}未提现{/if}</td>
+        <td>
+            {if $set[tstate]==1}
+            {if $v['state'] ==0}
+            <div onclick="tixian('{$v[id]}')" class="btn btn-success btn-sm">提现</div>
+            {else}
+            <a class="btn btn-info btn-sm" >已提现</a>
+            {/if}
+            {else}
+            {if $v['state'] ==0}
+            <a href="{php echo $this->createWebUrl('User',array('action'=>'tixian1','id'=>$v['id']))}" class="btn btn-success btn-sm">转账</a>
+            {else}
+            <a class="btn btn-info btn-sm" >已转账</a>
+            {/if}
+            {/if}
+
+
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+<div class="col-xs-12">
+    {php echo $pager1}
+</div>
+{/if}
+
+{if $_GPC['action'] ==''}
+<div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+        <form action="{php echo $this->createWebUrl('Dkrecord')}" method="get" class="form-horizontal">
+            <input type="hidden" name="c" value="site">
+            <input type="hidden" name="a" value="entry">
+            <input type="hidden" name="m" value="wyt_luntan">
+            <input type="hidden" name="action" value="">
+            <input type="hidden" name="do" value="user">
+            <div class="form-group">
+
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">用户昵称</label>
+
+                <div class="col-sm-4">
+
+                    <div class="input-group">
+                        <input type="text" value="{$nickname}" name="username">
+                    </div>
+
+                </div>
+                <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>    	
+        <th>头像</th>
+        <th>UID</th>
+        <th>openid</th>
+        <th>昵称</th>
+        <th>发帖数</th>
+        <th>积分数</th>
+        <th style="width:250px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res $v}
+    <tr>    	
+        <td>
+            <img src="{$v[avatar]}" style="width: 50px;height: 50px;border-radius:50px;margin: 0 auto;">
+        </td>
+        <td>{$v['uid']}</td>
+        <td>{$v['openid']}</td>
+        <td>{$v['nickname']}</td>
+        <td>{php echo count($v['fatie'])}</td>
+        <td>{$v['jifen1']['credit1']}</td>
+
+        <td>
+        <a class="btn btn-danger btn-sm" href="{$_W['siteroot']}web/index.php?c=mc&a=member&do=base_information&uid={$v['uid']}">资金积分</a>
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'add', 'id' => $v['id']));}">编辑</a>
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'delete', 'id' => $v['id']));}">删除</a>
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'invite', 'uid' => $v['uid']));}">邀请</a>
+
+            {if $v['state']== 0}
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'lahei', 'id' => $v['id']));}">拉黑</a>
+            {/if}
+            {if $v['state']== 1}
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'labai', 'id' => $v['id']));}">拉白</a>
+            {/if}
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+<div class="col-xs-12">
+    {php echo $pager}
+</div>
+{/if}
+
+{if $_GPC['action'] =='invite'}
+
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>头像</th>
+        <th>UID</th>
+        <th>openid</th>
+        <th>昵称</th>
+        <th>发帖数</th>
+        <th>积分数</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $invite $v}
+    <tr>
+        <td>
+            <img src="{$v[avatar]}" style="width: 50px;height: 50px;border-radius:50px;margin: 0 auto;">
+        </td>
+        <td>{$v['uid']}</td>
+        <td>{$v['openid']}</td>
+        <td>{$v['nickname']}</td>
+        <td>{php echo count($v['fatie'])}</td>
+        <td>{$v['jifen1']['credit1']}</td>
+
+
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+{/if}
+
+{if $_GPC['action'] =='heimingdan'}
+
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>头像</th>
+        <th>昵称</th>
+        <th>发帖数</th>
+        <th>积分数</th>
+        <th style="width:250px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res $v}
+    <tr>
+        <td>
+            <img src="{$v[avatar]}" style="width: 50px;height: 50px;border-radius:50px;margin: 0 auto;">
+        </td>
+        <td>{$v['nickname']}</td>
+        <td>{php echo count($v['fatie'])}</td>
+        <td>{$v['jifen1']['credit1']}</td>
+
+        <td>
+
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'add', 'id' => $v['id']));}">编辑</a>
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'delete', 'id' => $v['id']));}">删除</a>
+            {if $v['state']== 0}
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'lahei', 'id' => $v['id']));}">拉黑</a>
+            {/if}
+            {if $v['state']== 1}
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('user',array('action'=>'labai', 'id' => $v['id']));}">拉白</a>
+            {/if}
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+<div class="col-xs-12">
+    {php echo $pager}
+</div>
+{/if}
+
+
+{template 'common/footer'}
+<script>
+    function tixian(id) {
+        var a=confirm('确定提现？');
+        if(a){
+            $.ajax({
+                url : "{php echo $this->createWebUrl('User',array('action'=>'tixian1'))}",
+                type:"post",
+                data:{
+                    id : id,
+                    aa:1
+                }, success: function (res) {
+
+                    if(res==1) {
+                        window.location.reload();
+                    }else{
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+
+
+    }
+</script>

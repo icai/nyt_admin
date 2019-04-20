@@ -1,0 +1,123 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-u-sm-9{margin-top:4px;}.am-form-horizontal .am-form-label{text-align:left;}.tpl-amazeui-form .am-form-label{color:#000000;}[class*=am-u-] + [class*=am-u-]:last-child{float:right;font-size:14px;margin-top:8px;color:#999;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-comment-o"></span> 回复详情
+        </div>
+        <div style="text-align: right">
+            <a href="{:url('reply')}" target="_blank">
+                <button type="button" class="am-btn am-btn-default am-btn-sm">回复列表</button>
+            </a>
+            {if $list.whether_delete==0}
+            <button type="button" class="am-btn am-btn-danger am-btn-sm" onclick="satypical();">删除回复</button>
+            {/if}
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12">
+                <div class="am-form am-form-horizontal" style="border: solid 1px #cccccc;width: 700px;margin: 0 auto;padding-left: 14%;padding-top: 50px;padding-bottom:50px;overflow: hidden;box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 1);">
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">帖子标题</label>
+                        <div class="am-u-sm-9" style="max-height:300px;overflow:auto;">
+                            <a href="{:url('setails')}&uplid={$list.paper_id}" target="_blank">
+                            {if $list.study_title!=''}
+                            {$list.study_title|emoji_decode}
+                            {else}
+                            ————
+                            {/if}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">回复用户</label>
+                        <div class="am-u-sm-9">{$list.user_nick_name|emoji_decode|filter_emoji}</div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">回复类型</label>
+                        <div class="am-u-sm-9">
+                            {if $list.reply_type==0}{if $list.reply_content!=''}文字{else}图片{/if}{elseif $list.reply_type==1}语音{/if}
+                        </div>
+                    </div>
+                    {notempty name="list.reply_content"}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">回复内容</label>
+                        <div class="am-u-sm-9" style="max-height:300px;overflow:auto;">{$list.reply_content}</div>
+                    </div>
+                    {/notempty}
+                    {notempty name="list.image_part"}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">回复图片</label>
+                        <div class="am-u-sm-9" style="max-height:300px;overflow:auto;">
+                            {volist name="list.image_part" id="vo"}
+                            <a href="{$vo}" target="_blank">
+                                <img src="{$vo}" style="width: 80px;height: 80px;"/>
+                            </a>
+                            {/volist}
+                        </div>
+                    </div>
+                    {/notempty}
+                    {notempty name="list.reply_voice"}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">回复语音</label>
+                        <div class="am-u-sm-9">
+                            <audio controls="controls" style="width: 80%;">
+                                <source src="{$list.reply_voice}" type="audio/mpeg">
+                                您的浏览器不支持音频标签。
+                            </audio>
+                        </div>
+                    </div>
+                    {/notempty}
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">回复时间</label>
+                        <div class="am-u-sm-9">{:date('Y-m-d H:i:s',$list.apter_time)}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    function satypical() {
+        var uata = {};
+        uata['uplid'] = '{$list.id}';
+        layer.prompt({'title': "请您输入删帖原因："}, function (rea_value, index) {
+            if (rea_value == '' || rea_value == 'undefined' || rea_value == null) {
+                return false;
+            }
+            uata['reason'] = rea_value;
+            equitable(uata);
+            layer.close(index);
+        });
+    }
+
+    function equitable(uata) {
+        $.ajax({
+            type: "post",
+            url: "{:url('repas')}",
+            data: uata,
+            dataType: 'json',
+            traditional: true,
+            success: function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.href = "{:url('reply')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }
+        });
+    }
+
+
+</script>
+{/block}

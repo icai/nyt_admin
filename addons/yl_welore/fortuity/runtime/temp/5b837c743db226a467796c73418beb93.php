@@ -1,0 +1,172 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:92:"/www3/wwwroot/nyt.gzchujiao.com/addons/yl_welore/fortuity/template/images/dialog_images.html";i:1552701446;}*/ ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>选择图片</title>
+</head>
+<link rel="stylesheet" href="assets/css/bootstrap.min.css?v=1.0">
+<link rel="stylesheet" href="assets/css/amazeui.min.css?v=1.0"/>
+<style>a,a:hover{text-decoration:none;}.pagination{font-size:12px;}.left-li{color:#ffffff;text-align:center;padding:12px 0px;font-size:14px;cursor:pointer;}.right-img{float:left;}::-webkit-scrollbar{width:3px;height:3px;background-color:#F5F5F5;}::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);border-radius:10px;background-color:#F5F5F5;}::-webkit-scrollbar-thumb{border-radius:10px;-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);background-color:#555;}.select_group{background-image:linear-gradient(120deg,#89f7fe 0%,#66a6ff 100%);}.right-x{position:absolute;right:10px;top:-14px;height:30px;width:30px;background-color:rgba(255,0,51,0.7);border-radius:50%;text-align:center;line-height:30px;cursor:pointer;}.right-img-li{cursor:pointer;width:120px;height:120px;box-shadow:10px 5px 10px 0px rgb(204,204,204);border-radius:5px;}.img-select{box-shadow:0px 0px 5px 5px rgb(102,153,255)!important;}</style>
+<body style="width:100%;height:100%;">
+<div class="am-g">
+    <div class="am-u-sm-2" style="padding:0px;">
+        <div style="min-height:600px;;background-color: #212121">
+            <div style="color: #fff;text-align: center;padding: 30px 0px 15px 0px;;font-size: 20px;font-weight: 700;">
+                图片库 <span class="am-icon-picture-o"></span>
+            </div>
+            <div class="test-1" style="color: #ffffff;text-align: center;height: 430px;overflow: auto;">
+                <?php if(is_array($gclassify) || $gclassify instanceof \think\Collection || $gclassify instanceof \think\Paginator): $i = 0; $__LIST__ = $gclassify;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+                <a href="<?php echo url('images/dialogimages'); ?>&gclasid=<?php echo $vo['id']; ?>">
+                    <div class="left-li <?php if($vo['id']==$gclasid): ?>select_group<?php endif; ?>">
+                        <?php echo $vo['name']; ?><span style="margin-left: 5px;" class="am-badge am-badge-danger am-round"><?php echo $vo['count']; ?></span>
+                    </div>
+                </a>
+                <?php endforeach; endif; else: echo "" ;endif; ?>
+            </div>
+            <div style="cursor:pointer;margin: 10px auto;color:#ffffff;background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);height: 38px;width: 120px;font-size: 15px;text-align: center;line-height: 38px;border-radius: 20px;" onclick="sngchoice();">
+                <span class="am-icon-jsfiddle"></span>本地上传
+            </div>
+            <form id="snup" style="display: none;">
+                <input type="file" id="sngpic" name="sngpic" onchange="snuload();">
+            </form>
+        </div>
+    </div>
+    <div class="am-u-sm-10" style="padding:0px;">
+        <div  style="width: 100%;min-height:600px;box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 1);">
+            <div style="cursor:pointer;margin-right: 20px;float:right;margin-top: 10px;color:#ffffff;background-image: linear-gradient(-225deg, #65379B 0%, #886AEA 53%, #6457C6 100%);height: 38px;width: 120px;font-size: 15px;text-align: center;line-height: 38px;border-radius: 20px;" onclick="saloof();">
+                <span class="am-icon-tag"></span>创建图库
+            </div>
+            <div style="cursor:pointer;margin-right: 20px;float:right;margin-top: 10px;color:#ffffff;background-image: linear-gradient(-225deg, #7152bb 0%, #c34e4e 53%, #4b808c 100%);height: 38px;width: 120px;font-size: 15px;text-align: center;line-height: 38px;border-radius: 20px;" onclick="unimgs();">
+                <span class="am-icon-trash-o"></span> 删除图片
+            </div>
+            <div style="clear:both;height:0"></div>
+            <div class="test-5" style="padding: 20px;height: 430px;width: 100%;overflow: auto;">
+                <ul class="am-avg-sm-5 am-thumbnails">
+                    <?php if(is_array($gallery) || $gallery instanceof \think\Collection || $gallery instanceof \think\Paginator): $i = 0; $__LIST__ = $gallery;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
+                    <li style="position: relative;text-align: center;">
+                        <img class="right-img-li" src="<?php echo $vo['img_url']; ?>" alt="<?php echo $vo['img_title']; ?>" title="<?php echo $vo['img_title']; ?>" onclick="spicking(this);" data-urid="<?php echo $vo['id']; ?>" />
+                    </li>
+                    <?php endforeach; endif; else: echo "" ;endif; ?>
+                </ul>
+            </div>
+            <div style="text-align: center;">
+                <?php echo $gallery->render(); ?>
+            </div>
+            <div style="text-align: center;">
+                <div style="cursor:pointer;margin:0 auto;color:#ffffff;background-image: linear-gradient(to right, #434343 0%, black 100%);height: 38px;width: 120px;font-size: 15px;text-align: center;line-height: 38px;border-radius: 20px;" onclick="ubacktrack();">
+                    确定
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="assets/js/jquery.min.js?v=1.0"></script>
+<script src="assets/js/bootstrap.min.js?v=1.0"></script>
+<script src="static/layer/layer.js?v=1.0"></script>
+<script>
+
+    function saloof() {
+        layer.open({
+            type: 2,
+            anim:2,
+            scrollbar: false,
+            area: ['550px', '230px'],
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            content: ["<?php echo url('images/newImgs'); ?>", 'no']
+        });
+    }
+
+
+    function sngchoice() {
+        var gclasid = $.trim("<?php echo $gclasid; ?>");
+        if (gclasid == '') {
+            parent.layer.msg('请创建一个图库');
+            return;
+        }
+        $('#sngpic').click();
+    }
+    function snuload() {
+        var animateimg = $("#sngpic").val();
+        var imgarr = animateimg.split('\\');
+        var imgname = imgarr[imgarr.length - 1];
+        var suffix = imgname.lastIndexOf('.');
+        var ext = imgname.substring(suffix, imgname.length).toUpperCase();
+        var file = $('#sngpic').get(0).files[0];
+        var fileSize = file.size;
+        var maxSize = 3145728;
+        if (ext != '.PNG' && ext != '.GIF' && ext != '.JPG' && ext != '.JPEG' && ext != '.BMP') {
+            parent.layer.msg('文件类型错误,请上传图片类型');
+            $('#sngpic').val('');
+            return false;
+        } else if (parseInt(fileSize) >= parseInt(maxSize)) {
+            parent.layer.msg('上传的文件不能超过3MB');
+            $('#sngpic').val('');
+            return false;
+        } else {
+            parent.layer.load();
+            var sngpic = new FormData($('#snup')[0]);
+            $.ajax({
+                type: "post",
+                url: "<?php echo url('upload/operate'); ?>&gclasid=<?php echo $gclasid; ?>&picture=library",
+                async: false,
+                data: sngpic,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (data) {
+                    setTimeout(function () {
+                        parent.layer.closeAll('loading');
+                        if (data.status == 'success') {
+                            location.reload();
+                        } else {
+                            parent.layer.msg('上传失败，请检查上传配置');
+                        }
+                        $('#sngpic').val('');
+                    }, 1600);
+                }
+            });
+        }
+    }
+
+    function unimgs(){
+        var euid = $.trim($('.img-select').attr('data-urid'));
+        if (euid == '') {
+            parent.layer.msg('请选择要删除的图片');
+            return;
+        }
+        $.post("<?php echo url('images/unimgs'); ?>", {'euid': parseInt(euid)}, function (data) {
+            if (data.code > 0) {
+                parent.layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                parent.layer.msg(data.msg, {icon: 5, time: 1000});
+            }
+        }, 'json');
+    }
+
+    function ubacktrack() {
+        var eurl = $.trim($('.img-select').attr('src'));
+        if (eurl == '') {
+            parent.layer.msg('请选择图片');
+            return;
+        }
+        parent.sutake(eurl);
+        parent.layer.closeAll();
+    }
+
+
+    function spicking(obj) {
+        if ($(obj).hasClass('img-select')) {
+            $(obj).removeClass('img-select');
+        } else {
+            $('.img-select').removeClass('img-select');
+            $(obj).addClass('img-select');
+        }
+    }
+</script>
+</html>

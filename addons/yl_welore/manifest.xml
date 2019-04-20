@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.8,1.0">
+	<application setting="false">
+		<name><![CDATA[榆落微时光]]></name>
+		<identifie><![CDATA[yl_welore]]></identifie>
+		<version><![CDATA[1.0.23]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[榆落微时光]]></ability>
+		<description><![CDATA[榆落微时光]]></description>
+		<author><![CDATA[微擎]]></author>
+		<url><![CDATA[http://www.we7.cc/]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+		<supports>
+			<item type="wxapp" />
+		</supports>
+	</platform>
+	<bindings>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[
+CREATE TABLE IF NOT EXISTS `yl_welore_advertise` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `adstory` int(11) unsigned NOT NULL DEFAULT '0',
+  `adsper` int(11) unsigned NOT NULL DEFAULT '0',
+  `isolate` int(11) unsigned NOT NULL DEFAULT '20',
+  `adunit_id` varchar(255) DEFAULT NULL,
+  `much_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_authority` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(500) DEFAULT NULL,
+  `sgraph` varchar(500) DEFAULT NULL,
+  `cust_phone` varchar(255) DEFAULT NULL,
+  `copyright` varchar(500) DEFAULT NULL,
+  `prevent_duplication` int(11) unsigned NOT NULL DEFAULT '1',
+  `noble_arbor` int(11) unsigned NOT NULL DEFAULT '1',
+  `wallet_arbor` int(11) unsigned NOT NULL DEFAULT '1',
+  `much_id` int(11) unsigned NOT NULL,
+  `ensure_arbor` int(10) unsigned NOT NULL DEFAULT '0',
+  `video_setting` int(11) unsigned NOT NULL DEFAULT '60',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`),
+  KEY `much_id_2` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `app_name` text,
+  `app_id` text,
+  `app_secret` text,
+  `app_mchid` text,
+  `app_key` text,
+  `pay_react` text,
+  `apiclient_cert` text,
+  `apiclient_key` text,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`),
+  KEY `id` (`id`),
+  KEY `much_id_2` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_contrar` (
+  `id` int(10) unsigned NOT NULL,
+  `rand_code` varchar(1000) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_copyright` (
+  `id` int(11) NOT NULL,
+  `hermit` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `hermit` (`hermit`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_design` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `confer` varchar(500) DEFAULT NULL,
+  `currency` varchar(500) DEFAULT NULL,
+  `landgrave` varchar(500) DEFAULT NULL,
+  `home_title` varchar(500) DEFAULT NULL,
+  `pattern_data` longtext,
+  `much_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_gallery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `classify_id` int(11) unsigned DEFAULT NULL,
+  `img_title` varchar(1000) DEFAULT NULL,
+  `img_url` varchar(1000) DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classify_id` (`classify_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_gallery_classify` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(500) NOT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '1',
+  `scores` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`),
+  KEY `scores` (`scores`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_help` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `trouble` varchar(1000) DEFAULT NULL,
+  `answer` longtext,
+  `scores` int(11) unsigned NOT NULL DEFAULT '0',
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_lament` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proof_id` int(11) unsigned DEFAULT NULL,
+  `mopt_id` int(11) unsigned DEFAULT NULL,
+  `ment_type` int(11) unsigned DEFAULT NULL,
+  `tory_id` int(11) unsigned DEFAULT NULL,
+  `labor` int(11) DEFAULT NULL,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `ment_caption` longtext,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `ment_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ment_type` (`ment_type`),
+  KEY `much_id` (`much_id`),
+  KEY `user_id` (`user_id`),
+  KEY `labor` (`labor`),
+  KEY `status` (`status`),
+  KEY `mopt_id` (`mopt_id`),
+  KEY `tory_id` (`tory_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_motion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mot_name` varchar(300) DEFAULT NULL,
+  `icon` varchar(255) DEFAULT NULL,
+  `mot_url` varchar(300) DEFAULT NULL,
+  `pid` int(11) unsigned DEFAULT NULL,
+  `survie` int(11) unsigned NOT NULL DEFAULT '1',
+  `vurvie` int(11) unsigned NOT NULL DEFAULT '1',
+  `furvie` int(11) unsigned NOT NULL DEFAULT '1',
+  `divulge` int(11) unsigned NOT NULL DEFAULT '1',
+  `sort` int(11) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_mouldboard` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `prototype_data` longtext,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_much_admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `much_name` varchar(255) DEFAULT NULL,
+  `much_cipher` varchar(255) DEFAULT NULL,
+  `much_uniacid` int(11) DEFAULT NULL,
+  `much_purview` varchar(1000) DEFAULT NULL,
+  `much_maturity` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_needle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `icon` varchar(500) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `keyword` varchar(255) DEFAULT NULL,
+  `status` int(11) unsigned DEFAULT '1',
+  `scores` int(11) unsigned DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_outlying` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `quicken_type` int(11) unsigned NOT NULL DEFAULT '0',
+  `oss_follow` varchar(1000) DEFAULT NULL,
+  `qiniu_follow` varchar(1000) DEFAULT NULL,
+  `cos_follow` varchar(1000) DEFAULT NULL,
+  `much_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`),
+  KEY `id` (`id`),
+  KEY `much_id_2` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_outlying_allude` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `key` varchar(500) DEFAULT NULL,
+  `value` varchar(500) DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '1',
+  `type` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_paper` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `tory_id` int(11) unsigned DEFAULT NULL,
+  `study_title` varchar(500) DEFAULT NULL,
+  `study_title_color` varchar(500) DEFAULT NULL,
+  `study_content` longtext,
+  `study_type` int(11) unsigned DEFAULT '0',
+  `topping_time` int(11) unsigned NOT NULL DEFAULT '0',
+  `image_part` longtext,
+  `study_voice` longtext,
+  `study_voice_time` int(11) unsigned NOT NULL DEFAULT '0',
+  `study_video` longtext,
+  `study_heat` int(11) unsigned NOT NULL DEFAULT '0',
+  `study_laud` int(11) unsigned NOT NULL DEFAULT '0',
+  `study_repount` int(11) unsigned NOT NULL DEFAULT '0',
+  `adapter_time` int(11) unsigned DEFAULT NULL,
+  `prove_time` int(11) unsigned DEFAULT NULL,
+  `study_status` int(11) unsigned NOT NULL DEFAULT '0',
+  `reject_reason` varchar(500) DEFAULT NULL,
+  `whether_type` int(11) unsigned NOT NULL DEFAULT '0',
+  `whether_reason` varchar(500) DEFAULT NULL,
+  `whether_delete` int(11) unsigned NOT NULL DEFAULT '0',
+  `whetd_time` int(11) unsigned DEFAULT NULL,
+  `is_open` int(11) unsigned NOT NULL DEFAULT '1',
+  `token` varchar(500) DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `tory_id` (`tory_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_paper_complaint` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `tale_type` int(11) unsigned DEFAULT NULL,
+  `paper_id` int(11) unsigned DEFAULT NULL,
+  `prely_id` int(11) unsigned DEFAULT NULL,
+  `tory_id` int(11) unsigned DEFAULT NULL,
+  `tale_content` longtext,
+  `acceptance_status` int(11) unsigned NOT NULL DEFAULT '0',
+  `petition_time` int(11) unsigned DEFAULT '0',
+  `transact_time` int(11) unsigned DEFAULT '0',
+  `is_strike` int(11) unsigned NOT NULL DEFAULT '0',
+  `tale_instruct` longtext,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `tale_type` (`tale_type`),
+  KEY `paper_id` (`paper_id`),
+  KEY `prely_id` (`prely_id`),
+  KEY `tory_id` (`tory_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_paper_red_packet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `paper_id` int(11) unsigned DEFAULT NULL,
+  `initial_fraction` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `surplus_fraction` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `initial_quantity` int(11) unsigned NOT NULL DEFAULT '0',
+  `surplus_quantity` int(11) unsigned NOT NULL DEFAULT '0',
+  `red_type` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `paper_id` (`paper_id`),
+  KEY `red_type` (`red_type`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_paper_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `paper_id` int(11) unsigned DEFAULT NULL,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `reply_type` int(11) unsigned DEFAULT NULL,
+  `phase` int(11) unsigned DEFAULT NULL,
+  `reply_content` longtext,
+  `image_part` longtext,
+  `reply_voice` longtext,
+  `reply_voice_time` int(11) unsigned NOT NULL DEFAULT '0',
+  `apter_time` int(11) unsigned DEFAULT NULL,
+  `whetd_time` int(11) unsigned DEFAULT NULL,
+  `whether_delete` int(11) unsigned DEFAULT '0',
+  `whether_type` int(11) unsigned DEFAULT '0',
+  `whether_reason` varchar(500) DEFAULT NULL,
+  `token` varchar(500) DEFAULT NULL,
+  `praise` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `paper_id` (`paper_id`),
+  KEY `user_id` (`user_id`),
+  KEY `reply_type` (`reply_type`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_paper_reply_duplex` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `reply_id` int(11) unsigned DEFAULT NULL,
+  `reply_user_id` int(11) unsigned DEFAULT NULL,
+  `duplex_content` longtext,
+  `duplex_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `reply_id` (`reply_id`),
+  KEY `duplex_time` (`duplex_time`),
+  KEY `much_id` (`much_id`),
+  KEY `reply_user_id` (`reply_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_paper_smingle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `auto_review` int(11) unsigned DEFAULT '0',
+  `number_limit` int(11) unsigned NOT NULL DEFAULT '0',
+  `notice` longtext,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_polling` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `playbill_url` varchar(1000) DEFAULT NULL,
+  `practice_type` int(11) unsigned DEFAULT NULL,
+  `url` varchar(1000) DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `scores` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_prompt_count` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `barg` int(11) unsigned DEFAULT '0',
+  `much_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_prompt_msg` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` int(11) unsigned DEFAULT NULL,
+  `retter` varchar(1000) DEFAULT NULL,
+  `msg_time` int(11) unsigned DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_raws_setting` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `open_withdrawals` int(11) unsigned NOT NULL DEFAULT '0',
+  `open_offline_payment` int(11) unsigned NOT NULL DEFAULT '0',
+  `auto_review_payment` int(11) unsigned NOT NULL DEFAULT '0',
+  `lowest_money` decimal(18,2) unsigned NOT NULL DEFAULT '1.00',
+  `payment_tariff` decimal(19,3) unsigned NOT NULL DEFAULT '0.000',
+  `notice` longtext,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`),
+  KEY `open_withdrawals` (`open_withdrawals`),
+  KEY `open_offline_payment` (`open_offline_payment`),
+  KEY `auto_review_payment` (`auto_review_payment`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_reissue` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `whether_open` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(500) DEFAULT NULL,
+  `reis_img` varchar(1000) DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_shaky_fission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `release_single` int(11) unsigned NOT NULL DEFAULT '0',
+  `release_fraction` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `reply_single` int(11) unsigned NOT NULL DEFAULT '0',
+  `reply_fraction` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `packet_single` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_shop` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_name` varchar(500) DEFAULT NULL,
+  `product_type` int(11) unsigned DEFAULT NULL,
+  `product_synopsis` longtext,
+  `product_detail` longtext,
+  `product_img` longtext,
+  `product_inventory` int(11) unsigned NOT NULL DEFAULT '0',
+  `product_restrict` int(11) unsigned NOT NULL DEFAULT '0',
+  `product_price` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `noble_exclusive` int(11) unsigned NOT NULL DEFAULT '0',
+  `open_discount` int(11) unsigned NOT NULL DEFAULT '0',
+  `noble_discount` decimal(18,2) unsigned NOT NULL DEFAULT '1.00',
+  `noble_rebate` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `sales_volume` int(11) unsigned NOT NULL DEFAULT '0',
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `scores` int(11) unsigned NOT NULL DEFAULT '0',
+  `trash` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`),
+  KEY `trash` (`trash`),
+  KEY `scores` (`scores`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_shop_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_number` varchar(500) DEFAULT NULL,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `product_id` int(11) unsigned DEFAULT NULL,
+  `product_img` varchar(1000) DEFAULT NULL,
+  `product_name` varchar(1000) DEFAULT NULL,
+  `product_price` decimal(18,2) unsigned DEFAULT NULL,
+  `actual_price` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `remark` text,
+  `buy_time` int(11) unsigned DEFAULT NULL,
+  `shipment` varchar(1000) DEFAULT NULL,
+  `buyer_name` varchar(50) DEFAULT NULL,
+  `buyer_phone` varchar(50) DEFAULT NULL,
+  `buyer_address` longtext,
+  `is_noble` int(11) unsigned DEFAULT NULL,
+  `product_discount` decimal(18,2) unsigned NOT NULL DEFAULT '1.00',
+  `product_rebate` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `ship_time` int(11) unsigned DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `reason_refund` longtext,
+  `refund_count` int(11) unsigned NOT NULL DEFAULT '0',
+  `trash` int(10) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`),
+  KEY `trash` (`trash`),
+  KEY `is_noble` (`is_noble`),
+  KEY `status` (`status`),
+  KEY `user_id` (`user_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_shop_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(500) DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `scores` int(11) unsigned NOT NULL DEFAULT '0',
+  `stype_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`),
+  KEY `scores` (`scores`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_territory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `realm_icon` varchar(1000) DEFAULT NULL,
+  `realm_name` varchar(255) DEFAULT NULL,
+  `needle_id` int(11) unsigned DEFAULT NULL,
+  `realm_synopsis` longtext,
+  `attention` int(11) unsigned NOT NULL DEFAULT '0',
+  `atence` int(11) NOT NULL DEFAULT '0',
+  `atcipher` longtext,
+  `status` int(11) unsigned DEFAULT '0',
+  `concern` int(11) unsigned NOT NULL DEFAULT '0',
+  `scores` int(11) unsigned NOT NULL DEFAULT '0',
+  `rising_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `needle_id` (`needle_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_territory_interest` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `tory_id` int(11) unsigned DEFAULT NULL,
+  `reason` longtext,
+  `sult_time` int(11) unsigned DEFAULT NULL,
+  `rest_time` int(11) unsigned DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `tory_id` (`tory_id`),
+  KEY `sult_time` (`sult_time`),
+  KEY `rest_time` (`rest_time`),
+  KEY `status` (`status`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_territory_learned` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tory_id` int(11) unsigned DEFAULT NULL,
+  `snvite_bulord` text,
+  `bulord` text,
+  `envite_sulord` text,
+  `sulord` text,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tory_id` (`tory_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_territory_petition` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `realm_icon` varchar(255) DEFAULT NULL,
+  `realm_name` varchar(255) DEFAULT NULL,
+  `needle_id` int(11) unsigned DEFAULT NULL,
+  `realm_synopsis` longtext,
+  `solicit_origin` longtext,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `is_gnaw_qulord` int(11) unsigned DEFAULT NULL,
+  `attention` int(11) unsigned NOT NULL DEFAULT '0',
+  `solicit_rate` int(11) unsigned NOT NULL DEFAULT '1',
+  `realm_status` int(11) unsigned NOT NULL DEFAULT '0',
+  `denial_reason` longtext,
+  `found_lasting` int(11) unsigned DEFAULT NULL,
+  `review_lasting` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `needle_id` (`needle_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_tribute` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tr_icon` varchar(500) DEFAULT NULL,
+  `tr_name` varchar(500) DEFAULT NULL,
+  `tr_conch` decimal(18,2) unsigned DEFAULT NULL,
+  `status` int(11) unsigned DEFAULT '0',
+  `scores` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_tribute_taxation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `taxing` decimal(18,2) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_head_sculpture` varchar(1000) DEFAULT NULL,
+  `user_nick_name` varchar(255) DEFAULT NULL,
+  `user_wechat_open_id` varchar(500) DEFAULT NULL,
+  `uvirtual` int(11) unsigned NOT NULL DEFAULT '0',
+  `token` varchar(255) CHARACTER SET ucs2 DEFAULT NULL,
+  `user_reg_time` int(11) unsigned DEFAULT NULL,
+  `gender` int(11) unsigned NOT NULL DEFAULT '0',
+  `status` int(11) unsigned DEFAULT '1',
+  `fraction` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `conch` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `autograph` longtext,
+  `buyer_name` varchar(50) DEFAULT NULL,
+  `buyer_phone` varchar(50) DEFAULT NULL,
+  `buyer_address` varchar(500) DEFAULT NULL,
+  `vip_end_time` int(11) unsigned NOT NULL DEFAULT '0',
+  `nick_name_time` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_amount` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `serial_id` varchar(255) DEFAULT NULL,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `category` int(11) unsigned DEFAULT NULL,
+  `finance` decimal(18,2) DEFAULT NULL,
+  `poem_fraction` decimal(18,2) unsigned DEFAULT '0.00',
+  `poem_conch` decimal(18,2) unsigned DEFAULT '0.00',
+  `surplus_fraction` decimal(18,2) unsigned DEFAULT '0.00',
+  `surplus_conch` decimal(18,2) unsigned DEFAULT '0.00',
+  `ruins_time` int(11) unsigned DEFAULT NULL,
+  `solution` varchar(500) DEFAULT NULL,
+  `evaluate` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `serial_id` (`serial_id`),
+  KEY `user_id` (`user_id`),
+  KEY `category` (`category`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_applaud` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `paper_id` int(11) unsigned DEFAULT NULL,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `applaud_type` int(11) unsigned DEFAULT '0',
+  `laud_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `paper_id` (`paper_id`),
+  KEY `user_id` (`user_id`),
+  KEY `applaud_type` (`applaud_type`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_banned` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tory_id` int(11) unsigned DEFAULT NULL,
+  `refer_id` int(11) unsigned DEFAULT NULL,
+  `refer_type` int(11) unsigned DEFAULT NULL,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `beget` longtext,
+  `refer_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tory_id` (`tory_id`),
+  KEY `refer_id` (`refer_id`),
+  KEY `refer_type` (`refer_type`),
+  KEY `user_id` (`user_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_collect` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `paper_id` int(11) unsigned DEFAULT NULL,
+  `create_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `paper_id` (`paper_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_form_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `open_id` varchar(500) DEFAULT NULL,
+  `formid` varchar(1000) DEFAULT NULL,
+  `create_time` int(11) unsigned NOT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_honorary` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hono_price` decimal(18,2) unsigned DEFAULT NULL,
+  `first_discount` int(11) unsigned NOT NULL DEFAULT '0',
+  `discount_scale` decimal(18,2) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`),
+  KEY `much_id_2` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_invitation_code` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `code` varchar(1000) DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_maker` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_open_id` varchar(500) DEFAULT NULL,
+  `found_time` int(11) unsigned DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `scores` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_mutter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `tory_id` int(11) unsigned DEFAULT NULL,
+  `ban_id` int(11) unsigned DEFAULT NULL,
+  `beget` longtext,
+  `mute_time` int(11) unsigned DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `mute_type` int(11) NOT NULL DEFAULT '0',
+  `reason_refusal` text,
+  `much_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `tory_id` (`tory_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_punch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `fraction` decimal(18,2) unsigned DEFAULT NULL,
+  `punch_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  `invite_min` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `invite_max` decimal(18,2) NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_punch_range` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `aver_min` decimal(18,2) unsigned DEFAULT '0.00',
+  `aver_max` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `noble_min` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `noble_max` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `invite_min` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `invite_max` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `much_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_red_packet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `red_packet_id` int(11) unsigned DEFAULT NULL,
+  `obtain_fraction` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `obtain_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `red_packet_id` (`red_packet_id`),
+  KEY `obtain_time` (`obtain_time`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_respond_invitation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `re_code` varchar(1000) DEFAULT NULL,
+  `in_us_reward` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `re_us_reward` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `re_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_serial` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `single_mark` varchar(500) DEFAULT NULL,
+  `status` int(11) unsigned DEFAULT '0',
+  `user_id` int(11) unsigned NOT NULL,
+  `add_time` int(11) unsigned NOT NULL DEFAULT '0',
+  `money` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `pay_money` decimal(18,2) unsigned NOT NULL DEFAULT '0.00',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_smail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `maring` longtext,
+  `clue_time` int(11) unsigned DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_subsidy` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `con_user_id` int(11) unsigned DEFAULT NULL,
+  `sel_user_id` int(11) unsigned DEFAULT NULL,
+  `bute_name` varchar(500) DEFAULT NULL,
+  `bute_price` decimal(18,2) DEFAULT NULL,
+  `allow_scale` decimal(18,2) unsigned DEFAULT NULL,
+  `bute_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sel_user_id` (`sel_user_id`),
+  KEY `con_user_id` (`con_user_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_templet_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `paper_id` int(11) DEFAULT NULL,
+  `send_user_id` int(11) unsigned DEFAULT NULL,
+  `accept_user_id` int(11) unsigned DEFAULT NULL,
+  `archetype_id` varchar(1000) DEFAULT NULL,
+  `send_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `send_user_id` (`send_user_id`),
+  KEY `accept_user_id` (`accept_user_id`),
+  KEY `much_id` (`much_id`),
+  KEY `send_time` (`send_time`),
+  KEY `paper_id` (`paper_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_track` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `at_user_id` int(10) unsigned DEFAULT NULL,
+  `qu_user_id` int(10) unsigned DEFAULT NULL,
+  `fo_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `at_user_id` (`at_user_id`),
+  KEY `qu_user_id` (`qu_user_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_trailing` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `tory_id` int(11) unsigned DEFAULT NULL,
+  `ling_time` int(11) unsigned DEFAULT NULL,
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `tory_id` (`tory_id`),
+  KEY `much_id` (`much_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_user_withdraw_money` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned DEFAULT NULL,
+  `user_account` varchar(500) DEFAULT NULL,
+  `display_money` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `tariff` decimal(19,3) unsigned NOT NULL DEFAULT '0.000',
+  `actual_amount` decimal(18,2) NOT NULL DEFAULT '0.00',
+  `withdraw_type` int(11) unsigned NOT NULL DEFAULT '0',
+  `seek_time` int(11) unsigned DEFAULT NULL,
+  `verify_time` int(11) unsigned DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `much_id` (`much_id`),
+  KEY `user_id` (`user_id`),
+  KEY `withdraw_type` (`withdraw_type`),
+  KEY `seek_time` (`seek_time`),
+  KEY `verify_time` (`verify_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `yl_welore_version` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sign_code` varchar(500) DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
+  `much_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO yl_welore_motion VALUES 
+('1','首页','am-icon-home','index/index','0','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('2','广场管理','am-icon-map-signs','','0','1','1','1','1','1');
+INSERT INTO yl_welore_motion VALUES 
+('3','广场列表','','compass/nav','2','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('4','用户管理','am-icon-users','','0','1','1','1','1','5');
+INSERT INTO yl_welore_motion VALUES 
+('5','圈子列表','','compass/fence','2','1','1','1','1','1');
+INSERT INTO yl_welore_motion VALUES 
+('6','圈子审核','','compass/solicit','2','1','1','1','1','2');
+INSERT INTO yl_welore_motion VALUES 
+('7','帖子管理','am-icon-file-text','','0','1','1','1','1','2');
+INSERT INTO yl_welore_motion VALUES 
+('8','帖子列表','','essay/index','7','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('9','帖子回复','','essay/reply','7','1','1','1','1','1');
+INSERT INTO yl_welore_motion VALUES 
+('10','帖子设置','','essay/ritual','7','1','1','1','1','2');
+INSERT INTO yl_welore_motion VALUES 
+('11','举报反馈','am-icon-shield','','0','1','1','1','1','3');
+INSERT INTO yl_welore_motion VALUES 
+('12','帖子举报','','journal/report','11','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('13','帖子申诉','','journal/appeal','11','1','1','1','1','1');
+INSERT INTO yl_welore_motion VALUES 
+('14','轮播广告','','systems/symbol','42','1','1','1','1','1');
+INSERT INTO yl_welore_motion VALUES 
+('15','系统管理','am-icon-cogs','','0','1','1','1','1','8');
+INSERT INTO yl_welore_motion VALUES 
+('16','远程附件','','systems/annex','15','1','1','1','1','5');
+INSERT INTO yl_welore_motion VALUES 
+('17','营销管理','am-icon-magic','','0','1','1','1','1','4');
+INSERT INTO yl_welore_motion VALUES 
+('18','礼物列表','','marketing/friendly','17','1','1','1','1','1');
+INSERT INTO yl_welore_motion VALUES 
+('19','站点设置','','systems/warrior','15','1','1','1','1','4');
+INSERT INTO yl_welore_motion VALUES 
+('20','疑难解答','','systems/help','15','1','1','1','1','3');
+INSERT INTO yl_welore_motion VALUES 
+('21','小程序设置','','systems/applets','42','1','1','1','1','3');
+INSERT INTO yl_welore_motion VALUES 
+('22','会员设置','','marketing/fabulous','17','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('23','用户列表','','user/index','4','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('24','超级管理员','','user/inspect','4','0','0','0','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('25','商品列表','','marketing/shop','17','1','1','1','1','4');
+INSERT INTO yl_welore_motion VALUES 
+('26','圈子投诉','','journal/spread','11','1','1','1','1','2');
+INSERT INTO yl_welore_motion VALUES 
+('27','管理投诉','','journal/safety','11','1','1','1','1','3');
+INSERT INTO yl_welore_motion VALUES 
+('28','用户投诉','','journal/usmur','11','1','1','1','1','4');
+INSERT INTO yl_welore_motion VALUES 
+('29','积分设置','','systems/punch','15','1','1','1','1','2');
+INSERT INTO yl_welore_motion VALUES 
+('30','自定义转发','','systems/partake','42','1','1','1','1','5');
+INSERT INTO yl_welore_motion VALUES 
+('31','流量主','','systems/proclaim','42','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('32','礼物税率','','marketing/taxing','17','1','1','1','1','2');
+INSERT INTO yl_welore_motion VALUES 
+('33','商品分类','','marketing/stype','17','1','1','1','1','3');
+INSERT INTO yl_welore_motion VALUES 
+('34','商品订单','','marketing/sorder','17','1','1','1','1','4');
+INSERT INTO yl_welore_motion VALUES 
+('35','图片库','','images/index','15','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('36','自定义设置','','systems/navigate','42','1','1','1','1','4');
+INSERT INTO yl_welore_motion VALUES 
+('37','提现管理','am-icon-money','','0','1','1','1','1','6');
+INSERT INTO yl_welore_motion VALUES 
+('38','提现设置','','rawls/setting','37','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('39','提现列表','','rawls/stand','37','1','1','1','1','1');
+INSERT INTO yl_welore_motion VALUES 
+('40','模板消息','','systems/antetype','42','1','1','1','1','2');
+INSERT INTO yl_welore_motion VALUES 
+('41','虚拟用户','','user/theoretic','4','1','1','1','1','2');
+INSERT INTO yl_welore_motion VALUES 
+('42','小程序管理','am-icon-stumbleupon','','0','1','1','1','1','7');
+INSERT INTO yl_welore_motion VALUES 
+('43','审核设置','','systems/audit','42','1','1','1','1','0');
+INSERT INTO yl_welore_motion VALUES 
+('44','充值明细','','user/water','4','1','1','1','1','3');
+INSERT INTO yl_welore_motion VALUES 
+('45','邀请排行','','user/engage','4','1','1','1','1','4');
+
+]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `yl_welore_advertise`;
+DROP TABLE IF EXISTS `yl_welore_authority`;
+DROP TABLE IF EXISTS `yl_welore_config`;
+DROP TABLE IF EXISTS `yl_welore_contrar`;
+DROP TABLE IF EXISTS `yl_welore_copyright`;
+DROP TABLE IF EXISTS `yl_welore_design`;
+DROP TABLE IF EXISTS `yl_welore_gallery`;
+DROP TABLE IF EXISTS `yl_welore_gallery_classify`;
+DROP TABLE IF EXISTS `yl_welore_help`;
+DROP TABLE IF EXISTS `yl_welore_lament`;
+DROP TABLE IF EXISTS `yl_welore_motion`;
+DROP TABLE IF EXISTS `yl_welore_mouldboard`;
+DROP TABLE IF EXISTS `yl_welore_much_admin`;
+DROP TABLE IF EXISTS `yl_welore_needle`;
+DROP TABLE IF EXISTS `yl_welore_outlying`;
+DROP TABLE IF EXISTS `yl_welore_outlying_allude`;
+DROP TABLE IF EXISTS `yl_welore_paper`;
+DROP TABLE IF EXISTS `yl_welore_paper_complaint`;
+DROP TABLE IF EXISTS `yl_welore_paper_red_packet`;
+DROP TABLE IF EXISTS `yl_welore_paper_reply`;
+DROP TABLE IF EXISTS `yl_welore_paper_reply_duplex`;
+DROP TABLE IF EXISTS `yl_welore_paper_smingle`;
+DROP TABLE IF EXISTS `yl_welore_polling`;
+DROP TABLE IF EXISTS `yl_welore_prompt_count`;
+DROP TABLE IF EXISTS `yl_welore_prompt_msg`;
+DROP TABLE IF EXISTS `yl_welore_raws_setting`;
+DROP TABLE IF EXISTS `yl_welore_reissue`;
+DROP TABLE IF EXISTS `yl_welore_shaky_fission`;
+DROP TABLE IF EXISTS `yl_welore_shop`;
+DROP TABLE IF EXISTS `yl_welore_shop_order`;
+DROP TABLE IF EXISTS `yl_welore_shop_type`;
+DROP TABLE IF EXISTS `yl_welore_territory`;
+DROP TABLE IF EXISTS `yl_welore_territory_interest`;
+DROP TABLE IF EXISTS `yl_welore_territory_learned`;
+DROP TABLE IF EXISTS `yl_welore_territory_petition`;
+DROP TABLE IF EXISTS `yl_welore_tribute`;
+DROP TABLE IF EXISTS `yl_welore_tribute_taxation`;
+DROP TABLE IF EXISTS `yl_welore_user`;
+DROP TABLE IF EXISTS `yl_welore_user_amount`;
+DROP TABLE IF EXISTS `yl_welore_user_applaud`;
+DROP TABLE IF EXISTS `yl_welore_user_banned`;
+DROP TABLE IF EXISTS `yl_welore_user_collect`;
+DROP TABLE IF EXISTS `yl_welore_user_form_info`;
+DROP TABLE IF EXISTS `yl_welore_user_honorary`;
+DROP TABLE IF EXISTS `yl_welore_user_invitation_code`;
+DROP TABLE IF EXISTS `yl_welore_user_maker`;
+DROP TABLE IF EXISTS `yl_welore_user_mutter`;
+DROP TABLE IF EXISTS `yl_welore_user_punch`;
+DROP TABLE IF EXISTS `yl_welore_user_punch_range`;
+DROP TABLE IF EXISTS `yl_welore_user_red_packet`;
+DROP TABLE IF EXISTS `yl_welore_user_respond_invitation`;
+DROP TABLE IF EXISTS `yl_welore_user_serial`;
+DROP TABLE IF EXISTS `yl_welore_user_smail`;
+DROP TABLE IF EXISTS `yl_welore_user_subsidy`;
+DROP TABLE IF EXISTS `yl_welore_user_templet_history`;
+DROP TABLE IF EXISTS `yl_welore_user_track`;
+DROP TABLE IF EXISTS `yl_welore_user_trailing`;
+DROP TABLE IF EXISTS `yl_welore_user_withdraw_money`;
+DROP TABLE IF EXISTS `yl_welore_version`;
+]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+
+</manifest>

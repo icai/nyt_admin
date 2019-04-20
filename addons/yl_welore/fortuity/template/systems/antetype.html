@@ -1,0 +1,87 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-envelope"></span> 模板消息
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">AT2310</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="AT2310" value="{$list.prototype_data.AT2310}" placeholder="">
+                            <small>帖子被收藏通知  帖子主题、收藏用户、收藏人数</small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">AT2295</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="AT2295" value="{$list.prototype_data.AT2295}" placeholder="">
+                            <small>帖子被点赞通知 您的帖子、点赞人、点赞时间</small>
+                        </div>
+                    </div>
+
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">AT1803</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="AT1803" value="{$list.prototype_data.AT1803}" placeholder="">
+                            <small>帖子被评论通知  您的帖子、评论人、评论内容、评论时间</small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">AT0330</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="AT0330" value="{$list.prototype_data.AT0330}" placeholder="">
+                            <small>申请结果通知   申请内容、申请结果、通过时间</small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">AT1235</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="AT1235" value="{$list.prototype_data.AT1235}" placeholder="">
+                            <small>评论内容、回复内容、回复人、回复时间</small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdSave();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+    function holdSave() {
+        var prototype_data = {};
+        prototype_data['AT2310'] = $.trim($('#AT2310').val());
+        prototype_data['AT2295'] = $.trim($('#AT2295').val());
+        prototype_data['AT1803'] = $.trim($('#AT1803').val());
+        prototype_data['AT0330'] = $.trim($('#AT0330').val());
+        prototype_data['AT1235'] = $.trim($('#AT1235').val());
+        $.post("{:url('systems/antetype')}", prototype_data, function (data) {
+            if (data.code > 0) {
+                layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(data.msg, {icon: 5, time: 2000});
+            }
+        }, 'json');
+    }
+</script>
+{/block}

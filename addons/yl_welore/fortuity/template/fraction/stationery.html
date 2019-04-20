@@ -1,0 +1,99 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-paragraph"></span> 活动奖励
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-12">
+                <div class="am-form am-form-horizontal" style="width: 650px;height:410px;margin: 0px auto;box-shadow: 0px 0px 10px 0px black;">
+                    <div class="am-form-group" style="padding: 80px 0px 20px 0px;margin-left: 30px;">
+                        <label class="am-u-sm-3 am-form-label">每天前</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <div style="float: left;width: 20%;">
+                                <input type="number" id="releaseSingle" value="{$list.release_single}">
+                            </div>
+                            <div style="float: left;margin-left:5%;width:25%;">
+                                <label class="am-form-label">次&nbsp;&nbsp;&nbsp;&nbsp;发帖 获得</label>
+                            </div>
+                            <div style="float: left;width: 20%;">
+                                <input type="number" id="releaseFraction" value="{$list.release_fraction}">
+                            </div>
+                            <div style="float: left;margin-left:3%;width:23%;">
+                                <label class="am-form-label">积分</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-form-group" style="padding-bottom: 20px;margin-left: 30px;">
+                        <label class="am-u-sm-3 am-form-label">每天前</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <div style="float: left;width: 20%;">
+                                <input type="number" id="replySingle" value="{$list.reply_single}">
+                            </div>
+                            <div style="float: left;margin-left:5%;width:25%;">
+                                <label class="am-form-label">次&nbsp;&nbsp;&nbsp;&nbsp;回帖 获得</label>
+                            </div>
+                            <div style="float: left;width: 20%;">
+                                <input type="number" id="replyFraction" value="{$list.reply_fraction}">
+                            </div>
+                            <div style="float: left;margin-left:3%;width:23%;">
+                                <label class="am-form-label">积分</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-form-group" style="padding-bottom: 20px;margin-left: 30px;">
+                        <label class="am-u-sm-3 am-form-label">每天前</label>
+                        <div class="am-u-sm-6 am-u-end">
+                            <div style="float: left;width: 28%;">
+                                <input type="number" id="packetSingle" value="{$list.packet_single}">
+                            </div>
+                            <div style="float: left;margin-left:7%;width:65%;">
+                                <label class="am-form-label">次&nbsp;&nbsp;&nbsp;&nbsp;回复 红包帖 获得积分</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-7 am-u-sm-push-5">
+                            <button type="button" class="am-btn am-btn-secondary" style="border-radius: 5px;" onclick="holdSave();">保存设置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+    function holdSave() {
+        var releaseSingle = $.trim($('#releaseSingle').val());
+        var releaseFraction = Number($('#releaseFraction').val().toString().match(/^\d+(?:\.\d{0,2})?/));
+        var replySingle = $.trim($('#replySingle').val());
+        var replyFraction = Number($('#replyFraction').val().toString().match(/^\d+(?:\.\d{0,2})?/));
+        var packetSingle = $.trim($('#packetSingle').val());
+        if (releaseSingle > 2147483647 || replySingle > 2147483647 || packetSingle > 2147483647) {
+            layer.msg('输入的秒数超出正常范围，请重新输入');
+            return;
+        }
+        $.post("{:url('fraction/stationery')}", {
+            'releaseSingle': releaseSingle,
+            'releaseFraction': releaseFraction,
+            'replySingle': replySingle,
+            'replyFraction': replyFraction,
+            'packetSingle': packetSingle
+        }, function (data) {
+            if (data.code > 0) {
+                layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(data.msg, {icon: 5, time: 2000});
+            }
+        }, 'json');
+    }
+</script>
+{/block}

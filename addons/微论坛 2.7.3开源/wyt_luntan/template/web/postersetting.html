@@ -1,0 +1,126 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+  <li {if $operation == 'poster_bg'}class="active"{/if}><a href="{php echo $this->createWebUrl('postersetting', array('op' => 'poster_bg'));}">海报背景</a></li>
+  <li {if $operation == 'poster_dis'}class="active"{/if}><a href="{php echo $this->createWebUrl('postersetting', array('op' => 'poster_dis'));}">海报设计</a></li>
+</ul>
+<div class="main">
+    <div class="panel panel-info">
+	    <div class="panel-heading">海报设置</div>
+        <div class="panel-body">
+        <form action="" method="post" class="form-horizontal" role="form" id="form1" enctype="multipart/form-data">
+	    {if $operation == 'poster_bg'}
+        	<div class="form-group" id="posterbg">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">海报背景</label>
+                <div class="col-sm-9 col-xs-12">
+                   {php echo tpl_form_field_image('hb_bg',$set['hb_bg'])}
+                   <span class='help-block'>海报背景大小建议尺寸为: 640 * 1008</span>
+                </div>
+             </div>
+             <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    <input style="margin-left:15px;" type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+                    <input type="hidden" name="token" value="{$_W['token']}" />
+                </div>
+            </div>
+        {elseif $operation == 'poster_dis'}
+        	<script type="text/javascript" src="../addons/wyt_luntan/js/designer.js"></script>
+            <script  src="../addons/wyt_luntan/js/jquery.form.js" type="text/javascript"></script>
+            <script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+            <link href="../addons/wyt_luntan/css/poster.css" rel="stylesheet">
+			<link href="../addons/wyt_luntan/css/jquery.contextMenu.css" rel="stylesheet">
+            <div class="form-group">
+                <div class="col-xs-12 col-sm-3 col-md-1 control-label">海报设计</div>
+                <div class="col-sm-11 col-xs-12">
+                    <table style='width:100%;'>
+                        <tr>
+                            <td id="bgtd" style='padding:10px 5px 0 0;' valign='top'>
+                                <div id='tiger_poster'>
+                                  <img src="{php echo toimage($set['hb_bg'])}" class='bg'/>
+                                  {if !empty($data)}
+                                  {loop $data $key $d}
+                                  <div class="drag" type="{$d['type']}" onclick="tiger_bind($(this));" ondblclick="delete_drag(this);" index="{php echo $key+1}" style="zindex:{php echo $key+1};left:{$d['left']};top:{$d['top']};
+                                       width:{$d['width']};height:{$d['height']}" size="{$d['size']}" color="{$d['color']}" > 
+                                        {if $d['type']=='img' || $d['type']=='thumb'}
+                                          <img src="../addons/wyt_luntan/images/default.jpg" />
+                                        {elseif $d['type']=='qr'}
+                                          <img src="../addons/wyt_luntan/images/qr.png" />
+                                        {elseif $d['type']=='name'}
+                                           <div class=text style="font-size:{$d['size']};color:{$d['color']}" >昵称</div> 
+                                        {/if}
+                                      <div class="dRightDown"> </div>
+                                      <div class="dLeftDown"> </div>
+                                      <div class="dRightUp"> </div>
+                                      <div class="dLeftUp"> </div>
+                                      <div class="dRight"> </div>
+                                      <div class="dLeft"> </div>
+                                      <div class="rUp"> </div>
+                                      <div class="rDown"></div>
+                                  </div>
+                                  {/loop} 
+                                  {/if}
+                                </div>
+                            </td>
+                            <td valign='top' style='padding:10px;'>
+                                  <div class='panel panel-default'>
+                                      <div class='panel-body'>
+                                            <div class="form-group">
+                                                <label class="col-xs-12 col-sm-3 col-md-2 control-label">海报元素</label>
+                                                <div class="col-sm-9 col-xs-12">
+                                                    <button class='btn btn-info btn-poster' type='button'  data-type='img' >头像</button>
+                                                    <button class='btn btn-primary btn-poster' type='button' data-type='name'>昵称</button>
+                                                    <button class='btn btn-warning btn-poster' type='button' data-type='qr' >二维码</button>
+                                                </div>
+                                            </div>
+                                            
+                                            <!--<div class="form-group">
+                                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">显示战绩</label>
+                                            <div class="col-sm-9 col-xs-12">
+                                            	<label class="col-sm-9 col-xs-12">
+                                               	<input type="radio" value="2" {php echo $set['zhanji']==0||$set['zhanji']==2?'checked="checked"':''}  name="zhanji">不显示</input>  
+												<input type="radio" value="1" {php echo $set['zhanji']==1?'checked="checked"':''} name="zhanji">显示</input>
+                                                </label>
+                                            </div>
+                                        </div>-->
+                                          <div id='namesset' style='display:none'>
+                                              <div class="form-group">
+                                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">昵称颜色</label>
+                                                     <div class="col-sm-9 col-xs-12">
+                                                          {php echo tpl_form_field_color('color')}
+                                                    </div>
+                                                </div>
+                                              <div class="form-group">
+                                                <label class="col-xs-12 col-sm-3 col-md-2 control-label">昵称大小</label>
+                                                <div class="col-sm-6">
+                                                     <div class='input-group'>
+                                                         <input type="text" id="namesize" class="form-control namesize" placeholder="例如: 15"  />
+                                                         <div class='input-group-addon'>px</div>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                         </div>
+                                  </div>
+                           </div>
+                            </td>
+                        </tr>
+                     </table>
+                  </div>
+                </div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-10">
+						<input style="margin-left:15px;" type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+                        <input type="hidden" name="data" value="" />
+                        <input type="hidden" name="hb_bg" value="{$set['hb_bg']}" />
+						<input type="hidden" name="token" value="{$_W['token']}" />
+					</div>
+				</div>
+                
+                <script  src="../addons/wyt_luntan/js/poster.js" type="text/javascript"></script>
+        {/if}
+        <input type="hidden" name="modulename" id="modulename" value="wyt_luntan" />
+		</form>
+	    </div>
+	</div>
+</div>
+{template 'common/footer'}

@@ -1,0 +1,101 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-cog"></span> 帖子设置
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">是否开启帖子自动审核</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <span style="font-size: 14px;">
+                                <label>
+                                    <input type="radio" name="review" value="1" {if $list.auto_review==1}checked{/if}>开启
+                                </label>
+                                <label>
+                                    <input type="radio" name="review" value="0" {if $list.auto_review==0}checked{/if} style="margin-left: 10px;">关闭
+                                </label>
+                            </span>
+                            <br/>
+                            <small>开启后您无需再手动审核 系统将自动通过所有用户发布的帖子</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">是否开启发帖次数限制</label>
+                        <div class="am-u-sm-9" style="margin-top: 3px;">
+                            <input type="number" name="numit" value="{$list.number_limit}">
+                            <small>发帖次数限制 0 为不限制</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="notice" class="am-u-sm-3 am-form-label">发帖须知</label>
+                        <div class="am-u-sm-9" style="margin-top: 8px;">
+                            <textarea id="notice"
+                                      style="height:300px;overflow:auto;resize:none;">{$list.notice}</textarea>
+                            <small>请填写发帖须知（用户发帖需要遵守的规则）</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdNav();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    function excheck(notice) {
+        if (notice == '' || notice == 'undefined' || notice == null) {
+            layer.msg('发帖须知不能为空');
+            return false;
+        }
+        return true;
+    }
+
+    var slock = false;
+
+    function holdNav() {
+        if (!slock) {
+            var review = $.trim($("[name='review']:checked").val());
+            var numit = $.trim($('#numit').val());
+            var notice = $.trim($('#notice').val());
+            if (excheck(notice)) {
+                slock = true;
+                $.ajax({
+                    type: "post",
+                    url: "{:url('ritual')}",
+                    data: {
+                        'uplid': '{$list.id}',
+                        'review': review,
+                        'numit': numit,
+                        'notice': notice
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                                slock = false;
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+{/block}

@@ -1,0 +1,183 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table > thead:first-child > tr:first-child > th{text-align:center;}.am-table>tbody>tr>td{text-align:center;line-height:45px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-slideshare"></span> 审核设置
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="fuzzy();"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索版本号...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-2 am-u-sm-push-10" style="font-size: 16px;">
+                <div class="am-u-sm-4">
+                    <label class="am-form-label" style="margin-top: 5px;width: 120px;margin-left: -10px;">
+                        过审核开关
+                    </label>
+                </div>
+                <div class="am-u-sm-3">
+                    <div class="tpl-switch">
+                        <input type="checkbox" style="display: none;" class="ios-switch bigswitch tpl-switch-btn" {if $authorityInfo.ensure_arbor==1}checked{/if}>
+                        <div class="tpl-switch-btn-view">
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-u-sm-4 am-u-end">
+                    <label id="lamura" class="am-form-label" style="margin-top: 5px;width: 100px;">
+                        {if $authorityInfo.ensure_arbor==1}
+                        <span style="color: green;">已开启</span>
+                        {else}
+                        <span style="color: red;">已关闭</span>
+                        {/if}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="30%">小程序版本号</th>
+                            <th width="70%">
+                                <span style="margin-left: -9%;">小程序审核状态</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <span style="font-size: 16px;">{$vo.sign_code}</span>
+                            </td>
+                            <td class="am-hide-sm-only" style="text-align: center;">
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-5 am-form-label"></label>
+                                    <div class="am-u-sm-1 am-u-end" style="margin-top: 7px;">
+                                        <div class="tpl-switch">
+                                            <input type="checkbox" style="display: none;" data-audit="{$vo.id}"
+                                                   class="ios-switch bigswitch tpl-switch-btn" {if $vo.status==1}checked{/if}>
+                                            <div class="tpl-switch-btn-view">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label id="formula-{$vo.id}" class="am-u-sm-2 am-u-end am-form-label">
+                                        {if $vo.status==1}
+                                        <span style="color: green;">已通过</span>
+                                        {else}
+                                        <span style="color: red;">待审核</span>
+                                        {/if}
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    !function () {
+        $('.tpl-switch').find('.tpl-switch-btn-view').on('click', function () {
+            $(this).prev('.tpl-switch-btn').prop("checked", function () {
+                var euid = $.trim($(this).attr('data-audit'));
+                if (euid != '') {
+                    if ($(this).is(':checked')) {
+                        return cocksure(euid, 0, true);
+                    } else {
+                        return cocksure(euid, 1, false);
+                    }
+                } else {
+                    if ($(this).is(':checked')) {
+                        return colser(0, true);
+                    } else {
+                        return colser(1, true);
+                    }
+                }
+            });
+        });
+    }();
+
+    function cocksure(euid, status, juncture) {
+        $.ajax({
+            type: "post",
+            url: "{:url('systems/audit')}",
+            data: {'euid': euid, 'status': status},
+            async: false,
+            success: function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1600});
+                    if (status == 1) {
+                        juncture = true;
+                        $('#formula-' + euid).html('<span style="color: green;">已通过</span>');
+                    } else {
+                        juncture = false;
+                        $('#formula-' + euid).html('<span style="color: red;">待审核</span>');
+                    }
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 1600});
+                }
+            }
+        });
+        return juncture;
+    }
+    
+    function colser(status, juncture) {
+        $.ajax({
+            type: "post",
+            url: "{:url('systems/limuda')}",
+            data: {'status': status},
+            async: false,
+            success: function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1600});
+                    if (status == 1) {
+                        juncture = true;
+                        $('#lamura').html('<span style="color: green;">已开启</span>');
+                    } else {
+                        juncture = false;
+                        $('#lamura').html('<span style="color: red;">已关闭</span>');
+                    }
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 1600});
+                }
+            }
+        });
+        return juncture;
+    }
+
+    function fuzzy() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('systems/audit')}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('systems/audit')}&page={$page}";
+    }
+
+</script>
+{/block}

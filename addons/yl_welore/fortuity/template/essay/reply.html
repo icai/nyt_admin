@@ -1,0 +1,118 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-comment-o"></span> 回复列表
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="fuzzy();"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索回复或用户...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="14.28%">用户昵称</th>
+                            <th width="14.28%">当前楼层</th>
+                            <th width="14.28%">回复内容</th>
+                            <th width="14.28%">帖子 标题 / 内容</th>
+                            <th width="14.28%">所属圈子</th>
+                            <th width="14.28%">回复时间</th>
+                            <th width="14.29%">回复详情</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_wechat_open_id}&page=1"
+                                   title="{$vo.user_nick_name|emoji_decode}"
+                                   target="_blank">
+                                    {$vo.user_nick_name|emoji_decode|subtext=6}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">{$vo.phase}</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.reply_type==0}
+                                {if $vo.reply_content!=''}
+                                {$vo.reply_content|strip_tags|subtext=6}
+                                {else}
+                                图片不支持预览
+                                {/if}
+                                {elseif $vo.reply_type==1}
+                                语音不支持预览
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('setails')}&uplid={$vo.paper_id}" target="_blank">
+                                    {if $vo.study_title!=''}
+                                        {$vo.study_title|strip_tags|emoji_decode|subtext=6}
+                                    {elseif $vo.study_content!=''}
+                                        {$vo.study_content|strip_tags|emoji_decode|subtext=6}
+                                    {else}
+                                        无
+                                    {/if}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">{$vo.tory.realm_name}</td>
+                            <td class="am-hide-sm-only">{:date('Y-m-d H:i:s',$vo.apter_time)}</td>
+                            <td>
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                                onclick="uploof('{$vo.id}');">
+                                            <span class="am-icon-search"></span> 查看
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+
+    function uploof(uplid) {
+        var dynamicUrl = $('<a></a>');
+        dynamicUrl.attr('href', "{:url('essay/repas')}&uplid=" + uplid);
+        dynamicUrl.attr('target', '_blank');
+        dynamicUrl.get(0).click();
+    }
+
+    function fuzzy() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('essay/reply')}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('essay/reply')}&page={$page}";
+    }
+
+</script>
+{/block}

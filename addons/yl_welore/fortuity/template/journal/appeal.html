@@ -1,0 +1,207 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-reply-all"></span> 帖子申诉
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="fuzzy();"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索举报用户...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="10%">申诉用户</th>
+                            <th width="10%">申诉类型</th>
+                            <th width="10%">申诉楼层</th>
+                            <th width="10%">申诉 标题/内容</th>
+                            <th width="10%">所属圈子</th>
+                            <th width="10%">申诉时间</th>
+                            <th width="10%">申诉内容</th>
+                            <th width="10%">处理状态</th>
+                            <th width="10%">帖子状态</th>
+                            <th width="10%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_nick_name|emoji_decode|filter_emoji}&page=1"
+                                   title="{$vo.user_nick_name|emoji_decode}"
+                                   target="_blank">
+                                    {$vo.user_nick_name|emoji_decode|subtext=6}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.tale_type==2}
+                                帖子申诉
+                                {elseif $vo.tale_type==3}
+                                回复申诉
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.tale_type==2}
+                                1
+                                {elseif $vo.tale_type==3}
+                                {$vo.satisfy.phase}
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.tale_type==2}
+                                <a href="{:url('essay/setails')}&uplid={$vo.paper_id}{if $vo.satisfy.token!=''}&token={$vo.satisfy.token}{/if}"
+                                   target="_blank" title="{$vo.satisfy.study_title|strip_tags|subtext=6}">
+                                    {if $vo.satisfy.study_title}
+                                    {$vo.satisfy.study_title|strip_tags|subtext=6}
+                                    {else}
+                                        无
+                                    {/if}
+                                </a>
+                                {elseif $vo.tale_type==3}
+                                {if $vo.satisfy.reply_type==0}
+                                <a href="{:url('essay/repas')}&uplid={$vo.prely_id}{if $vo.satisfy.token!=''}&token={$vo.satisfy.token}{/if}"
+                                   target="_blank" title="{$vo.satisfy.reply_content|strip_tags|subtext=6}">
+                                    {if $vo.satisfy.reply_content}
+                                    {$vo.satisfy.reply_content|strip_tags|subtext=6}
+                                    {else}
+                                    无
+                                    {/if}
+                                </a>
+                                {elseif $vo.satisfy.reply_type==1}
+                                <a href="{:url('essay/repas')}&uplid={$vo.prely_id}{if $vo.satisfy.token!=''}&token={$vo.satisfy.token}{/if}"
+                                   target="_blank" title="语音">语音</a>
+                                {/if}
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('compass/fence')}&hazy_name={$vo.realm_name}&page=1"
+                                   title="{$vo.realm_name}" target="_blank">
+                                    {$vo.realm_name|subtext=7}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">{:date('Y-m-d H:i:s',$vo.petition_time)}</td>
+                            <td>
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button" class="am-btn am-btn-default am-btn-xs"
+                                                onclick="karma('{$vo.id}');">查看
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.acceptance_status==0}
+                                <span style="color: red;">未处理</span>
+                                {elseif $vo.acceptance_status==1}
+                                <span style="color: green;">已处理</span>
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.is_strike==0}
+                                <span style="color: green;">已恢复</span>
+                                {else}
+                                <span style="color: red;">未恢复</span>
+                                {/if}
+                            </td>
+                            <td>
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        {if $vo.acceptance_status==0}
+                                        <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                                onclick="ruling('{$vo.user_nick_name|emoji_decode|filter_emoji}','{$vo.tale_type}','{$vo.id}','{$vo.satisfy.id}');">
+                                            <span class="am-icon-retweet"></span> 处理申诉
+                                        </button>
+                                        {else}
+                                        ————
+                                        {/if}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    function karma(sin) {
+        $.getJSON("{:url('appeal')}", {'ksin': sin}, function (data) {
+            layer.alert(data, {'title': '申诉内容'});
+        });
+    }
+
+    function ruling(usname, stale, ngid, vgid) {
+        var estale = stale == 2 ? '帖子' : '回复';
+        var sitle = "您是否要恢复用户<span style='color: blue'>" + usname + "</span>申诉的" + estale + "？";
+        layer.confirm(sitle, {
+            btn: ['是', '否'], 'title': '操作确认'
+        }, function () {
+            layer.closeAll();
+            srompt('0', stale, ngid, vgid);
+        }, function () {
+            layer.closeAll();
+            srompt('1', stale, ngid, vgid);
+        });
+    }
+
+    function srompt(fell, stale, ngid, vgid) {
+        layer.prompt({'title': "请输入处理结果，回复给申诉用户"}, function (rea_value, index) {
+            if (rea_value == '' || rea_value == 'undefined' || rea_value == null) {
+                return false;
+            }
+            $.post("{:url('rejupeal')}", {
+                'sfell': fell,
+                "sngid": ngid,
+                'setale': stale,
+                'nvgid': vgid,
+                'nstruct': rea_value
+            }, function (data) {
+                layer.close(index);
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            });
+        });
+    }
+
+
+    function fuzzy() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('appeal')}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('appeal')}&page={$page}";
+    }
+</script>
+{/block}

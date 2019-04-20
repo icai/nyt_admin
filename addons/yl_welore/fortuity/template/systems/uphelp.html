@@ -1,0 +1,113 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-edit"></span> 新增解答
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">问题标题</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="trouble" value="{$list.trouble}" placeholder="请输入问题">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">回答内容</label>
+                        <div class="am-u-sm-9">
+                            <textarea id="answer" style="height:300px;overflow:auto;resize:none;margin-top: 8px;"
+                                      placeholder="请输入回答">{$list.answer}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="status" class="am-u-sm-3 am-form-label">状态</label>
+                        <div class="am-u-sm-9">
+                            <select id="status">
+                                <option value="0" {if $list.status==0}selected{/if} >隐藏</option>
+                                <option value="1" {if $list.status==1}selected{/if} >显示</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="scores" class="am-u-sm-3 am-form-label">排序</label>
+                        <div class="am-u-sm-9">
+                            <input type="number" id="scores" value="{$list.scores}" placeholder="请输入排序数字">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdNav();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+
+    function excheck(trouble, answer, scores) {
+        if (trouble == '' || trouble == 'undefined' || trouble == null) {
+            layer.msg('问题标题不能为空');
+            return false;
+        }
+        if (answer == '' || answer == 'undefined' || answer == null) {
+            layer.msg('回答内容不能为空');
+            return false;
+        }
+        if (scores > 2147483646) {
+            layer.msg('排序数字最大不能超过 2147483646');
+            return false;
+        }
+        return true;
+    }
+
+    var slock = false;
+
+    function holdNav() {
+        if (!slock) {
+            var trouble = $.trim($('#trouble').val());
+            var answer = $.trim($('#answer').val());
+            var status = $.trim($('#status').val());
+            var scores = $.trim($('#scores').val());
+            if (excheck(trouble, answer, scores)) {
+                slock = true;
+                $.ajax({
+                    type: "post",
+                    url: "{:url('uphelp')}",
+                    data: {
+                        'usid': '{$list.id}',
+                        'trouble': trouble,
+                        'answer': answer,
+                        'status': status,
+                        'scores': scores
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.href = "{:url('help')}";
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                                slock = false;
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+{/block}

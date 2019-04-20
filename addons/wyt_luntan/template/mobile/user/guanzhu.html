@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 32px;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <script src="{ASSETS_PATH}js/zepto.min.js"></script>
+    <title>我的关注</title>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/swiper.min.css">
+    <script src="{ASSETS_PATH}js/swipe.js"></script>
+    <script src="{ASSETS_PATH}js/iscroll.js"></script>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui.css"/>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui2.css"/>
+    <script src="{ASSETS_PATH}js/layer/layer.js"></script>
+    {php echo register_jssdk(false);}
+    <style>
+        .slide .dot .cur {background-color:#ff9000;border:1px solid #ff9000}
+        a {text-decoration:none;out-line: none;color:#666; }
+        .comment h3 { height: 28px; line-height: 28px }
+        .com_form p { height: 28px; line-height: 28px; position: relative; margin-top: 10px; }
+        .qqFace table td { padding: 0px; }
+        .qqFace table td img { cursor: pointer; border: 1px #fff solid; }
+        .qqFace table td img:hover { border: 1px #0066cc solid; }
+
+    </style>
+    {php echo register_jssdk(false);}
+    <style>
+        .footer {position: fixed;bottom: 0;background-color:white;height:50px;width:100%;text-align: center;border-top:1px solid #eee;font-size:14px;padding:2px 0 0 0;}
+        *{
+            margin:0;
+            padding:0;
+        }
+        a{text-decoration: none;color: #666;border: none;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-tap-highlight-color: transparent;}
+        input{outline: none;border: none;background: transparent;}
+        ul,ol{list-style: none;}
+        button{background: none;border:none;}
+        .search ::-webkit-input-placeholder{
+            font-size: .32rem;
+            color: #fff
+        }
+        .announceItem{
+            padding: .283rem 0 .283rem .34rem;
+            color: #3b3b3b;
+            display: block;
+            border-bottom:1px solid #ebebeb;
+        }
+        .announceTag{,
+        width: .747rem;
+            margin-right: .16rem;
+            padding: .067rem;
+            text-align: center;
+            color: #fefefe;
+            font-size:12px;
+            line-height: 1;
+            background: #ff9000;
+            border-radius: 2px;
+        }
+        .warn{background: red;}
+        .pad_right{ padding-right:2em;}
+        #scroll_div {height:26px;overflow: hidden;white-space: nowrap;width:100%;margin-left:20px;margin-top: -20px;}
+        #scroll_begin,#scroll_end {display: inline;}
+        .nav ul li a:not(:nth-of-type(4n)){margin-right: .32rem;}
+        .nav ul li a:active{background:#ff9000;color: #fff;}
+        .listItem:not(:last-of-type){
+            margin-bottom: .213rem;
+        }
+        .listItem-head{
+            position: relative;
+            padding:.48rem .32rem .32rem;
+            font-size: 0;
+        }
+        .listItem-content{
+            position: relative;
+            display: block;
+            width: 100%;
+            color: #3b3b3b;
+        }
+        .weui-navigator-list li a {font-weight:100;font-size:14px;}
+        .weui-navigator-list li.weui-state-active a{color:#666;font-weight:100;font-size:14px;}
+        .weui-navigator-list li.weui-state-active a:after{background-color:#666;font-weight:100;}
+        .weui-comment-icon{border:none;}
+        ul li {list-style: none;}
+        .top {position:fixed;top:0;width:100%;height:50px;line-height:50px;text-align:center;background-color:white;color:black;}
+    </style>
+</head>
+<input id="uopenid" type="hidden" value="{$uopenid}">
+<body style="font-size: 12px;background-color:white;">
+<div class="head" style="background-color:#ff9000">
+    <div style="" align="center">
+        <span><img src="{$user['avatar']}" width="80px" height="80px" style="margin-top:30px;border-radius:80px;"></span><br>
+        <span style="color:white">{$user['nickname']} </span>
+    </div>
+</div>
+
+<div>
+    <ul id="zhengwen">
+
+        {loop $row $v}
+        <li class="listItem" style="border-bottom:7px solid #eee;position: relative">
+            <div class="listItem-head">
+                <a href="{php echo $this->createMobileUrl('Index',array('action'=>'other','openid'=>$v['col']['openid']))}" style="width: 1.2rem;height: 1.2rem;float: left;margin-right: .213rem;position:relative;"><img src="{$v['col']['avatar']}" alt="" style="width: 100%;height: 100%;border-radius: 50%;"></a>
+                <div style="height: 1.2rem;">
+                    <p>
+                        <span style="margin-right:5px;color: #111;font-size:15px">{$v['col']['nickname']}</span>
+                    </p>
+                </div>
+            </div>
+            <a align="center"  href="{php echo $this->createMobileUrl('user',array('action'=>'bguanzhu','id'=>$v['col']['openid']))}" style="position: absolute;top: 20px;right: 10px" >
+                <span style="color:white;padding:5px 10px;background-color: #ff8500;border-radius:5px;">取消关注</span>
+            </a>
+        </li>
+        {/loop}
+    </ul>
+</div>
+
+<div style="height:50px;color:white;">1</div>
+<div class="footer" style="z-index: 9999">
+    <ul id="dian">
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>''))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/shouye.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">首页</span>
+            </li>
+        </a>
+        <a href="{php echo $this->createMobileUrl('User',array('action'=>'opinion'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/dongtai.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">反馈</span>
+            </li>
+        </a>
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'fatie'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/fabu.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">发帖</span>
+            </li>
+        </a>
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'user'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/wode.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">我的</span>
+            </li>
+        </a>
+    </ul>
+</div>
+</body>
+<script type="text/javascript"></script>
+</html>
+<script src="https://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+<script src="{ASSETS_PATH}js/layer/layer.js"></script>
+<script></script>
+<script  src="{ASSETS_PATH}/qqFace/js/jquery.min.js"></script>
+<script type="text/javascript" src="{ASSETS_PATH}/qqFace/js/jquery.qqFace.js"></script>

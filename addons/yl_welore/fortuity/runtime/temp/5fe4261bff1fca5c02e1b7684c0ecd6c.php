@@ -1,0 +1,49 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:87:"/www3/wwwroot/nyt.gzchujiao.com/addons/yl_welore/fortuity/template/images/new_imgs.html";i:1552701446;}*/ ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增图库</title>
+</head>
+<link rel="stylesheet" href="assets/css/bootstrap.min.css?v=1.0">
+<link rel="stylesheet" href="assets/css/amazeui.min.css?v=1.0"/>
+<body>
+<div class="am-form am-form-horizontal" style="margin-top: 30px;">
+    <div class="am-form-group">
+        <label class="am-u-sm-3 am-form-label">新增图库名称</label>
+        <div class="am-u-sm-8 am-u-end">
+            <input type="text" id="name" placeholder="请输入图库名称">
+        </div>
+    </div>
+    <div class="am-form-group">
+        <label class="am-u-sm-3 am-form-label">排序</label>
+        <div class="am-u-sm-8 am-u-end">
+            <input type="number" id="scores" value="0" placeholder="排序">
+        </div>
+    </div>
+    <div style="cursor:pointer;margin: 30px auto;color:#ffffff;background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);height: 38px;width: 120px;font-size: 15px;text-align: center;line-height: 38px;border-radius: 20px;" onclick="newImagesSave();">
+        确定
+    </div>
+</div>
+</body>
+<script src="assets/js/jquery.min.js?v=1.0"></script>
+<script>
+    function newImagesSave() {
+        var uname = $.trim($('#name').val());
+        if (uname == '') {
+            parent.layer.msg('图库名称不能为空');
+            return;
+        }
+        var scores = $('#scores').val();
+        $.post("<?php echo url('images/newImgs'); ?>", {'name': uname, 'scores': scores}, function (data) {
+            if (data.code > 0) {
+                parent.layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                    parent.location.reload();
+                });
+            } else {
+                parent.layer.msg(data.msg, {icon: 5, time: 1000});
+            }
+        }, 'json');
+    }
+</script>
+</html>

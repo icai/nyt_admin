@@ -1,0 +1,139 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-plus"></span> 新增超级管理员
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+
+                    <div class="am-form-group" style="display: none;">
+                        <label class="am-u-sm-3 am-form-label">用户名称</label>
+                        <div class="am-u-sm-9">
+                            <input id="username" type="text" class="am-form-field am-radius" disabled>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group" style="display: none;">
+                        <label class="am-u-sm-3 am-form-label">用户头像</label>
+                        <div class="am-u-sm-9">
+                            <img id="userhead" src=""  onerror="this.src='static/disappear/default.png'" style="width: 100px;height: 100px;">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">用户openid</label>
+                        <div class="am-u-sm-9">
+                            <input id="openid" type="text" class="am-form-field am-radius" placeholder="请输入openid" onblur="extolled(this);">
+                            <small id="hobby"></small>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="status" class="am-u-sm-3 am-form-label">状态</label>
+                        <div class="am-u-sm-9">
+                            <select id="status">
+                                <option value="0">禁用</option>
+                                <option value="1">正常</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="scores" class="am-u-sm-3 am-form-label">排序</label>
+                        <div class="am-u-sm-9">
+                            <input type="number" id="scores" value="0" placeholder="请输入排序数字">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdNav();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+
+    function extolled(obg) {
+        obg.value = $.trim(obg.value);
+        if (obg.value != '') {
+            $.getJSON("{:url('compass/getopenid')}", {"openid": obg.value}, function (data) {
+                if (data.name != '') {
+                    $('#hobby').html('');
+                    $('#username').val(data.name).parent().parent().show();
+                    $('#userhead').attr('src',data.userhead).parent().parent().show();
+                } else {
+                    $('#username').val('').parent().parent().hide();
+                    $('#userhead').attr('src','static/disappear/default.png').parent().parent().hide();
+                    var gropt = "<span id='sgropt' style='color: red;'>openid填写错误</span>";
+                    $('#hobby').html(gropt);
+                    obg.value = '';
+                }
+            });
+        }
+    }
+
+    function excheck(openid, scores) {
+        if (openid == '' || openid == 'undefined' || openid == null) {
+            layer.msg('OpenId不能为空');
+            return false;
+        }
+
+        if (scores == '' || openid == 'undefined' || openid == null) {
+            layer.msg('排序数字不能为空');
+            return false;
+        }
+
+        if (scores > 2147483646) {
+            layer.msg('排序数字最大不能超过 2147483646');
+            return false;
+        }
+        return true;
+    }
+
+    var slock = false;
+    function holdNav() {
+        if (!slock) {
+            var openid = $.trim($('#openid').val());
+            var status = $.trim($('#status').val());
+            var scores = $.trim($('#scores').val());
+            if (excheck(openid, scores)) {
+                slock = true;
+                $.ajax({
+                    type: "post",
+                    url: "{:url('ruinspect')}",
+                    data: {
+                        'user_open_id': openid,
+                        'status': status,
+                        'scores': scores
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.href = "{:url('inspect')}";
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                                slock = false;
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+{/block}

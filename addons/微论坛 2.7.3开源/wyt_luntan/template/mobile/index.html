@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 32px;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <script src="{ASSETS_PATH}js/jquery-3.2.1.min.js"></script>
+    <script src="{ASSETS_PATH}js/layer/layer.js"></script>
+    <title>{$set['name']}</title>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/swiper.min.css">
+    <script src="{ASSETS_PATH}js/swipe.js"></script>
+    <script src="{ASSETS_PATH}js/iscroll.js"></script>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui.css"/>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui2.css"/>
+    {php echo register_jssdk(false);}
+    <script>
+        wx.ready(function () {
+        	//过滤简介中的回车符
+        	var desc = "{php echo preg_replace('/\s+/', ' ', mb_substr($set['jianjie'], 0,20, 'utf-8'))}";
+            sharedata = {
+                title: "{$set['name']}",
+                desc: desc,
+                link: '',
+                imgUrl: "{php echo tomedia($set['logo'])}",
+                success: function(){
+                    $.ajax({
+                        url : "{php echo $this->createMobileUrl('Index',array('action'=>'share'))}",
+                        type:"post",
+                        data:{
+                            id : 1
+                        }, success: function (res) {
+                            if(res==1) {
+                                layer.msg('分享成功', {time:2000})
+                            }else{
+                                layer.msg('分享成功', {time:2000})
+                            }
+                        }
+                    });
+                },
+                cancel: function(){
+                    layer.msg('分享成功', {time:2000})
+                }
+            };
+            wx.onMenuShareAppMessage(sharedata);
+            wx.onMenuShareTimeline(sharedata);
+        });
+    </script>
+    <style>
+        .slide .dot .cur {background-color:#ff9000;border:1px solid #ff9000}
+        a {text-decoration:none;out-line: none;color:#666; }
+        .comment h3 { height: 28px; line-height: 28px }
+        .com_form p { height: 28px; line-height: 28px; position: relative; margin-top: 10px; }
+        .qqFace table td { padding: 0px; }
+        .qqFace table td img { cursor: pointer; border: 1px #fff solid; }
+        .qqFace table td img:hover { border: 1px #0066cc solid; }
+
+    </style>
+    {php echo register_jssdk(false);}
+    <style>
+        .footer {position: fixed;bottom: 0;background-color:white;height:50px;width:100%;text-align: center;border-top:1px solid #eee;font-size:14px;padding:2px 0 0 0;}
+        *{
+            margin:0;
+            padding:0;
+        }
+        a{text-decoration: none;color: #666;border: none;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-tap-highlight-color: transparent;}
+        input{outline: none;border: none;background: transparent;}
+        ul,ol{list-style: none;}
+        button{background: none;border:none;}
+        .search ::-webkit-input-placeholder{
+            font-size: .32rem;
+            color: #585858
+        }
+        .announceItem{
+            padding: .283rem 0 .283rem .34rem;
+            color: #3b3b3b;
+            display: block;
+            border-bottom:1px solid #ebebeb;
+        }
+        .announceTag{,
+        width: .747rem;
+            margin-right: .16rem;
+            padding: .067rem;
+            text-align: center;
+            color: #fefefe;
+            font-size:12px;
+            line-height: 1;
+            background: #ff9000;
+            border-radius: 2px;
+        }
+        .warn{background: red;}
+        .pad_right{ padding-right:2em;}
+        #scroll_div {height:26px;overflow: hidden;white-space: nowrap;width:100%;margin-left:20px;margin-top: -20px;}
+        #scroll_begin,#scroll_end {display: inline;}
+        .nav ul li a:not(:nth-of-type(4n)){margin-right: .32rem;}
+        .nav ul li a:active{background:#ff9000;color: #fff;}
+        .listItem:not(:last-of-type){
+            margin-bottom: .213rem;
+        }
+        .listItem-head{
+            position: relative;
+            padding:.48rem .32rem .32rem;
+            font-size: 0;
+        }
+        .listItem-content{
+            position: relative;
+            display: block;
+            width: 100%;
+            color: #3b3b3b;
+        }
+        .weui-navigator-list li a {font-weight:100;font-size:14px;}
+        .weui-navigator-list li.weui-state-active a{color:#666;font-weight:100;font-size:14px;}
+        .weui-navigator-list li.weui-state-active a:after{background-color:#666;font-weight:100;}
+        .weui-comment-icon{border:none;}
+        ul li {list-style: none;}
+        .top {position:fixed;top:0;width:100%;height:50px;line-height:50px;text-align:center;background-color:white;color:black;}
+        .tips{
+        	display: inline-block;
+		    width: 1rem;
+		    height: 0.5rem;
+		    font-size: .290rem;
+		    text-align: center;
+		    color: #fff;
+		    background: #ff5000;
+		    border-radius: .4rem;
+		    line-height: 0.5rem;
+		    margin-right: .25rem;
+        }
+    </style>
+</head>
+<body style="font-size: 12px;background-color:white;">
+
+
+<script>
+    function AutoScroll(obj) {
+        $(obj).find("ul:first").animate({
+                marginTop: "-25px"
+            },
+            800,
+            function() {
+                $(this).css({
+                    marginTop: "0px"
+                }).find("li:first").appendTo(this);
+            });
+    }
+    $(document).ready(function() {
+        setInterval('AutoScroll("#demo")',3000)
+    });
+</script>
+
+<!--header-->
+<div style="width: 100%;position: relative;">
+    <div style="position: absolute;top: .213rem;width: 90%;margin: 0 5%;">
+
+    </div>
+    <img src="{php echo tomedia($set['beij'])}" alt="" style="width: 100%;height:140px;">
+    <div style="width: 90%;margin:0 5%;height: .96rem;position: relative;margin-top:-45px;color:white;">
+        <img src="{php echo tomedia($set['logo'])}" alt="" style="width:70px;height:70px;margin: -12.5% .213rem 0 0;">
+        <div style="margin-left:85px;margin-top:-68px;font-size:13px;color:white">
+            <div style="font-size:16px;line-height:35px;">{$set['name']}</div>
+            <span style="">话题</span>&nbsp;<span>{php echo $set['member'] + $huati}</span>
+            <span>·</span>
+            <span style="">浏览</span>&nbsp;<span>{php echo $set['thread'] + $information['fangwen']+$zong}</span>
+            <span ><a onclick="qiandao(this)"id="qiandao1" style="width: 1.387rem;font-size:13px;color: #fff;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;border-radius: .667rem; padding:3px 5px;margin-top:-4px;margin-left: 12%;text-align: center;display: inline-block;float: right;">{if $qiandao ==''}签到{else}已签到{/if}</a></span>
+        </div>
+    </div>
+
+</div>
+<!--content-->
+<div style="border-bottom:5px solid #ebebeb"></div>
+<div style="padding: .48rem .32rem .2rem;" class="nav">
+    <ul style="width: 100%;overflow: hidden;">
+    {if $title=='' || $title==undefined}
+        <li onclick="jiazai()" style="float: left;width:25%; " align="center"><a href="javascript:void (0);" style="font-size:13px;line-height: .613rem;text-align: center;border-radius: .613rem;border: 1px solid #ff9000;padding: 0 .12rem;width: 2rem;margin-bottom: .32rem;display: block; background: RGB(255,80,0);color: RGB(255,255,255) " >全部</a></li>
+        {else}
+        <li onclick="jiazai()" style="float: left;width:25%; " align="center"><a href="javascript:void (0);" style="font-size:13px;line-height: .613rem;text-align: center;border-radius: .613rem;border: 1px solid #ff9000;padding: 0 .12rem;width: 2rem;margin-bottom: .32rem;display: block;  " >全部</a></li>
+        {/if}
+        {loop $fenlei $v}
+        {if $title==$v['name']}
+        <li data-id="{$v['name']}" class="jiazai modle_{$v['id']}" style="float: left;width:25%;" align="center"><a href="javascript:void (0);" style="font-size:13px;line-height: .613rem;text-align: center;border-radius: .613rem;border: 1px solid #ff9000;padding: 0 .12rem;width: 2rem;margin-bottom: .32rem;display: block;background: RGB(255,80,0);color: RGB(255,255,255) ">{$v['name']}</a></li>
+        {else}
+        <li data-id="{$v['name']}" class="jiazai modle_{$v['id']}" style="float: left;width:25%;" align="center"><a href="javascript:void (0);" style="font-size:13px;line-height: .613rem;text-align: center;border-radius: .613rem;border: 1px solid #ff9000;padding: 0 .12rem;width: 2rem;margin-bottom: .32rem;display: block;">{$v['name']}</a></li>
+        {/if}
+        {/loop}
+    </ul>
+</div>
+
+<div style="border-bottom:1px solid #eee;"></div>
+<div style="padding: 8px">
+    <div style="background: #eee;border-radius: 5px;height:30px;color: #585858" class="search">
+        <form id="sosuo" action="{php echo $this->createMobileUrl('Index',array('action'=>''))}" method="post">
+            <img src="{ASSETS_PATH}img/search_1.png" alt="" style="width:15px;padding-left:9px;padding-top:7px;float: left;">
+            <input  name="sou" id="title" type="text" style="display: inline-block;width: 56%;height:30px;font-size: .373rem;line-height: .667rem;vertical-align: middle;margin-bottom: auto;float: left;margin-left:10px;" placeholder="搜索帖子">
+            <button onclick="tijiao()"style="padding: 0 .32rem;font-size: .32rem;;float: right;line-height:30px;">搜索</button>
+        </form>
+    </div>
+</div>
+
+{if $notice != null}
+<div style="border-bottom:1px solid #eee;"></div>
+<div id="broadcast" class="bar" style="height:40px;line-height:40px;">
+    <div style="float:left;margin-left: 12px"><img src="{ASSETS_PATH}img/gonggao.png" width="20px" height="20px" style="margin-top:10px;"></div>
+    <div id="demo" style="overflow:hidden;height:40px;line-height:40px;">
+        <ul class="mingdan" id="holder" style="margin-left:10px;font-size:15px;">
+            {loop $notice $v}
+            <li><a href="{php echo $this->createMobileUrl('Index',array('action'=>'info','id'=>$v['id']))}" target="_blank">{if $v['title'] !=''}{$v['title']}{else}{php echo mb_substr($v['info'], 0,20, 'utf-8')}{/if}</a>
+             {/loop}
+        </ul>
+    </div>
+</div>
+<div style="border-bottom:6px solid #eee;"></div>
+{/if}
+
+{loop $zdrow $v}
+<a href="{php echo $this->createMobileUrl('Index',array('action'=>'info','id'=>$v['id']))}">
+<div  style="height:40px;line-height:40px;text-align: center">
+    <div style="float:left;text-align: center;margin-left:10px;"> <span style="border-radius:2px;font-size:13px;color:white;padding:2px 5px;background-color: #ff6000">置顶</span> </div>
+    <div style="float:left;font-size:15px;margin-left: 10px;">{if $v['title'] !=''}{php echo mb_substr($v['title'], 0,18, 'utf-8')}{else}{php echo mb_substr($v['info'], 0,18, 'utf-8')}{/if}</div>
+</div>
+</a>
+<div style="border-bottom:2px solid #eee;"></div>
+{/loop}
+
+<!--轮播-->
+{if $ads != null}
+<div class="slide" id="slide2">
+    <ul style="">
+        {loop $ads $v}
+        <li>
+            <a href="{$v['url']}">
+                <img src="{php echo tomedia($v['images'])}" alt="" style="">
+            </a>
+        </li>
+        {/loop}
+    </ul>
+    <div class="dot" style="right:47%;">
+        {loop $ads $v}
+        <span></span>
+        {/loop}
+    </div>
+</div>
+{/if}
+<!--tagnav-->
+
+
+<!--评论视频-->
+<div>
+    <ul id="zhengwen">
+        {loop $row $v}
+        <li class="listItem" style="border-bottom:7px solid #eee;">
+            <div class="listItem-head">
+                <a href="{php echo $this->createMobileUrl('Index',array('action'=>'other','openid'=>$v['openid']))}" style="width: 1.2rem;height: 1.2rem;float: left;margin-right: .213rem;position:relative;"><img src="{if $v['tbiaoshi']==1}{php echo tomedia($v['avatar'])}{else}{$v['avatar']}{/if}" alt="" style="width: 100%;height: 100%;border-radius: 50%;"></a>
+                <div style="height: 1.2rem;">
+                    <p>
+                        <span style="margin-right:5px;color: #111;font-size:15px">{$v['nickname']}</span>
+                        {if $v['huiyuan'] == 1}
+                        <span><img src="{ASSETS_PATH}img/huiyuan2.png" style="width:13px;"></span>
+                        {/if}
+                        {if $v['admin']}
+                        <span style="display: inline-block;min-width: 1.33rem;padding: .03rem .16rem;font-size: .290rem;text-align: center;color: #fff;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;border-radius: .4rem;margin-right: .32rem;">管理员</span>
+                        {/if}
+                        {if $v['award'] !=0.00}
+                        <span style="display: inline-block;min-width: 1.33rem;padding: .03rem .16rem;font-size: .290rem;text-align: center;color: #fff;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;border-radius: .4rem;margin-right: .32rem;">悬赏:{$v['award']}元</span>
+                        {/if}
+                    </p>
+                    <p>
+                        <span style="display: inline-block;min-width: 1.33rem;padding: .03rem .16rem;font-size: .290rem;text-align: center;color: #fff;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;border-radius: .4rem;margin-right: .32rem;">{$v['fenlei']}</span>
+                        <span style="color: #999;font-size: .38rem;margin-right: .32rem;">{$v['time']}</span>
+                        <span style="color: #999;font-size: .38rem;margin-right: .32rem;">{$v['looks']}浏览</span>
+                        <!--最新贴-->
+                        {if in_array($v['id'], $newthreads)}<span class="tips">NEW</span>{/if}
+                        <!--最热贴-->
+                        {if in_array($v['id'], $hotthreads)}<span class="tips">HOT</span>{/if}
+                    </p>
+                    <!--<div style="position:absolute;top: 0;right: 16%;font-size: 0;z-index: 5;">
+                        <span style="position:relative;display: inline-block;width: .56rem;height: .586rem;font-size: .32rem;color: #fff;margin-right: .213rem;"><img src="{ASSETS_PATH}img/ding.png" alt=""></span>
+                        <span style="position:relative;display: inline-block;width: .56rem;height: .586rem;font-size: .32rem;color: #fff;margin-right: .213rem;"><img src="{ASSETS_PATH}img/ding.png" alt=""></span>
+                    </div>-->
+                </div>
+            </div>
+
+            <div class="listItem-content" style="width: 100%;box-sizing: border-box;">
+                <a href="{php echo $this->createMobileUrl('Index',array('action'=>'info','id'=>$v['id']))}">
+                    <div class="listItem-contentInfo" style="margin-right:10px;margin-bottom: .267rem;margin-left:25px;">
+                        {if $v['title'] != ''}
+                        <h4 style="font-size:16px;margin-bottom: .16rem;font-weight: normal;color: #111;"><span>{$v['title']}</span></h4>
+                        {/if}
+                        {if strlen($v['info1'])>80}
+                        <p style="text-overflow: ellipsis;display: -webkit-box;overflow: hidden;font-size:15px;line-height: .6rem;color:#666;margin-right:10px;">{php echo mb_substr($v['info1'], 0,80, 'utf-8').'...'}</p>
+                        {else}
+                        <p style="text-overflow: ellipsis;display: -webkit-box;overflow: hidden;font-size:15px;line-height: .6rem;color:#666;margin-right:10px;">{$v['info1']}</p>
+                        {/if}
+                        <div style="width:100%">
+                            <ul>
+                                {loop $v['images'] $ks $vs}
+                                {if isset($vs['name']) }
+                                <li style="float:left;width:32%;margin-right:1.2%;max-height:110px;overflow: hidden;">
+                                    <img src="{php echo $vs['name']}" style=" width:100%;padding-top:5px;height: 110px; object-fit: cover;">
+                                </li>
+                                {else}
+                                <li style="float:left;width:32%;margin-right:1.2%;max-height:110px;overflow: hidden;">
+                                 <img src="{php echo tomedia($vs)}" style="width:100%;padding-top:5px;height: 110px;object-fit: cover;">
+
+                                </li>
+                                {/if}
+                                {/loop}
+                            </ul>
+                        </div>
+                    </div>
+                </a>
+                <div style="clear:both;"></div>
+                {if $v['video']!=''}
+                <video width="80%" height="200px" style="margin-left:20px;margin-top:10px;background-color: #666;" controls poster="{$v['fengmian']}">
+                    <source src="{$v['video']}" type="video/mp4">
+                    <source src="movie.ogg" type="video/ogg" />
+                </video>
+                {/if}
+                {if $v['address']!=''}
+                <div style="vertical-align: middle;line-height:35px;margin-left:20px">
+                    <div style="float:left;margin-top:3px;height:25px;">
+                        <img src="{ASSETS_PATH}img/location.png" alt="" style="width:14px;">
+                    </div>
+                    <span style="font-size:12px;color: #999;margin-left:3px;">{$v['address']}</span>
+                </div>
+                {/if}
+                <div style="border-bottom:1px solid #eee;"></div>
+                <div class="weui-flex" style="padding: .213rem 0;">
+                    <div class="weui-flex-item" style="text-align: center;border-right:1px solid #eee;">
+                        <a href="javascript:;">
+                            <img src="{ASSETS_PATH}img/zhuanfa.png" alt="" style="width:20px;vertical-align: middle;">
+                            <span style="font-size: .373rem;color:#515151;vertical-align: middle;line-height: 1;">{$v['share']}</span>
+                        </a>
+                    </div>
+                    {if $v['checkd'] ==0}
+                    <div class="weui-flex-item" style="text-align: center;border-right:1px solid #eee;">
+                        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'dashang','id'=>$v['id']))}">
+                            <img src="{ASSETS_PATH}img/dashang.png" alt="" style="width:20px;vertical-align: middle;">
+                            <span style="font-size: .373rem;color: #999;vertical-align: middle;line-height: 1;">打赏</span>
+                        </a>
+                    </div>
+                    {else}
+                    <div class="weui-flex-item" style="text-align: center;border-right:1px solid #eee;">
+                        <img src="{ASSETS_PATH}img/dashang_n.png" alt="" style="width:20px;vertical-align: middle;">
+                        <span style="font-size: .373rem;color: #eee;vertical-align: middle;line-height: 1;">打赏</span>
+                    </div>
+                    {/if}
+                    <div class="weui-flex-item" style="text-align: center;border-right:1px solid #eee;">
+                        <a href="javascript:;" {if $v['dianzan']!=''}class="checked"{/if}>
+                        <div style="z-index: 9999;position: absolute;float: left;width: 90px;height: 30px;" onclick="redict({$v['id']},this)"></div>
+                        <img {if $v['dianzan']!=''}src="{ASSETS_PATH}img/dianzan_y.png"{else}src="{ASSETS_PATH}img/dianzan.png"{/if} style="width:20px;vertical-align: middle;">                        
+                        <span style="font-size: .373rem;color: #999;vertical-align: middle;line-height: 1;">{$v['zan']}</span>
+                        </a>
+                    </div>
+                    {if $v['checkp'] ==0}
+                    <div class="weui-flex-item" style="text-align: center;">
+                        <a href="javascript:;" onclick="huifu({$v['id']})" class="review">
+                            <img src="{ASSETS_PATH}img/pinglun.png" alt="" style="width:20px;vertical-align: middle;">
+                            <span style="font-size: .373rem;color: #999;vertical-align: middle;line-height: 1;display: inline-block;">{$v['pl']}</span>
+                        </a>
+                        <input value="{$v['id']}" hidden>
+                    </div>
+                    {else}
+                    <div class="weui-flex-item" style="text-align: center;">
+                        <img src="{ASSETS_PATH}img/pinglun_n.png" alt="" style="width:20px;vertical-align: middle;">
+                        <span style="font-size: .373rem;color: #eee;vertical-align: middle;line-height: 1;display: inline-block;">{$v['pl']}</span>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+        </li>
+           <!-- <span style="display: inline-block;min-width: 1.33rem;padding: .03rem .16rem;font-size: .290rem;text-align: center;color: RGB(255,255,255);background:RGB(238,238,238) no-repeat;border-radius: .2rem;margin-right: .28rem;">广告</span> !-->
+        {/loop}
+        {if !empty($adv)}
+         <li class="listItem" style="border-bottom:7px solid #eee; width: 100%; height: 160px;">
+         <a href="{$adv['url']}" style="">
+              <div style="height: 0.9rem;" >
+               <span style="color: RGB(180,180,180);font-size:14px ;display: block;text-align: center ;width: 100%">{$adv['title']}</span>
+                </div>
+           <div style="text-align: center; width: 100%;">
+ <img src="{php echo tomedia($adv['images'])}" style="width: 95% ;margin: 0 auto; max-height:120px"  alt="" >
+            </div>
+ </a>
+           </li>
+           {/if}
+    </ul>
+</div>
+<!--评论-->
+<!--<form id="post_form" action="{php echo $this->createMobileUrl('Index',array('action'=>'pinglun'))}" method="post">-->
+    <!--<div class="panel" style="position: fixed;bottom: 0;left: 0;width: 100%;height: 100%;background: #fff;z-index:99;display: none;">-->
+        <!--<div class="top" style="font-size:14px;">-->
+            <!--<div onclick="location.href='{php echo $this->createMobileUrl('Index')}'" style="position: absolute;left:10px;">取消</div>-->
+            <!--<div onclick="doUpload()" style="position: absolute;right:10px;color:white;"><span style="background-color: #ff9000;padding:4px 12px;border-radius:20px;">发表</span></div>-->
+            <!--<span style="font-size:15px;">评论</span>-->
+        <!--</div>-->
+        <!--<div style="height: 10px;background: #ccc;"></div>-->
+        <!--<div class="weui_cells weui_cells_form" style="margin-top:40px;width: 100%;box-sizing: border-box;">-->
+            <!--<div class="weui_cell" style="border-top:10px solid #eee;">-->
+                <!--<div class="weui_cell_bd weui_cell_primary">-->
+                    <!--<textarea id="saytext" name="info" class="weui_textarea" placeholder="你是如何看待这个问题的" rows="3" style="min-height: 200px;width: 100%;outline: none;border: none;"></textarea>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div style="background:#eee;width: 100%;text-align: left;line-height: inherit;">-->
+            <!--<a href="#"><img onclick="upload_img()" src="{ASSETS_PATH}img/tp.png" style="width:28px;height:28px;margin-left:20px;"></a>-->
+            <!--<span><img class="emotion" src="{ASSETS_PATH}img/bq.png" style="width:28px;height:28px;margin-left:10px;"></span>-->
+        <!--</div>-->
+        <!--<input hidden name="tid" id="tid">-->
+        <!--<input type="hidden" name="images" value="">-->
+        <!--<div class="weui_uploader_bd" style="border-bottom: solid 1px #eee; margin-top: 10px; margin-left: 10px; display: none">-->
+            <!--<ul class="weui_uploader_files">-->
+            <!--</ul>-->
+            <!--<div class="weui_uploader_input_wrp" onclick="upload_img()">-->
+                <!--<input class="weui_uploader_input" multiple="" id="img" type="button">-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</form>-->
+<!---->
+
+
+<div style="height:50px;color:white;">1</div>
+
+{if $auth==0}
+
+{if $blist !=null}
+{template 'buttom'}
+{else}
+<div class="footer" style="z-index: 9999">
+    <ul id="dian">
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>''))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/shouye1.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#ff9000;">首页</span>
+            </li>
+        </a>
+        <a href="{php echo $this->createMobileUrl('User',array('action'=>'opinion'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/dongtai.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">反馈</span>
+            </li>
+        </a>
+
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'fatie'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/fabu.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">发帖</span>
+            </li>
+        </a>
+
+        <a href="{php echo $this->createMobileUrl('Index',array('action'=>'user'))}" style="text-decoration:none;color:black;">
+            <li style="float: left;width:25%;line-height:14px;margin-bottom:5px;">
+                <img src="{ASSETS_PATH}img/wode.png" width="25px" height="25px" style="margin-top:4px;"><br>
+                <span style="font-size:12px;color:#707070;">我的</span>
+            </li>
+        </a>
+    </ul>
+</div>
+{/if}
+
+{else if !empty($admin) && !empty($openid)}
+
+<a href="{php echo $this->createMobileUrl('Index',array('action'=>'fatie'))}">
+<div  align="center"  style="  position: fixed;right: 20px;bottom: 20px;width: 50px;height: 50px;background-color: #ff9000;border-radius: 50px;line-height: 68px;">
+   <img src="{ASSETS_PATH}img/post.png" width="30px"  >
+</div>
+</a>
+
+{/if}
+
+</body>
+<script type="text/javascript">
+
+    $("#slide2").swipeSlide({
+        autoSwipe:true,
+        speed:3000,
+        continuousScroll:true,//默认否
+        transitionType:'cubic-bezier(0.22, 0.69, 0.72, 0.88)',//过渡动画linear/ease/ease-in/ease-out/ease-in-out/cubic-bezier
+        lazyLoad:true,//懒加载默认否
+        firstCallback : function(i,sum,me){
+            me.find('.dot').children().first().addClass('cur');
+        },
+        callback : function(i,sum,me){
+            me.find('.dot').children().eq(i).addClass('cur').siblings().removeClass('cur');
+        }
+    });
+    //    顶部滑动菜单
+    $(function() {
+        TagNav('#tagnav', {
+            type: 'scrollToFirst',
+        });
+    });
+    //    滑动屏幕出现菜单栏
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if($(window).scrollTop()>=350){
+                $("#tagnav").css("opacity","1");
+            }else {
+                $("#tagnav").css("opacity","0");
+            }
+             wind=$(window).scrollTop();
+            console.log($(window).scrollTop() );
+        });
+    });
+    //    点赞
+
+    function redict(tid,obj) {
+        event.preventDefault();
+        var index = layer.load(1, {
+			shade: [0.5,'#000000'] //0.1透明度的白色背景
+		});
+        //接下来使用js代码进行页面跳转
+        $.ajax({
+            url : "{php echo $this->createMobileUrl('Index',array('action'=>'zan'))}",
+            type:"post",
+            data:{
+                tid : tid
+            }, success: function (res) {
+            	layer.close(index);
+                if(res =='yes') {
+                    $(obj).parent().addClass('checked');
+                    $(obj).next().attr("src","{ASSETS_PATH}img/dianzan_y.png");
+                    var  val = $(obj).next().next().html();
+                    $(obj).next().next().html(parseInt(val)+1);
+                    layer.msg('点赞成功', {time:2000})
+                }else{
+                    layer.msg('您已经赞过了', {time:1000})
+                }
+            }
+        });
+    }
+    $(".review").click(function () {
+        var aa=$(this).next().val();
+        $("#tid").val(aa);
+        $(".panel").css("display","block");
+    })
+    $(".close").click(function () {
+        $(".panel").css("display","none");
+    })
+
+</script>
+</html>
+
+<!--<script src="{ASSETS_PATH}js/layer/layer.js"></script>-->
+<style>
+    add{
+        background-color: #ff5000;
+    }
+</style>
+<script>
+
+
+
+    $(".nav ul li a").click(function(){
+        $(this).css({"background-color":"#ff5000","color":"white"}).parent().siblings().children().css({"background-color":"white","color":"black"});
+    });
+    var sroltop = 0;  //用来监听当前的加载事件是否在执行
+    var page=1;
+    var cid;
+    var wind=0;
+    $(".jiazai").click(function () {
+        jiazai($(this).data('id'))
+    })
+    function jiazai(fenlei){
+        cid=fenlei;
+        page=1;
+        var str=''
+        var index = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+        $("#zhengwen").html(str);
+
+        load_data();
+    }
+
+//var page ={$page};
+    $(window).scroll(function(){
+        var srollPos = $(window).scrollTop();    //滚动条距顶部距离(页面超出窗口的高度)
+        totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
+        if(($(document).height()) <= totalheight) {
+            if(sroltop == 0)
+            {
+                //alert(totalheight);
+                page+=1
+                var index = layer.load(1, {
+                    shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+                load_data();
+            }
+        }
+    });
+
+
+
+//var cid = '{$title}';
+
+    function load_data() {
+        sroltop = 1;
+//        var title='{$_GPC['title']}';
+		var newthreads = new Array();
+		var hotthreads = new Array();
+		newthreads = '{php echo $json_newthreads}';
+		hotthreads = '{php echo $json_hotthreads}';
+        $.ajax({
+            url : "{php echo $this->createMobileUrl('Index',array('action'=>'load_data'))}",
+            type:"post",
+            data:{
+                page : page,
+//                title : title,
+                fenlei : cid
+            }, success: function (res) {
+                    sroltop = 0;
+                layer.closeAll();
+                if(res!=0) {
+
+                    var data = $.parseJSON(res);
+                    console.log(data);
+
+                    var html = '';
+                     var adv=data.adv;
+                     console.log(adv);
+                    $.each(data.data,function (k,v) {
+                        var img='';
+                        var video='';
+                        var aa='';
+                        var huiyuan='';
+                        var dizhi='';
+                        var admin='';
+                        var adm='';
+                        var titles='';
+                        var newthread='';
+                        var hotthread='';
+                        var checkp='';
+                        var checkd='';
+                        var award='';
+                        if(v.images!=null){
+                        	console.log(v.images);
+                            $.each(v.images,function (a,b) {
+                                if(b.name !=null &&b.name !='i' && b.name !=''){
+
+                                    img+= '<div style="width:100%;"><ul><li style="float:left;width:32%;margin-right:1.2%;max-height:110px;overflow: hidden;">' +
+                                     '<img src="'+b.name+'" style=" width:100%;padding-top:5px;height: 110px; object-fit: cover;">' +
+                                      '</li></ul></div>'
+                                }else{
+                                    img+= '<div style="width:100%;"><ul><li style="float:left;width:32%;margin-right:1.2%;max-height:110px;overflow: hidden;"><img src="'+b+'" style="width:100%;padding-top:5px;height: 110px; object-fit: cover;">' +
+                                     '</li></ul></div>'
+                                }
+
+                            });
+                        }
+                        if(v.admin){
+                            adm= '<span style="display: inline-block;min-width: 1.33rem;padding: .03rem .16rem;font-size: .290rem;text-align: center;color: #fff;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;border-radius: .4rem;margin-right: .32rem;">管理员</span>'
+                        }
+                        if(v.award !=0.00){
+                            award= '<span style="display: inline-block;min-width: 1.33rem;padding: .03rem .16rem;font-size: .290rem;text-align: center;color: #fff;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;border-radius: .4rem;margin-right: .32rem;">悬赏:'+v.award+'</span>'
+                        }
+                        if(v.title !=''){
+                            titles= '<h4 style="font-size:16px;margin-bottom: .16rem;font-weight: normal;color: #111;"><span>'+v.title+'</span></h4>'
+                        }
+                        if(v.video!=''){
+                            video='<div style="width:88%;padding-left:25px;"><video width="100%" height="200px" style="background-color: #666;margin-top:5px;" controls   poster="'+v.fengmian+'" ' +
+                                '<source src="'+ v.video+'" type="video/mp4"><source src="movie.ogg" type="video/ogg" /></video></div>'
+                        }
+                        if(v.huiyuan==1){
+                            huiyuan='<span><img src="{ASSETS_PATH}img/huiyuan2.png" style="width:13px;margin-right:4px;"></span>'
+                        }
+                        if(v.dianzan!=''){
+                            aa='<a href="javascript:;" class="checked">';
+                            ico='{ASSETS_PATH}img/dianzan_y.png';
+                        }else{
+                            aa='<a href="javascript:;">';
+                            ico='{ASSETS_PATH}img/dianzan.png';
+                        }
+                        if(v.checkp ==0){
+                            checkp= '<div class="weui-flex-item" style="text-align: center;"><a href="javascript:;" onclick="huifu('+ v.id+')" class="review">' +
+                                    '<img src="{ASSETS_PATH}img/pinglun.png" alt="" style="width:20px;vertical-align: middle;">' +
+                                    '<span style="font-size: .373rem;color: #999;vertical-align: middle;line-height: 1;display: inline-block;">'+ v.pl+'</span> ' +
+                                    '</a><input value="'+ v.id+'" hidden></div>';
+                        }else{
+                            checkp= '<div class="weui-flex-item" style="text-align: center;">' +
+                                    '<img src="{ASSETS_PATH}img/pinglun_n.png" alt="" style="width:20px;vertical-align: middle;">' +
+                                    '<span style="font-size: .373rem;color: #eee;vertical-align: middle;line-height: 1;display: inline-block;">'+ v.pl+'</span> ' +
+                                    '</div>';
+                        }
+                        if(v.checkd ==0){
+                            checkd= '<div class="weui-flex-item" style="text-align: center;border-right:1px solid #eee;">' +
+                                    '<a href="{php echo $this->createMobileUrl('Index',array('action'=>'dashang'))}&id='+ v.id+'">' +
+                                    '<img src="{ASSETS_PATH}img/dashang.png" alt="" style="width:20px;vertical-align: middle;">' +
+                                    '<span style="font-size: .373rem;color: #999;vertical-align: middle;line-height: 1;">打赏</span></a></div> ';
+                        }else{
+                            checkd= '<div class="weui-flex-item" style="text-align: center;border-right:1px solid #eee;">' +
+                                    '<img src="{ASSETS_PATH}img/dashang_n.png" alt="" style="width:20px;vertical-align: middle;">' +
+                                    '<span style="font-size: .373rem;color: #eee;vertical-align: middle;line-height: 1;">打赏</span></div> ';
+                        }
+                        console.log(v.address);
+                        if( v.address !='' ){
+                            dizhi+='<div style="vertical-align: middle;line-height:35px;"><div style="float:left;margin-top:3px;height:25px;margin-left:20px"><img src="{ASSETS_PATH}img/location.png" alt="" style="width:14px;"></div>' +
+                                '<span style="font-size:12px;color: #999;margin-left:2px;">'+ v.address+'</span></div></div>'
+                        }
+                        if(v.tbiaoshi==1 ){
+                           avatar='<img src="{php echo tomedia("'+v.avatar+'")}" style="width: 100%;height: 100%;border-radius: 50%;">'
+
+                        }else{
+                            avatar='<img src="'+ v.avatar+'" style="width: 100%;height: 100%;border-radius: 50%;">'
+                        }
+                        
+                        //最新帖子
+                        if(jQuery.inArray(v.id, JSON.parse(newthreads)) >= 0){
+                        	newthread = '<span class="tips">NEW</span>';
+                        }
+                        //最热帖子
+                        if(jQuery.inArray(v.id, JSON.parse(hotthreads)) >= 0){
+                        	hotthread = '<span class="tips">HOT</span>';
+                        }                        
+                        
+                        html+='<li class="listItem" style="border-bottom:7px solid #eee;"><div class="listItem-head">' +
+                            '<a href="{php echo $this->createMobileUrl('Index',array('action'=>'other'))}&openid='+ v.openid+'" style="width: 1.2rem;height: 1.2rem;float: left;margin-right: .213rem;position:relative;">'+avatar+'</a> ' +
+                            '<div style="height: 1.2rem;"><p><span style="margin-right:5px;color: #111;font-size:15px">' +
+                            ''+ v.nickname+'</span>'+huiyuan+adm+'<!--<span style="color: #ffb135;font-size:12px;margin-right: .32rem;">版主</span>-->' +
+                            '<span style="color: #ffb135;font-size:12px;margin-right: .32rem;"></span>'+award+'</p><p>' +
+                            '<span style="display: inline-block;min-width: 1.33rem;padding: .03rem .16rem;font-size: .290rem;text-align: center;color: #fff;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;border-radius: .4rem;margin-right: .32rem;">'+v.fenlei+'</span> ' +
+                            '<span style="color: #999;font-size: .38rem;margin-right: .32rem;">'+ v.time+'</span> ' +
+                            '<span style="color: #999;font-size: .38rem;margin-right: .32rem;">'+ v.looks+'浏览</span>'+ admin + newthread + hotthread+'</p>' +
+                            '<div style="position:absolute;top: 0;right: 16%;font-size: 0;z-index: 5;">' +
+                            /*'<span style="position:relative;display: inline-block;width: .56rem;height: .586rem;font-size: .32rem;color: #fff;margin-right: .213rem;"><img src="{ASSETS_PATH}img/ding.png" alt=""></span> ' +
+                             '<span style="position:relative;display: inline-block;width: .56rem;height: .586rem;font-size: .32rem;color: #fff;margin-right: .213rem;"><img src="{ASSETS_PATH}img/ding.png" alt=""></span> ' +*/
+                            '</div></div></div><div class="listItem-content" style="width: 100%;box-sizing: border-box;">' +
+                            '<a href="{php echo $this->createMobileUrl('Index',array('action'=>'info'))}&id='+ v.id+'&page='+ page+'&fenlei='+cid+'"><div class="listItem-contentInfo" style="margin-right:10px;margin-bottom: .267rem;margin-left:25px;">'+titles+
+
+                        '<p style="text-overflow: ellipsis;display: -webkit-box;overflow: hidden;font-size:15px;line-height: .6rem;color: #666;margin-right:10px;">'+ v.info1+'</p>'+img+'</div><div style="clear:both">'+video+'</div></a> ' +dizhi+
+                        '<div style="border-bottom:1px solid #eee;"></div><div class="weui-flex" style="padding: .213rem 0;">' +
+                        '<div class="weui-flex-item" style="text-align: center;border-right:1px solid #eee;"><a href="javascript:;">' +
+                        '<img src="{ASSETS_PATH}img/zhuanfa.png" style="vertical-align: middle;width:20px;">' +
+                        '<span style="font-size: .373rem;color: #999;vertical-align: middle;line-height: 1;">'+ v.share+'</span></a></div> ' +
+                        checkd+
+                        '<div class="weui-flex-item" style="text-align: center;border-right:1px solid #eee;">'+aa+'' +
+                        '<div style="z-index: 9999;position: absolute;float: left;width: 90px;height: 30px;" onclick="redict('+ v.id+',this)"></div>' +
+                        '<img src="'+ico+'" alt="" style="width:20px;vertical-align: middle;">' +
+                        '<span style="font-size: .373rem;color: #999;vertical-align: middle;line-height: 1;">'+ v.zan+'</span></a></div>' +checkp+
+                       '</div></div></li>'
+                    });
+
+                    if(adv!=null){
+                        html +='<li class="listItem" style="border-bottom:7px solid #eee; width: 100%; height: 160px;">'+
+        '  <a href= "'+adv.url+'"> '+
+                        ' <div style="height: 0.9rem;" >'+
+                         ' <span style="color: RGB(180,180,180);font-size:14px ;display: block;text-align: center ;width: 100%">'+adv.title+'</span>'+
+                         '   </div>'+
+                       '   <div style="text-align: center; width: 100%;">'+
+                      ' <img src="'+adv.images+'" style="width: 95% ;margin: 0 auto; max-height:120px"  alt="" >'+
+                    '     </div>'+
+                      ' </a>'+
+                         '  </li>'
+
+                    }
+
+
+                    $("#zhengwen").append(html);
+
+                }
+            }
+        });
+    }
+    function huifu(tid){
+        event.preventDefault();
+
+       location.href='{php echo $this->createMobileUrl('Index',array('action'=>'info'))}&id='+ tid+'#hudong'
+    }
+    
+    function in_array(val,arr){
+    	var n = val.toString();
+	    for(var i in arr){
+	        if(arr[i] == n){
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+    
+    
+</script>
+<!--<script  src="{ASSETS_PATH}/qqFace/js/jquery.min.js"></script>-->
+<!--<script type="text/javascript" src="{ASSETS_PATH}/qqFace/js/jquery.qqFace.js"></script>-->
+<script type="text/javascript">
+
+    $(function(){
+
+        $('.emotion').qqFace({
+
+            id : 'facebox',
+
+            assign:'saytext',
+
+            path:'{ASSETS_PATH}/qqFace/arclist/'	//表情存放的路径
+        });
+
+    });
+
+    //查看结果
+
+    function replace_em(str){
+        str = str.replace(/\</g,'&lt;');
+
+        str = str.replace(/\>/g,'&gt;');
+
+        str = str.replace(/\n/g,'<br/>');
+
+        str = str.replace(/\[em_([0-9]*)\]/g,'<img src="{ASSETS_PATH}qqFace/arclist/$1.gif" border="0" />');
+        $("#show").html(str);
+
+    }
+
+</script>
+<script>
+    var images = new Array();
+    var serids = new Array();
+    function upload_img() {
+        var count=images.length;
+        wx.ready(function () {
+            wx.chooseImage({
+                count: 3-count,
+                sizeType: ['original', 'compressed'],
+                sourceType: ['album', 'camera'],
+                success: function (res) {
+                    $.each(res.localIds,function (k,v) {
+                        show_img(v);
+                        images.push(v);
+                    });
+                }
+            });
+        });
+    }
+
+    function show_img(local) {
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+            $(".weui_uploader_bd").show();
+            var str = '<li class="weui_uploader_file" local="' + local + '" style="background-image:url(' + local + ')"><i class="clear_del weui_icon_cancel" onclick="del_img(' + "'" + local + "'" + ')" </i></li>';
+            $(".weui_uploader_files").append(str);
+        }else if (u.indexOf('iPhone') > -1) {//苹果手机
+            wx.getLocalImgData({
+                localId: local, // 图片的localID
+                success: function (res) {
+
+                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                    $(".weui_uploader_bd").show();
+                    var str = '<li class="weui_uploader_file" local="'+localData+'" style="background-image:url('+localData+')"><i class="clear_del weui_icon_cancel" onclick="del_img('+"'"+localData+"'"+')" </i></li>';
+                    $(".weui_uploader_files").append(str);
+                }
+            });
+        }else if (u.indexOf('Windows Phone') > -1) {//winphone手机
+            alert("winphone手机");
+        }
+    }
+
+
+    function del_img(local) {
+        $.each(images,function (k,v) {
+            if(v == local)
+            {
+                images.splice(k);
+            }
+        });
+        $(".weui_uploader_file").each(function () {
+            if($(this).attr('local') == local)
+            {
+                $(this).remove();
+            }
+        });
+    }
+
+    function upload_video() {
+        $("#upload_video").toggle();
+    }
+
+    function doUpload () {
+        if (images.length == 0) {
+            doSave(0);
+        }else {
+            var i = 0, length = images.length;
+            images.serverId = [];
+            function upload() {
+                wx.uploadImage({
+                    localId: images[i],
+                    success: function (res) {
+                        i++;
+                        images.serverId.push(res.serverId);
+                        if (i < length) {
+                            upload();
+                        }
+                        else
+                        {
+                            var media_ids = images.serverId.join(',');
+                            doSave(media_ids);
+                        }
+                    },
+                    fail: function (res) {
+                        alert(JSON.stringify(res));
+                    }
+                });
+            }
+            upload();
+        }
+    }
+
+    function doSave(ids) {
+        if(ids != 0)
+        {
+            $("input[name='images']").val(ids);
+        }
+        if($("#saytext").val() == "")
+        {
+            alert("评论内容不能为空!");
+            return false;
+        }
+        $("#post_form").submit();
+    }
+
+    function tijiao(){
+        $("#sosuo").submit();
+    }
+    function qiandao(obj){
+        $.ajax({
+            url : "{php echo $this->createMobileUrl('Index',array('action'=>'qiandao'))}",
+            type:"post",
+            success:function (res) {
+                //alert(res);
+                if(res=='2'){
+                    $('#qiandao1').empty().text('已签到')
+                    layer.msg('签到成功', {time:3000});
+                }else if(res=='1'){
+                    layer.msg('您今天已经签到！', {time:3000});
+                }else{
+                     layer.msg('请从微信端进入签到！', {time:3000});
+                }
+            }
+        });
+    }
+
+    function guanzhu(){
+        layer.open({
+            type: 1,
+            title: "扫一扫关注我们",
+            area: ['300px', '360px'], //宽高
+            shadeClose: true, //开启遮罩关闭
+            content: '<div style="width:280px;margin-left:10px;">' +
+            '<img src="http://wx.juwu168.com/attachment/qrcode_50.jpg" style="width:280px;height:280px;">' +
+            '<div style="text-align:center;font-size:15px;margin-top:-10px;">长按二维码关注我们</div></div>'
+        });
+    }
+</script>
+

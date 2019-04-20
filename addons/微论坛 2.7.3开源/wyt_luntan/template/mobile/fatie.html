@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh">
+<script type="text/javascript">
+     // 对浏览器的UserAgent进行正则匹配,不含有微信独有标识的则为其他浏览器
+     var useragent = navigator.userAgent;
+     if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
+         // 这里警告框会阻塞当前页面继续加载
+         alert('请登录微信端再发帖!');
+         // 以下代码是用javascript强行关闭当前页面
+         var opened = window.open('about:blank', '_self');
+         opened.opener = null;
+         opened.close();
+     }
+ </script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>发表帖子</title>
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key={$set['qq_address_key']}"></script>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui.css"/>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui2.css"/>
+    <script src="{ASSETS_PATH}js/layer/layer.js"></script>
+    <style>
+        .weui_cells {margin-top:0px;}
+        ul li {list-style: none;}
+        .fenlei {margin-bottom:8px;margin-left:5px;font-size:13px;float: left;border:1px solid #999;color:#666;padding:3px 12px;border-radius:15px;}
+
+        .bgcolor{color: #fff;background:#ff9000;border:1px solid white}
+        .weui_cells:after {border:none;}
+        .uptitle{
+        	height: 45px;
+    		border-bottom: 1px solid #eeeeee;
+    		padding-left: 10px;
+        }
+        .uptitle li{
+        	float: left;
+        	list-style: none;
+        	line-height: 45px;
+        }
+        .up_ico{
+    	    height: 30px;
+		    width: 35px;
+		    float: left;
+		    margin-top: 10px;
+        }
+        .up_ico img{
+        	width: 30px;
+        }
+        .upload-progress{
+        	position: absolute;
+        	width: 140px;
+        	height: 35px;
+        	background: rgba(0, 0, 0, 0.45);
+        	border-radius: 5px;
+        	line-height: 35px;
+        	color: #ffffff;
+        	display: none;
+        	float: left;
+        	bottom: 90px;
+        	left: 50%;
+        	margin-left: -70px;
+        }
+        .upvideo_ok{
+        	position: absolute;
+		    height: 90px;
+		    float: left;
+		    width: 94%;
+		    margin-left: 3%;
+		    margin-top: 10px;
+		    border: 1px solid #FF9000;
+		    font-size: 16px;
+        }
+        .upvideo_ok li{
+        	list-style: none;
+        	line-height: 25px;
+        }
+        .upvideo_ok img{
+        	width: 90px;
+        }
+        .upvideo_ok div{
+        	float: left;
+        }
+        .video_cover{
+        	border-radius: 3px;
+		    background: #FF9000;
+		    padding: 3px;
+		    color: #FFFFFF;
+		    position: relative;
+		    top: 25px;
+        }
+        .mask{
+        	z-index: 999;
+        	display: none;
+        	position: fixed;
+        	top: 0;
+        	width: 100%;
+        	height: 100%;
+        	background: rgba(0, 0, 0, 0.8);
+        }
+        .play_video{
+        	z-index: 99999;
+        	position: fixed;
+        	top: 20%;
+			background: #FFFFFF;
+			width: 100%;
+			text-align: center;
+        }
+        .back_home{
+        	position: fixed;
+		    bottom: 50px;
+		    right: 10px;
+		    width: 50px;
+		    height: 50px;
+		    line-height: 50px;
+		    background: #FF6500;
+		    text-align: center;
+		    border-radius: 25px;
+		    color: #FFFFFF;
+        }
+        .delete_video{
+        	position: absolute;
+		    width: 20px;
+		    height: 20px;
+		    right: -5px;
+		    top: -10px;
+		    border: 1px solid #FF0000;
+		    border-radius: 20px;
+		    line-height: 20px;
+		    text-align: center;
+		    background: #FFFFFF;
+        }
+        .weui_switch:checked{
+            background: #FF6500;
+            border-color: #FF6500;
+        }
+    </style>
+
+</head>
+<body style="background-color: white;">
+<form id="post_form" action="{php echo $this->createMobileUrl('Index',array('action'=>'fatie1'))}" method="post">
+    <div class="weui_cells weui_cells_form" style="padding-bottom:10px;">
+        <!--{if $set['dingdan'] == 0}-->
+        <!--<div class="weui_cell">-->
+            <!--<div class="weui_cell_bd weui_cell_primary">-->
+                <!--<input class="weui_input" type="text" id="zengjia" name="zengjia" value="{$res['zengjia']}" style="font-size:15px;" placeholder="请输入{$set['zengjia']}">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--{/if}-->
+
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                 <input class="weui_input" type="text" id="" name="title" value="" style="font-size:15px;" placeholder="请输入标题">
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <textarea name="info" id="textarea" class="weui_textarea" placeholder="我想说点什么..." rows="5"></textarea>
+                <!--<div class="weui_textarea" style="height: 200px;" contenteditable="true" id="textarea"></div>-->
+            </div>
+        </div>
+        <div class="weui_cell" style="font-size:12px;">
+            <div style="margin-top:3px;"><img src="{ASSETS_PATH}img/location.png" style="width:15px;"></div>
+            <div class="weui_cell_bd weui_cell_primary" style="margin-left:2px;color:#666;">
+                <input readonly class="weui_input" type="text" id="address" name="address" onfocus="this.blur()">
+            </div>
+        </div>
+
+
+        <div style="border-bottom:1px solid #eee;"></div>
+        <div class="xuanze" style="padding-bottom:10px;">
+            <ul style="margin:10px;">
+                {loop $fenlei $v}
+                <li class="fenlei fenlei_s">{$v['name']}</li>
+                {/loop}
+                <input value="" type="hidden" class="a12" name="fenlei1">
+                <script>
+                    $('.fenlei_s').click(function () {
+                        $('.a12').val($(this).html());
+                        $.ajax({
+                            url:"{php echo $this->createMobileUrl('index',array('action' => 'fatie_quanxian'))}", type: 'post',
+                            data:{
+                                fenlei1:$('.a12').val(),
+                            },success:function(res){
+                                if(res==0){
+                                    alert('你的积分不够发此种类型的帖子，请重新选择');
+                                    $(".xuanze ul li").removeClass("bgcolor");
+                                    $("#fenlei").val().empty();
+                                   // $("#fenlei").val() == ""
+                                }
+                            }
+                        })
+                    });
+                </script>
+            </ul>
+        </div>
+
+        <div style="clear:both;border-bottom:5px solid #eee;"></div>
+    <div >
+
+
+        <script>
+            function changestyle(obj) {
+                if ($(obj).attr("class") == 'checkp') {
+                    $(obj).attr("class", 'checkps');
+                    $("#checkp").val(1);
+                    //关闭评论 同时关闭悬赏
+                    $("#awardt").css('display','block');
+	              	$("#awardtm").css('display','none');
+	               	$("#award").val(0);
+                } else {
+                    $(obj).attr("class", 'checkp');
+                    $("#checkp").val(0);
+                }
+            }
+
+           function sure(){
+               layer.closeAll();
+               if($("#awardm").val()>0){
+                   $("#awardt").css('display','none');
+                   $("#awardtmt").text('悬赏'+$("#awardm").val()+'元');
+                   $("#awardtm").css('display','block');
+                   $("#award").val($("#awardm").val());
+                   
+                   //设置悬赏必须开启评论
+                   $("#allow_comment").attr("class", 'checkp');
+                   $("#checkp").val(0);
+               }else{
+                   layer.msg('金额不能小于0',{time:2000});
+               }
+
+           }
+            function surepacket(){
+                layer.closeAll();
+                if($("#packetm").val()>0 && $("#packets").val() >0){
+                    $("#packet").css('display','none');
+                    $("#packetc").text($("#packets").val()+'个/'+$("#packetm").val()+'元');
+                    $("#packetf").css('display','block');
+                    $("#award").val($("#awardm").val());
+                }else{
+                    layer.msg('金额与个数不能小于0',{time:2000});
+                }
+
+            }
+           function clears(){
+              $("#awardt").css('display','block');
+              $("#awardtm").css('display','none');
+               $("#award").val(0);
+           }
+            function clearpacket(){
+                $("#packet").css('display','block');
+                $("#packetf").css('display','none');
+                $("#award").val(0);
+            }
+           function changeaward(active_time) {
+               layer.closeAll();
+               layer.open({
+                   type: 1,
+                   title: "输入悬赏金额",
+                   anim:'up',
+                   shadeClose: true, //开启遮罩关闭
+                   area: ['300px', '255px'], //宽高
+                   time:'',
+                   content:'<div style="width:90%;margin-left:5%;height:140px;color:#666;">' +
+                   '<div style="margin-bottom:10px;">' +
+                   '<input type="number" id="awardm" placeholder="请输入奖励金额" id="" style="margin-top: 10px;font-size:15px;border-radius:5px;border:1px solid #ff8500;width:97%;height:35px;line-height:35px;padding-left:3%">' +
+                   '</div>' +
+                   '<div style="margin-bottom:10px; text-align:center">' +
+                   '请在' + active_time + '天内选择一条回复作为最佳答案，逾期未设置赏金将自动支付给第一条回复的用户' +
+                   '</div>' +
+                   '<div style="margin-top:20px;"><div onclick="sure()"  style="border-radius:5px;font-size:15px;width:60%;margin-left:20%;border:none;text-align:center;background-color:#ff8500;color:white;height:35px;line-height:35px;">确认</div></div></div>'
+               });
+
+           }
+
+            function changepacket() {
+                layer.closeAll();
+                layer.open({
+                    type: 1,
+                    title: "奖励红包",
+                    anim:'up',
+                    shadeClose: true, //开启遮罩关闭
+                    area: ['300px', '200px'], //宽高
+                    time:'',
+                    content:'<div style="width:90%;margin-left:5%;height:140px;color:#666;">' +
+                    '<div style="margin-bottom:10px;">' +
+                    '<input type="number" id="packetm" placeholder="请输入红包金额" id="" style="margin-top: 10px;font-size:15px;border-radius:5px;border:1px solid #ff8500;width:97%;height:35px;line-height:35px;padding-left:3%">' +
+                    '<input type="number" id="packets" placeholder="请输入红包个数" id="" style="margin-top: 10px;font-size:15px;border-radius:5px;border:1px solid #ff8500;width:97%;height:35px;line-height:35px;padding-left:3%">' +
+                    '</div>' +
+                    '<div style="margin-top:20px;"><div onclick="surepacket()"  style="border-radius:5px;font-size:15px;width:60%;margin-left:20%;border:none;text-align:center;background-color:#ff8500;color:white;height:35px;line-height:35px;">确认</div></div></div>'
+                });
+
+            }
+        </script>
+        <style>
+            .checkp{color: white;width: 70px;margin: 10px;font-size: 15px;text-align: center;line-height:30px;height: 30px;border-radius: 5px;  background-color: #ff8500;border: solid 1px #ff8500;float: left}
+            .checkps{color: #666;width: 70px;margin: 10px;font-size: 15px;text-align: center;line-height:30px;height: 30px;border-radius: 5px; border: solid 1px #666 ;float: left}
+            .checkx{color: white;padding-left:5px;padding-right:5px;margin: 10px;font-size: 15px;text-align: center;line-height:30px;height: 30px;border-radius: 5px;  background-color: red;border: solid 1px red;}
+            .checkxs{color: red;width: 70px;margin: 10px;font-size: 15px;text-align: center;line-height:30px;height: 30px;border-radius: 5px; border: solid 1px red;float: left }
+            .packet{color: white;padding-left:5px;padding-right:5px;margin: 10px;font-size: 15px;text-align: center;line-height:30px;height: 30px;border-radius: 15px;  background-color: red;border: solid 1px red;}
+            .packets{color: red;width: 70px;margin: 10px;font-size: 15px;text-align: center;line-height:30px;height: 30px;border-radius: 15px; border: solid 1px red;float: left }
+        </style>
+        <div onclick="changestyle(this)" class="checkp" id="allow_comment">允许评论</div>
+        <div id="awardt" onclick="changeaward({$set['award_days']})" class="checkxs">悬赏帖</div>
+        <div id="awardtm" style="display: none;float: left;position: relative">
+            <div id="awardtmt"  onclick="" class="checkx"></div>
+            <i onclick="clears()" style="position: absolute;top: 0px;right: 3px" class="weui_icon_clear"></i>
+        </div>
+
+        <!--<div id="packet" onclick="changepacket(this)" class="packets">红包帖</div>
+        <div id="packetf" style="display: none;float: left;position: relative">
+            <div id="packetc"  onclick="" class="packet"></div>
+            <i onclick="clearpacket()" style="position: absolute;top: 0px;right: 3px" class="weui_icon_clear"></i>
+        </div>-->
+
+        <!--<div class="weui_cell weui_cell_switch" style="float: left">-->
+            <!--<div class="weui_cell_hd weui_cell_primary" style="padding-right: 20px">允许评论</div>-->
+            <!--<div class="weui_cell_ft">-->
+                <!--<input class="weui_switch" onchange = "changeState(this)" type="checkbox" checked="checked" id="button1"/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="weui_cell weui_cell_switch" style="float: left">-->
+            <!--<div class="weui_cell_hd weui_cell_primary" style="padding-right: 20px">允许打赏</div>-->
+            <!--<div class="weui_cell_ft">-->
+                <!--<input class="weui_switch" onchange = "changeStated(this)" type="checkbox" checked="checked" id="button2"/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <input id="checkp" name="checkp" value="0" hidden/>
+        <input id="checkd" name="checkd" value="0" hidden/>
+        <input id="award" name="award" value="0" hidden/>
+    </div>
+        <div style="clear:both;border-bottom:5px solid #eee;"></div>
+        <div class="uptitle">
+        	<div class="up_ico"><img src="{ASSETS_PATH}img/pic_ico.png"/></div>
+        	<li>上传图片</li>
+        </div>
+        <div class="weui_uploader_bd" style="border-bottom: solid 1px #eee; margin-top: 10px; margin-left: 10px; display: none">
+            <ul class="weui_uploader_files">
+            </ul>
+            <div class="weui_uploader_input_wrp">
+                <input class="weui_uploader_input" multiple="" id="img" type="button" name="images" onclick="upload_img()">
+            </div>
+        </div>
+        <div id="xiaoshi" class="tubiao">
+            <ul style="">
+                <li onclick="upload_img()">
+                    <a href="javascript:void(0)">
+                        <img src="{ASSETS_PATH}img/xiangce.png" style="margin:10px;">
+                    </a>
+                </li>
+            </ul>
+            <div style="display: none"></div>
+            <div style="display: none"></div>
+        </div>
+
+        <div id="upload_video" style="height: 100px;display: none">
+            <div class="weui_uploader_input_wrp">
+                <input type="hidden" name="images" value="">
+                <input type="hidden" name="fengmian" value="">
+            </div>
+        </div>
+        <input  name="videos" value=""  id='vv' hidden>
+        <input type="hidden" name="huiyuan" value="{$huiyuan['status']}">
+        {if $set['vstate']==0}
+        <div style="clear:both;border-bottom:5px solid #eee;"></div>
+        <div class="uptitle">
+        	<div class="up_ico"><img src="{ASSETS_PATH}img/video_ico.png"/></div>
+        	<li>上传视频</li>
+        </div>
+        <div id="yulan" style="background-color: white;float: left;height: 150px;" align="center">
+            <label for="" class="btn btn-info realBtn">
+                <div></div>
+        <span>
+            <!--上传视频部分-->
+        <div class="add_video">
+            <img src="{ASSETS_PATH}img/xiangce.png" style="margin:10px;">
+        </div>
+
+        </span>
+        <div class="upload-progress"></div>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input id="video" name="video" type="file" onchange="upload_video($(this))" value="" accept="video/*"  style="width: 80px;height: 80px;bottom: 70px;position: absolute;left: 12px;opacity: 0;">
+                </form>
+            </label>
+        </div>
+        
+        <!--上传视频成功显示-->
+        <div class="upvideo_ok" style="display: none;">
+        	<div onclick="play_video()"><img src="{ASSETS_PATH}img/video_uped.png"/></div>
+        	<div style="padding-top: 18px;padding-left: 10px;font-size: 16px;">
+        		<li style="color: #666666;">上传成功</li>
+        		<li style="color: #777777;font-size: 14px;">点击左边浏览视频</li>
+        	</div>
+        	<div style="float: right;margin-right: 8px;">
+        		<li class="video_cover" onclick="fengmian_img()">上传视频封面</li>
+        	</div>
+        	<div class="delete_video">
+        		×
+        	</div>
+        </div>
+        
+        <!--浏览视频-->
+        <div class="mask"></div>
+        <div class="play_video" style="display: none;">
+        	
+        </div>
+        
+        <input id="sss" name="sss" hidden>
+        {/if}
+        <input id="fenlei" name="fenlei" hidden>
+    </div>
+    {if $_W['fans']['follow'] != 1}
+    <div style="width:100%;height:60px;z-index:999999999;border:1px solid #eee;background-color:white;">
+        <div>
+            <img src="{php echo tomedia($set['logo'])}" style="width:50px;height:50px;margin:5px;">
+        </div>
+        <div style="margin-left:70px;margin-top:-60px;">
+            <span onclick="guanzhu1()" style="border-radius:3px;font-size:12px;color:#ff5000;border:1px solid #ff5000;float:right;margin-right:70px;margin-top:8px;padding:1px 10px;">关注</span>
+            <div style="font-size:14px;margin-top:5px;">{$set['name']}</div>
+            <div style="color:#666;font-size:12px;line-height:20px;">{php echo mb_substr($set['jianjie'],0,15)}</div>
+        </div>
+    </div>
+    <div style="height: 60px"></div>
+    {/if}
+    <a href="{php echo $this->createMobileUrl('Index')}"><div class="back_home">首页</div></a>
+    <a href="javascript:void(0)" id="save" onclick="doUpload()" style="position:fixed;bottom:0;width:100%;height:45px;line-height:45px;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;color:white;text-align:center"><span>立即发表</span></a>
+</form>
+<iframe hidden id="geoPage" width="100%" height="30%" frameborder=0 scrolling="no" src="https://apis.map.qq.com/tools/geolocation?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp&effect=zoom"></iframe>
+
+</body>
+
+
+<script>
+
+    function changeState (ele) {
+        if($(ele).attr('checked')){
+            $(ele).removeAttr('checked');
+            $("#checkp").val(1);
+        } else {
+            $(ele).attr('checked','');
+            $("#checkp").val(0);
+        }
+    }
+    function changeStated (ele) {
+        if($(ele).attr('checked')){
+            $(ele).removeAttr('checked');
+            $("#checkd").val(1);
+        } else {
+            $(ele).attr('checked','');
+            $("#checkd").val(0);
+        }
+    }
+
+
+</script>
+</html>
+
+
+<script>
+    $(document).ready(function () {
+        window.addEventListener('message', function (event) {
+            loc = event.data; // 接收位置信息
+            //console.log(loc);
+            geocoder = new qq.maps.Geocoder({
+                complete: function (result) {
+                    //alert(result.detail.address);
+                    var i = result.detail.address.slice(2);
+                    $("#address").val(i);
+                }
+            });
+            var coord = new qq.maps.LatLng(loc.lat, loc.lng);
+            geocoder.getAddress(coord);
+        })
+    })
+
+</script>
+{php echo register_jssdk(false)}
+
+<script>
+    var images = new Array();
+    var serids = new Array();
+    var fengmian=new Array();
+    function upload_img() {
+        wx.ready(function () {
+            wx.chooseImage({
+                count:9,
+                sizeType: ['compressed'],
+                sourceType: ['album', 'camera'],
+                success: function (res) {
+                    $.each(res.localIds,function (k,v) {
+                        show_img(v);
+                        images.push(v);
+                    });
+                }
+            });
+        });
+    }
+
+    function fengmian_img() {
+            wx.ready(function () {
+                wx.chooseImage({
+                    count:1,
+                    sizeType: ['compressed'],
+                    sourceType: ['album', 'camera'],
+                    success: function (res) {
+                       $.each(res.localIds,function (k,v) {
+                        fengmian.push(v);
+                        layer.msg('上传封面成功', {time:2000})
+                        //fengmianimg
+                       });
+                    }
+                });
+            });
+        }
+    
+    function play_video(){
+    	$(".mask").css("display","block");
+    	$(".play_video").css("display","block");
+    }
+    
+    $(".mask").click(function(){
+        $(".mask").css("display","none");
+    	$(".play_video").css("display","none");
+    });
+
+    function show_img(local) {
+        var dis = document.getElementById('xiaoshi');
+        dis.style.display = 'none';
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+            $(".weui_uploader_bd").show();
+            var str = '<li class="weui_uploader_file" local="' + local + '" style="background-image:url(' + local + ')"><i class="clear_del weui_icon_cancel" onclick="del_img(' + "'" + local + "'" + ')" </i></li>';
+            $(".weui_uploader_files").append(str);
+        }else if (u.indexOf('iPhone') > -1) {//苹果手机
+            wx.getLocalImgData({
+                localId: local, // 图片的localID
+                success: function (res) {
+
+                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                    $(".weui_uploader_bd").show();
+                    var str = '<li class="weui_uploader_file" local="'+localData+'" style="background-image:url('+localData+')"><i class="clear_del weui_icon_cancel" onclick="del_img('+"'"+localData+"'"+')" </i></li>';
+                    $(".weui_uploader_files").append(str);
+                }
+            });
+        }else if (u.indexOf('Windows Phone') > -1) {//winphone手机
+            alert("winphone手机");
+        }
+    }
+
+
+    function del_img(local) {
+        $.each(images,function (k,v) {
+            if(v == local)
+            {
+                images.splice(k);
+            }
+        });
+        $(".weui_uploader_file").each(function () {
+            if($(this).attr('local') == local)
+            {
+                $(this).remove();
+            }
+        });
+    }
+    
+    $(".delete_video").click(function(){
+        $(".upvideo_ok").css("display","none");
+        $(".play_video").html("");
+        $(".upload-progress input").val("");
+        $("input[name='videos']").val("");
+        $(".add_video").css("display","block");
+    });
+    
+    function upload_video() {
+        $("#upload_video").toggle();
+        show_video();
+    }
+    function fengmianimg () {
+//            {
+//            fengmian.serverId = [];
+//            function upload() {
+//                wx.uploadImage({
+//                    localId: fengmian[0],
+//                    success: function (res) {
+//                        fengmian.serverId.push(res.serverId)
+//                        var media_ids = fengmian.serverId.join(',');
+//                         $("input[name='fengmian']").val(media_ids);
+//                         doUpload ()
+//                    },
+//                    fail: function (res) {
+//                        doUpload ();
+//                        alert(JSON.stringify(res));
+//                    }
+//                });
+//            }
+//            upload();
+//        }
+                    fengmian.serverId = [];
+                        wx.uploadImage({
+                            localId: fengmian[0],
+                            success: function (res) {
+                                fengmian.serverId.push(res.serverId)
+                                var media_ids = fengmian.serverId.join(',');
+                                 $("input[name='fengmian']").val(media_ids);
+                                 doUpload (1)
+                            },
+                            fail: function (res) {
+                                doUpload (1);
+                                alert(JSON.stringify(res));
+                            }
+                        });
+    }
+    function doUpload (s) {
+        if (fengmian.length!=0&&s!=1){
+              fengmianimg();return false;
+          }
+        if (images.length == 0) {
+            doSave(0);
+        }else {
+            var i = 0, length = images.length;
+            images.serverId = [];
+            function upload() {
+                wx.uploadImage({
+                    localId: images[i],
+                    success: function (res) {
+                        i++;
+                        images.serverId.push(res.serverId);
+                        if (length >i ) {
+                            upload();
+                        }
+                        else
+                        {
+                            var media_ids = images.serverId.join(',');
+                            doSave(media_ids);
+                        }
+                    },
+                    fail: function (res) {
+                        alert(JSON.stringify(res));
+                    }
+                });
+            }
+            upload();
+        }
+    }
+
+    function doSave(ids,s) {
+         if($("#textarea").val() == "") {
+             alert("内容不能为空！");
+             return false;
+             }
+
+         if($("#fenlei").val() == "") {
+           alert("分类不能为空!");
+           return false;
+          }
+        if(ids != 0) {
+            $("input[name='images']").val(ids);
+        }
+        if($("#checkp").val() !=0 && $("#award").val() != 0){
+            alert("赏金帖需要开启评论!");
+            return false;
+        }
+        // if($("#bname").val() == "")
+        // {
+        //     alert("标题不能为空!");
+        //     return false;
+        // }
+
+
+        $("#post_form").submit();
+    }
+
+
+
+
+</script>
+<script>
+    var isUploadVideo = false;
+    var uploadProgress = 0;
+    var isStart = false;
+
+    function progressStart () {
+        $('body').append('<div style="display">');
+    }
+
+    // 定时器
+    var timer = setInterval(function () {
+        if (isStart == false) {
+            return ;
+        }
+        if (uploadProgress > 90) {
+            return ;
+        }
+        if (uploadProgress >= 75) {
+            uploadProgress = uploadProgress + 1;
+        } else {
+            uploadProgress = uploadProgress + 5;
+        }
+        $(".upload-progress").css("display","block"); 
+        $(".add_video").css("display","none");
+        $('.upload-progress').text('上传进度：'+uploadProgress + '%');
+    }, 1000);
+
+    function upload_video(obg) {
+        var formData = new FormData();
+        formData.append('file',$("input[name='video']")[0].files[0]);
+        $.ajax({
+            url : "{php echo $this->createMobileUrl('Index',array('action' => 'upload_video'))}",type:"post",
+            data:formData,
+            processData:false,
+            contentType:false,
+            beforeSend: function () {
+                isStart = true;
+                isUploadVideo = false;
+            },
+            success:function (res) {
+                isStart = false;
+                isUploadVideo = true;
+                uploadProgress = 0;
+                $('.upload-progress').text('上传进度：100%');
+                $(".upload-progress").css("display","none");
+                var aa = res;
+                $("input[name='videos']").val(aa);
+                var video = "";
+                video += '<a href="#" class="thumbnail"><video poster="" id="video" width="100%" height="300px" controls><source src="'+res+'" type="video/mp4"></video></a>'
+                $(".upvideo_ok").css("display","block");
+                $(".play_video").html(video);
+                $("#sss").val(aa);
+            }
+        });
+    }
+    function show_video()
+    {
+        $("#video").show();
+    }
+    $(".xuanze ul li").click(function () {
+        var fenlei=$(this).next().val();
+        $("#fenlei").val(fenlei);
+        $(this).addClass("bgcolor").siblings().removeClass("bgcolor");
+    })
+    function guanzhu1(){
+        var erwei = "{php echo tomedia($set['erwei'])}"
+        layer.open({
+            type: 1,
+            title: "扫一扫关注我们",
+            area: ['300px', '360px'], //宽高
+            shadeClose: true, //开启遮罩关闭
+            content: '<div style="width:280px;margin-left:10px;">' +
+            '<img src="'+erwei+'" style="width:280px;height:280px;">' +
+            '<div style="text-align:center;font-size:15px;margin-top:-10px;">长按二维码关注我们</div></div>'
+        });
+    }
+</script>

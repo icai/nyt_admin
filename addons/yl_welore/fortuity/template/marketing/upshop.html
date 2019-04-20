@@ -1,0 +1,355 @@
+{extend name="/base"/}
+{block name="main"}
+<link href="static/umeditor/themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
+<style>.am-modal-hd .am-close{top:-5px;right:-3px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-edit"></span> 编辑商品
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品名称</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="text" id="name" value="{$list.product_name}">
+                            <small>请输入商品名称</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品类型</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <select id="type">
+                                <option value="0">请选择类型</option>
+                                {volist name="stypeList" id="vo"}
+                                <option value="{$vo.id}" {if $list.product_type==$vo.id}selected{/if}>{$vo.name}</option>
+                                {/volist}
+                            </select>
+                            <small>选择商品属于的分类</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品描述</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="text" id="synopsis" value="{$list.product_synopsis}">
+                            <small>请输入商品描述</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品图片</label>
+                        <div class="am-u-sm-9">
+                            <div id="shion">
+                                {volist name="list.product_img" id="vo"}
+                                <div class="multiple-img" style="width:120px;height:120px;margin:10px 20px 10px 0px;position: relative;float: left;" data-multiple-img="{$vo}">
+                                    <img src="{$vo}" name="sngimg" onerror="this.src='static/disappear/default.png'" style="width: 120px;height: 120px;margin: 7px 0px 0px 3px;"/>
+                                    <div style="width: 126px;height: 126px;position: absolute;top: 4px;border: 1px solid #cccccc;border-radius: 3px;">
+                                        <div class="am-modal-hd" style="text-align: left;">
+                                            <a href="javascript: void(0);" class="am-close am-close-spin"
+                                               style="color:#2D93CA;opacity:1;" onclick="multipleClose(this);">×</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/volist}
+                            </div>
+                        </div>
+                        <div class="am-u-sm-9" style="margin-top: 30px;">
+                            <button type="button" style="font-size: 12px;" onclick="cuonice();">选择图片</button>
+                            <small>建议图片尺寸：260*260px</small>
+                            <span style="color: red;font-size: 12px;">商品图片可以通过拖拽进行排序 </span>
+                            <small><strong>( 第一张图片将作为商品主图 )</strong></small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品详情</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <textarea rows="5" id="detail" placeholder="请输入商品详情">{$list.product_detail}</textarea>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品库存</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="number" id="inventory" value="{$list.product_inventory}">
+                            <small>请输入商品库存</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品价格</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="number" id="price" value="{$list.product_price}">
+                            <small>请输入商品价格 <span style="color: red;">( {$defaultNavigate.currency}  )</span></small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品销量</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="number" id="volume" value="{$list.sales_volume}">
+                            <small>请输入商品销量</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">限购数量</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="number" id="restrict" value="{$list.product_restrict}">
+                            <small>请输入限购数量</small>
+                            <small style="color: red;padding-left: 5px;">0 表示不限购</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">开启会员专属</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <div class="tpl-switch">
+                                <input id="exclusive" type="checkbox" style="display: none;"
+                                       class="ios-switch bigswitch tpl-switch-btn" {if $list.noble_exclusive==1}checked{/if}>
+                                <div class="tpl-switch-btn-view">
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-form-group noble-vent" {if $list.noble_exclusive==1}style="display: none;"{/if}>
+                        <label class="am-u-sm-3 am-form-label">开启会员折扣</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <div class="tpl-switch">
+                                <input id="opdiscount" type="checkbox" style="display: none;"
+                                       class="ios-switch bigswitch tpl-switch-btn" {if $list.open_discount==1}checked{/if}>
+                                <div class="tpl-switch-btn-view">
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-form-group noble-vent" {if $list.noble_exclusive==1}style="display: none;"{/if}>
+                        <label class="am-u-sm-3 am-form-label">会员购物享受折扣比例</label>
+                        <div class="am-u-sm-8">
+                            <input type="number" id="nodiscount" value="{$list.noble_discount*100}" placeholder="请输入会员购物折扣比例">
+                            <small>
+                                会员购物享受折扣率 例如折扣比例为 95% <span style="color: red;">计算方式 [ 实付价格 ( {$defaultNavigate.currency} ) = 商品价格 * 95% ]</span>
+                            </small>
+                        </div>
+                        <label style="color: #999;font-weight: normal;font-size: 16px;line-height: 35px;width: auto;">%</label>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">会员购赠返{$defaultNavigate.confer}</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="number" id="rebate" value="{$list.noble_rebate}" placeholder="请输入返还{$defaultNavigate.confer}">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">商品状态</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <select id="status">
+                                <option value="0" {if $list.status==0}selected{/if}>已下架</option>
+                                <option value="1" {if $list.status==1}selected{/if}>已上架</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">排序</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="number" id="scores" value="{$list.scores}" placeholder="请输入排序数字">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-8 am-u-end am-u-sm-push-3">
+                            <button type="button" class="am-btn am-btn-primary" onclick="holdSave();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script src="assets/js/jquery.dad.min.js"></script>
+<script src="static/umeditor/third-party/template.min.js"></script>
+<script src="static/umeditor/umeditor.config.js"></script>
+<script src="static/umeditor/_examples/editor_api.js"></script>
+<script src="static/umeditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+
+    !function () {
+        $('#shion').dad();
+        UM.getEditor('detail', {imageUrl: "{:url('upload/operate')}"});
+        $('.tpl-switch').find('.tpl-switch-btn-view').on('click', function () {
+            $(this).prev('.tpl-switch-btn').prop("checked", function () {
+                if ($(this).is(':checked')) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+            if ($('#exclusive').prop('checked')) {
+                $('#opdiscount').prop('checked', false);
+                $('.noble-vent').hide();
+                $('#nodiscount').val('100');
+            } else {
+                $('.noble-vent').show();
+            }
+        });
+    }();
+
+    function cuonice() {
+        layer.open({
+            type: 2,
+            anim:2,
+            scrollbar: false,
+            area: ['900px', '600px'],
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            content: ["{:url('images/dialogImages')}&gclasid=0", 'no']
+        });
+    }
+
+    function sutake(eurl) {
+        var multipleImg = $.trim($('.multiple-img').eq(0).attr('data-multiple-img'));
+        if (multipleImg == '') {
+            $('#shion').html('');
+        }
+        var shtml = '<div class="multiple-img" style="width:120px;height:120px;margin:10px 20px 10px 0px;position: relative;float: left;" data-multiple-img="' + eurl + '">';
+        shtml += '<img src="' + eurl + '" name="sngimg" onerror="this.src=\'static/disappear/default.png\'" style="width: 120px;height: 120px;margin: 7px 0px 0px 3px;"/>';
+        shtml += '<div style="width: 126px;height: 126px;position: absolute;top: 4px;border: 1px solid #cccccc;border-radius: 3px;">';
+        shtml += '<div class="am-modal-hd" style="text-align: left;">';
+        shtml += '<a href="javascript: void(0);" class="am-close am-close-spin" style="color:#2D93CA;opacity:1;" onclick="multipleClose(this);">×</a>';
+        shtml += '</div>';
+        shtml += '</div>';
+        shtml += '</div>';
+        $('#shion').append(shtml);
+        $('#shion').dad();
+        layer.closeAll();
+    }
+
+    function multipleClose(obj) {
+        $(obj).parent().parent().parent().remove();
+        setTimeout(function () {
+            if ($('.multiple-img').length < 1) {
+                var shtml = '<div class="multiple-img" style="width:120px;height:120px;margin:10px 20px 10px 0px;position: relative;float: left;">';
+                shtml += '<img src="" name="sngimg" onerror="this.src=\'static/disappear/default.png\'" style="width: 120px;height: 120px;margin: 7px 0px 0px 3px;"/>';
+                shtml += '<div style="width: 126px;height: 126px;position: absolute;top: 4px;border: 1px solid #cccccc;border-radius: 3px;">';
+                shtml += '<div class="am-modal-hd" style="text-align: left;">';
+                shtml += '<a href="javascript: void(0);" class="am-close am-close-spin" style="color:#2D93CA;opacity:1;" onclick="multipleClose(this);">×</a>';
+                shtml += '</div>';
+                shtml += '</div>';
+                shtml += '</div>';
+                $('#shion').append(shtml);
+            }
+        }, 500);
+    }
+
+    function excheck(name, type, synopsis, multipleImg, detail, inventory, price, volume, restrict, nodiscount, rebate, scores) {
+        if (name == '' || name == 'undefined' || name == null) {
+            layer.msg('商品名称不能为空');
+            return false;
+        }
+        if (type == '0') {
+            layer.msg('请选择商品分类');
+            return false;
+        }
+        if (synopsis == '' || synopsis == 'undefined' || synopsis == null) {
+            layer.msg('商品描述不能为空');
+            return false;
+        }
+        if (multipleImg[0] == '' || multipleImg == 'undefined' || multipleImg == null) {
+            layer.msg('请上传商品图片');
+            return false;
+        }
+        if (detail == '' || detail == 'undefined' || detail == null) {
+            layer.msg('商品详情不能为空');
+            return false;
+        }
+        if (inventory <= 0) {
+            $('#inventory').val('0');
+        }
+        if (price <= 0) {
+            $('#price').val('0.00');
+        }
+        if (volume <= 0) {
+            $('#volume').val('0');
+        }
+        if (volume <= 0) {
+            $('#volume').val('0');
+        }
+        if (restrict <= 0) {
+            $('#restrict').val('0');
+        }
+        if (nodiscount > 100 || nodiscount < 1) {
+            layer.msg('会员购物享受折扣比例最小不能低于1%<br>最大不能超过100%');
+            return false;
+        }
+        if (rebate <= 0) {
+            $('#rebate').val('0.00');
+        }
+        if (scores <= 0) {
+            $('#scores').val('0');
+        }
+        return true;
+    }
+
+    var slock = false;
+
+    function holdSave() {
+        if (!slock) {
+            var name = $.trim($('#name').val());
+            var type = $.trim($('#type').val());
+            var synopsis = $.trim($('#synopsis').val());
+            var multipleImg = [];
+            $('.multiple-img').each(function () {
+                multipleImg.push($.trim($(this).attr('data-multiple-img')));
+            });
+            var detail = $.trim(UM.getEditor('detail').getContent());
+            var inventory = Number($('#inventory').val().match(/^\d+(?:\.\d{0,0})?/));
+            var price = Number($('#price').val().match(/^\d+(?:\.\d{0,2})?/));
+            var volume = Number($('#volume').val().match(/^\d+(?:\.\d{0,0})?/));
+            var restrict = Number($('#restrict').val().match(/^\d+(?:\.\d{0,0})?/));
+            var exclusive = $('#exclusive').prop('checked') ? 1 : 0;
+            var opdiscount = $('#opdiscount').prop('checked') ? 1 : 0;
+            var nodiscount = Number($('#nodiscount').val().match(/^\d+(?:\.\d{0,0})?/));
+            var rebate = Number($('#rebate').val().match(/^\d+(?:\.\d{0,2})?/));
+            var status = $.trim($('#status').val());
+            var scores = Number($('#scores').val().match(/^\d+(?:\.\d{0,0})?/));
+            if (excheck(name, type, synopsis, multipleImg, detail, inventory, price, volume, restrict, nodiscount, rebate, scores)) {
+                slock = true;
+                $.ajax({
+                    type: "post",
+                    url: "{:url('marketing/upshop')}",
+                    data: {
+                        'usid': '{$list.id}',
+                        'name': name,
+                        'type': type,
+                        'synopsis': synopsis,
+                        'multipleImg': multipleImg,
+                        'detail': detail,
+                        'inventory': inventory,
+                        'price': price,
+                        'volume': volume,
+                        'restrict': restrict,
+                        'exclusive': exclusive,
+                        'opdiscount': opdiscount,
+                        'nodiscount': nodiscount,
+                        'rebate': rebate,
+                        'status': status,
+                        'scores': scores
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.href = "{:url('shop')}";
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 2000}, function () {
+                                slock = false;
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    }
+</script>
+{/block}

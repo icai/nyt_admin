@@ -1,0 +1,439 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.prscroll{width:536px;margin:0 auto;box-shadow:0px 0px 10px 0px rgba(0,0,0,1);padding-top:2px;border-radius:10px;}.tuscroll{width:93%;margin:20px auto;border-radius:10px;}.tufirst{height:120px;background-image:linear-gradient(-20deg,#f794a4 0%,#fdd6bd 100%);padding-top:2%;}.tusecond{height:120px;background-image:linear-gradient(-225deg,#2CD8D5 0%,#C5C1FF 56%,#FFBAC3 100%);padding-top:2%;}.uscroll{width:100%;}.exhibit{height:600px;padding-top:20px;overflow:auto;}#conch,#fraction{font-size:14px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption bold">
+            <span style="color: black;margin: 0px 3px;">{$user.user_nick_name|emoji_decode}</span>的钱包
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-12">
+                <div class="prscroll">
+                    <div class="tuscroll tufirst">
+                        <div style="width: 92%;height:90%;margin: 0px auto;">
+                            <div class="am-u-md-12" style="padding: 0px;">
+                                <span style="color: white;font-weight: 600;font-size: 24px;">{$defaultNavigate.currency}余额</span>
+                            </div>
+                            <div class="am-u-md-6" style="padding-left:0.1rem;margin-top: 10px;">
+                                <span style="color: white;font-size: 14px;">{$user.conch}</span>
+                                <span style="color: white;font-weight: 600;font-size: 20px;">{$defaultNavigate.currency}</span>
+                            </div>
+                            <div class="am-u-md-3" style="padding: 0px;margin-top: 5px;">
+                                <div class="am-u-md-12" data-am-modal="{target: '#rechargeConchA', closeViaDimmer: 0, width: 500, height: 265}"
+                                     style="cursor: pointer;border-radius: 10px;text-align: center;background: white;height: 35px;line-height: 35px;padding: 0px;">
+                                    <span style="color: #f9a0a9;font-weight: 600;font-size: 16px;">充值{$defaultNavigate.currency}</span>
+                                </div>
+                            </div>
+                            <div class="am-u-md-3" style="padding: 0px;margin-top: 5px;">
+                                <div class="am-u-md-12" data-am-modal="{target: '#rechargeConchB', closeViaDimmer: 0, width: 500, height: 265}"
+                                     style="cursor: pointer;border-radius: 10px;text-align: center;background: white;height: 35px;line-height: 35px;margin-left: 10px;padding: 0px;">
+                                    <span style="color: #f9a0a9;font-weight: 600;font-size: 16px;"
+                                          onclick="adornConch('1','{$user.id}');">扣除{$defaultNavigate.currency}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tuscroll tusecond">
+                        <div style="width: 92%;height:90%;margin: 0px auto;">
+                            <div class="am-u-md-12" style="padding: 0px;">
+                                <span style="color: white;font-weight: 600;font-size: 24px;">{$defaultNavigate.confer}余额</span>
+                            </div>
+                            <div class="am-u-md-6" style="padding-left:0.1rem;margin-top: 10px;">
+                                <span style="color: white;font-size: 14px;">{$user.fraction}</span>
+                                <span style="color: white;font-weight: 600;font-size: 20px;">{$defaultNavigate.confer}</span>
+                            </div>
+                            <div class="am-u-md-3" style="padding: 0px;margin-top: 5px;">
+                                <div class="am-u-md-12" data-am-modal="{target: '#rechargeFractionA', closeViaDimmer: 0, width: 500, height: 265}"
+                                     style="cursor: pointer;border-radius: 10px;text-align: center;background: white;height: 35px;line-height: 35px;padding: 0px;">
+                                    <span style="color: #d1bff3;font-weight: 600;font-size: 16px;">充值{$defaultNavigate.confer}</span>
+                                </div>
+                            </div>
+                            <div class="am-u-md-3" style="padding: 0px;margin-top: 5px;">
+                                <div class="am-u-md-12" data-am-modal="{target: '#rechargeFractionB', closeViaDimmer: 0, width: 500, height: 265}"
+                                     style="cursor: pointer;border-radius: 10px;text-align: center;background: white;height: 35px;line-height: 35px;margin-left: 10px;padding: 0px;">
+                                    <span style="color: #d1bff3;font-weight: 600;font-size: 16px;">扣除{$defaultNavigate.confer}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-tabs uscroll" data-am-tabs>
+                        <ul class="am-tabs-nav am-nav am-nav-tabs am-nav-justify">
+                            <span id="usid" style="display: none">{$usid}</span>
+                            <li class="am-active">
+                                <a href="#conch">
+                                    {$defaultNavigate.currency}明细
+                                    <span id="conchPage" style="display: none">{$conchPage}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#fraction">
+                                    {$defaultNavigate.confer}明细
+                                    <span id="fractionPage" style="display: none">{$fractionPage}</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="am-tabs-bd">
+                            <div class="am-tab-panel exhibit am-active" id="conch">
+                                {volist name="userConch" id="vo"}
+                                <div class="am-u-sm-12" style="text-align: left;">
+                                <span style="font-weight: bolder;">
+                                {$vo.solution}
+                                </span>
+                                </div>
+                                <div class="am-u-sm-6" style="text-align: left;">
+                                 <span style="color: #c2ccd1;font-size: 12px;">
+                                {:date('Y-m-d H:i:s',$vo.ruins_time)}
+                                </span>
+                                </div>
+                                <div class="am-u-sm-6" style="text-align: right;margin-bottom: 20px;">
+                                    {if $vo.finance>=0}
+                                    <span style="color: green;">+{$vo.finance}</span>
+                                    {else}
+                                    <span style="color: red;">{$vo.finance}</span>
+                                    {/if}
+                                    <span style="font-size: 12px;font-weight: 600;">{$defaultNavigate.currency}</span>
+                                </div>
+                                {/volist}
+                            </div>
+                            <div class="am-tab-panel exhibit" id="fraction">
+                                {volist name="userFraction" id="vo"}
+                                <div class="am-u-sm-12" style="text-align: left;">
+                                <span style="font-weight: bolder;">
+                                {$vo.solution}
+                                </span>
+                                </div>
+                                <div class="am-u-sm-6" style="text-align: left;">
+                                 <span style="color: #c2ccd1;font-size: 12px;">
+                                {:date('Y-m-d H:i:s',$vo.ruins_time)}
+                                </span>
+                                </div>
+                                <div class="am-u-sm-6" style="text-align: right;margin-bottom: 20px;">
+                                    {if $vo.finance>=0}
+                                    <span style="color: green;">+{$vo.finance}</span>
+                                    {else}
+                                    <span style="color: red;">{$vo.finance}</span>
+                                    {/if}
+                                    <span style="font-size: 12px;font-weight: 600;">{$defaultNavigate.confer}</span>
+                                </div>
+                                {/volist}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal am-modal-no-btn" tabindex="-1" id="rechargeConchA">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd" style="text-align: left;">
+                        <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                    </div>
+                    <div class="am-modal-bd" style="margin-top: 30px;">
+                        <div class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label class="am-u-sm-3 am-form-label">充值{$defaultNavigate.currency}</label>
+                                <div class="am-u-sm-9" style="text-align: left;">
+                                    <input type="number" id="modifyConchA" value="0" placeholder="请输入要充值的{$defaultNavigate.currency}数量" data-conch="0">
+                                    <input type="hidden" id="uconchA" value="{$user.conch}">
+                                    <small id="cEcipherA"><span style="color: red;font-size: 14px;"> {$user.conch} + 0 = {$user.conch} </span></small><br>
+                                    <small><strong>计算方式：{$defaultNavigate.currency}余额 + 充值{$defaultNavigate.currency}数量 = 即将要保存的{$defaultNavigate.currency}</strong></small><br>
+                                    <small><span style="color: #2D93CA;">计算结果将会自动保留两位小数</span></small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <button type="button" class="am-btn am-btn-default am-btn-sm"
+                                        onclick="holdSave('0');">
+                                    确认充值
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal am-modal-no-btn" tabindex="-1" id="rechargeConchB">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd" style="text-align: left;">
+                        <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                    </div>
+                    <div class="am-modal-bd" style="margin-top: 30px;">
+                        <div class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label class="am-u-sm-3 am-form-label">扣除{$defaultNavigate.currency}</label>
+                                <div class="am-u-sm-9" style="text-align: left;">
+                                    <input type="number" id="modifyConchB" value="0" placeholder="请输入要扣除的{$defaultNavigate.currency}数量" data-conch="0">
+                                    <input type="hidden" id="uconchB" value="{$user.conch}">
+                                    <small id="cEcipherB"><span style="color: red;font-size: 14px;"> {$user.conch} - 0 = {$user.conch} </span></small><br>
+                                    <small><strong>计算方式：{$defaultNavigate.currency}余额 - 扣除{$defaultNavigate.currency}数量 = 即将要保存的{$defaultNavigate.currency}</strong></small><br>
+                                    <small><span style="color: #2D93CA;">计算结果将会自动保留两位小数</span></small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <button type="button" class="am-btn am-btn-default am-btn-sm"
+                                        onclick="holdSave('1');">
+                                    确认扣除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal am-modal-no-btn" tabindex="-1" id="rechargeFractionA">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd" style="text-align: left;">
+                        <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                    </div>
+                    <div class="am-modal-bd" style="margin-top: 30px;">
+                        <div class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label class="am-u-sm-3 am-form-label">充值{$defaultNavigate.confer}</label>
+                                <div class="am-u-sm-9" style="text-align: left;">
+                                    <input type="number" id="modifyFractionA" value="0" placeholder="请输入要充值的{$defaultNavigate.confer}数量" data-fraction="0">
+                                    <input type="hidden" id="uFractionA" value="{$user.fraction}">
+                                    <small id="fEcipherA"><span style="color: red;font-size: 14px;"> {$user.fraction} + 0 = {$user.fraction} </span></small><br>
+                                    <small><strong>计算方式：{$defaultNavigate.confer}余额 + 充值{$defaultNavigate.confer}数量 = 即将要保存的{$defaultNavigate.confer}</strong></small><br>
+                                    <small><span style="color: #2D93CA;">计算结果将会自动保留两位小数</span></small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <button type="button" class="am-btn am-btn-default am-btn-sm"
+                                        onclick="holdSave('2');">
+                                    确认充值
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-modal am-modal-no-btn" tabindex="-1" id="rechargeFractionB">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd" style="text-align: left;">
+                        <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                    </div>
+                    <div class="am-modal-bd" style="margin-top: 30px;">
+                        <div class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label class="am-u-sm-3 am-form-label">扣除{$defaultNavigate.confer}</label>
+                                <div class="am-u-sm-9" style="text-align: left;">
+                                    <input type="number" id="modifyFractionB" value="0" placeholder="请输入要扣除的{$defaultNavigate.confer}数量" data-fraction="0">
+                                    <input type="hidden" id="uFractionB" value="{$user.fraction}">
+                                    <small id="fEcipherB"><span style="color: red;font-size: 14px;"> {$user.fraction} - 0 = {$user.fraction} </span></small><br>
+                                    <small><strong>计算方式：{$defaultNavigate.confer}余额 - 扣除{$defaultNavigate.confer}数量 = 即将要保存的{$defaultNavigate.confer}</strong></small><br>
+                                    <small><span style="color: #2D93CA;">计算结果将会自动保留两位小数</span></small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <button type="button" class="am-btn am-btn-default am-btn-sm"
+                                        onclick="holdSave('3');">
+                                    确认扣除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+    !function () {
+        document.getElementById("conch").onscroll = function () {
+            var conchScrollHeight = document.getElementById("conch").scrollHeight;
+            var conchScrollTop = document.getElementById("conch").scrollTop;
+            var conchClientHeight = document.getElementById("conch").clientHeight;
+            if (conchScrollHeight - conchClientHeight == conchScrollTop) {
+                var usid = parseInt($.trim($('#usid').text()));
+                var conchPage = parseInt($.trim($('#conchPage').text()));
+                $.ajax({
+                    type: "post",
+                    url: "{:url('user/getConch')}",
+                    async: false,
+                    data: {'usid': usid, 'conchPage': (conchPage + 1)},
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            var shtml = '<div class="am-u-sm-12" style="text-align: left;">';
+                            shtml += '<span style="font-weight: bolder;">';
+                            shtml += data[i].solution;
+                            shtml += '</span>';
+                            shtml += '</div>';
+                            shtml += '<div class="am-u-sm-6"  style="text-align: left;">';
+                            shtml += '<span style="color: #c2ccd1;font-size: 12px;">';
+                            shtml += formatUnixtimestamp(data[i].ruins_time);
+                            shtml += '</span>';
+                            shtml += '</div>';
+                            shtml += '<div class="am-u-sm-6"  style="text-align: right;margin-bottom: 20px;">';
+                            if (data[i].finance >= 0) {
+                                shtml += '<span style="color: green;">+' + data[i].finance + '</span>';
+                            }
+                            else {
+                                shtml += '<span style="color: red;">' + data[i].finance + '</span>';
+                            }
+                            shtml += '<span style="font-size: 12px;font-weight: 600;"> {$defaultNavigate.currency}</span>';
+                            shtml += '</div>';
+                            $('#conch').append(shtml);
+                        }
+                        if (data.length > 0) {
+                            $('#conchPage').text(conchPage + 1);
+                        }
+                    }
+                });
+            }
+        }
+        document.getElementById("fraction").onscroll = function () {
+            var fractionScrollHeight = document.getElementById("fraction").scrollHeight;
+            var fractionScrollTop = document.getElementById("fraction").scrollTop;
+            var fractionClientHeight = document.getElementById("fraction").clientHeight;
+            if (fractionScrollHeight - fractionClientHeight == fractionScrollTop) {
+                var usid = parseInt($.trim($('#usid').text()));
+                var fractionPage = parseInt($.trim($('#fractionPage').text()));
+                $.ajax({
+                    type: "post",
+                    url: "{:url('user/getFraction')}",
+                    async: false,
+                    data: {'usid': usid, 'fractionPage': (fractionPage + 1)},
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            var shtml = '<div class="am-u-sm-12" style="text-align: left;">';
+                            shtml += '<span style="font-weight: bolder;">';
+                            shtml += data[i].solution;
+                            shtml += '</span>';
+                            shtml += '</div>';
+                            shtml += '<div class="am-u-sm-6"  style="text-align: left;">';
+                            shtml += '<span style="color: #c2ccd1;font-size: 12px;">';
+                            shtml += formatUnixtimestamp(data[i].ruins_time);
+                            shtml += '</span>';
+                            shtml += '</div>';
+                            shtml += '<div class="am-u-sm-6"  style="text-align: right;margin-bottom: 20px;">';
+                            if (data[i].finance >= 0) {
+                                shtml += '<span style="color: green;">+' + data[i].finance + '</span>';
+                            }
+                            else {
+                                shtml += '<span style="color: red;">' + data[i].finance + '</span>';
+                            }
+                            shtml += '<span style="font-size: 12px;font-weight: 600;"> {$defaultNavigate.confer}</span>';
+                            shtml += '</div>';
+                            $('#fraction').append(shtml);
+                        }
+                        if (data.length > 0) {
+                            $('#fractionPage').text(fractionPage + 1);
+                        }
+                    }
+                });
+            }
+        }
+
+        $('.am-close').click(function () {
+            location.reload();
+        });
+
+        $('#modifyConchA').keyup(function () {
+            var getUconch = Number($('#uconchA').val().match(/^\d+(?:\.\d{0,2})?/));
+            var getConch = Number($(this).val().match(/^\d+(?:\.\d{0,2})?/));
+            if (isNaN(getConch)) {
+                $(this).val(getConch = 0);
+            }
+            var epayoff = Number((getUconch + getConch).toString().match(/^\d+(?:\.\d{0,2})?/));
+            if (epayoff >= 9999999999999999) {
+                var dataConch = Number($(this).attr('data-conch'));
+                $(this).val(dataConch);
+                return false;
+            }
+            $('#cEcipherA').html('<span style="color: red;font-size: 14px;"> ' + getUconch + ' + ' + getConch + ' = ' + epayoff + ' </span>');
+            $(this).attr('data-conch', getConch.toString());
+        });
+        $('#modifyConchB').keyup(function () {
+            var getUconch = Number($('#uconchB').val().match(/^\d+(?:\.\d{0,2})?/));
+            var getConch = Number($(this).val().match(/^\d+(?:\.\d{0,2})?/));
+            if (isNaN(getConch)) {
+                $(this).val(getConch = 0);
+            }
+            var epayoff = Number((getUconch - getConch).toString().match(/^\d+(?:\.\d{0,2})?/));
+            if (epayoff < 0) {
+                var dataConch = Number($(this).attr('data-conch'));
+                $(this).val(dataConch);
+                return false;
+            }
+            $('#cEcipherB').html('<span style="color: red;font-size: 14px;"> ' + getUconch + ' - ' + getConch + ' = ' + epayoff + ' </span>');
+            $(this).attr('data-conch', getConch.toString());
+        });
+        $('#modifyFractionA').keyup(function () {
+            var getUfraction = Number($('#uFractionA').val().match(/^\d+(?:\.\d{0,2})?/));
+            var getFraction = Number($(this).val().match(/^\d+(?:\.\d{0,2})?/));
+            if (isNaN(getFraction)) {
+                $(this).val(getFraction = 0);
+            }
+            var epayoff = Number((getUfraction + getFraction).toString().match(/^\d+(?:\.\d{0,2})?/));
+            if (epayoff >= 9999999999999999) {
+                var dataFraction = Number($(this).attr('data-fraction'));
+                $(this).val(dataFraction);
+                return false;
+            }
+            $('#fEcipherA').html('<span style="color: red;font-size: 14px;"> ' + getUfraction + ' + ' + getFraction + ' = ' + epayoff + ' </span>');
+            $(this).attr('data-fraction', getFraction.toString());
+        });
+        $('#modifyFractionB').keyup(function () {
+            var getUfraction = Number($('#uFractionB').val().match(/^\d+(?:\.\d{0,2})?/));
+            var getFraction = Number($(this).val().match(/^\d+(?:\.\d{0,2})?/));
+            if (isNaN(getFraction)) {
+                $(this).val(getFraction = 0);
+            }
+            var epayoff = Number((getUfraction - getFraction).toString().match(/^\d+(?:\.\d{0,2})?/));
+            if (epayoff < 0) {
+                var dataFraction = Number($(this).attr('data-fraction'));
+                $(this).val(dataFraction);
+                return false;
+            }
+            $('#fEcipherB').html('<span style="color: red;font-size: 14px;"> ' + getUfraction + ' - ' + getFraction + ' = ' + epayoff + ' </span>');
+            $(this).attr('data-fraction', getFraction.toString());
+        });
+    }();
+
+    function formatUnixtimestamp(unixtimestamp) {
+        var unixtimestamp = new Date(unixtimestamp * 1000);
+        var year = 1900 + unixtimestamp.getYear();
+        var month = "0" + (unixtimestamp.getMonth() + 1);
+        var date = "0" + unixtimestamp.getDate();
+        var hour = "0" + unixtimestamp.getHours();
+        var minute = "0" + unixtimestamp.getMinutes();
+        var second = "0" + unixtimestamp.getSeconds();
+        return year + "-" + month.substring(month.length - 2, month.length) + "-" + date.substring(date.length - 2, date.length)
+            + " " + hour.substring(hour.length - 2, hour.length) + ":"
+            + minute.substring(minute.length - 2, minute.length) + ":"
+            + second.substring(second.length - 2, second.length);
+    }
+
+    function holdSave(genus) {
+        var cipher = 0;
+        switch (parseInt(genus)) {
+            case 0:
+                cipher = Number($('#modifyConchA').val().toString().match(/^\d+(?:\.\d{0,2})?/));
+                break;
+            case 1:
+                cipher = Number($('#modifyConchB').val().toString().match(/^\d+(?:\.\d{0,2})?/));
+                break;
+            case 2:
+                cipher = Number($('#modifyFractionA').val().toString().match(/^\d+(?:\.\d{0,2})?/));
+                break;
+            case 3:
+                cipher = Number($('#modifyFractionB').val().toString().match(/^\d+(?:\.\d{0,2})?/));
+                break;
+        }
+        $.post("{:url('alterunt')}", {
+            'usid': '{$user.id}',
+            'genus': genus,
+            'cipher': cipher
+        }, function (data) {
+            if (data.code > 0) {
+                layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(data.msg, {icon: 5, time: 2000});
+            }
+        }, 'json');
+    }
+</script>
+{/block}

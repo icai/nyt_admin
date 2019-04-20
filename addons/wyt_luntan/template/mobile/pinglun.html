@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 32px;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <script src="{ASSETS_PATH}js/zepto.min.js"></script>
+    <title>评论-{$set['name']}</title>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/swiper.min.css">
+    <script src="{ASSETS_PATH}js/swipe.js"></script>
+    <script src="{ASSETS_PATH}js/iscroll.js"></script>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui.css"/>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui2.css"/>
+
+    <style>
+        a {text-decoration:none;out-line: none;color:#666; }
+        .comment h3 { height: 28px; line-height: 28px }
+        .com_form p { height: 28px; line-height: 28px; position: relative; margin-top: 10px; }
+        .qqFace table td { padding: 0px; }
+        .qqFace table td img { cursor: pointer; border: 1px #fff solid; }
+        .qqFace table td img:hover { border: 1px #0066cc solid; }
+
+    </style>
+    {php echo register_jssdk(false);}
+    <style>
+        .footer {position: fixed;bottom: 0;background-color:white;height:50px;width:100%;text-align: center;border-top:1px solid #eee;font-size:14px;padding:2px 0 0 0;}
+        *{
+            margin:0;
+            padding:0;
+        }
+        a{text-decoration: none;color: #3b3b3b;border: none;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-tap-highlight-color: transparent;}
+        input{outline: none;border: none;background: transparent;}
+        ul,ol{list-style: none;}
+        button{background: none;border:none;}
+        .search ::-webkit-input-placeholder{
+            font-size: .32rem;
+            color: #fff
+        }
+        .announceItem{
+            padding: .213rem 0 .213rem .34rem;
+            color: #3b3b3b;
+            display: block;
+            border-bottom:1px solid #d6d6d6;
+        }
+        .announceTag{,
+        width: .747rem;
+            margin-right: .16rem;
+            padding: .067rem;
+            text-align: center;
+            color: #fefefe;
+            font-size:13px;
+            line-height: 1;
+            background: #159bff;
+            border-radius: 2px;
+        }
+        .warn{background: red;}
+        .pad_right{ padding-right:2em;}
+        #scroll_div {height:26px;overflow: hidden;white-space: nowrap;width:100%;margin-left:20px;margin-top: -20px;}
+        #scroll_begin,#scroll_end {display: inline;}
+        .nav ul li a:not(:nth-of-type(4n)){margin-right: .32rem;}
+        .nav ul li a:active{background:#18b4ed;color: #fff;}
+        .listItem:not(:last-of-type){
+            margin-bottom: .213rem;
+        }
+        .listItem-head{
+            position: relative;
+            padding:.48rem .32rem .32rem;
+            font-size: 0;
+        }
+        .listItem-content{
+            position: relative;
+            display: block;
+            width: 100%;
+            color: #3b3b3b;
+        }
+        .weui-navigator-list li a {font-weight:100;font-size:14px;}
+        .weui-navigator-list li.weui-state-active a{color:#666;font-weight:100;font-size:14px;}
+        .weui-navigator-list li.weui-state-active a:after{background-color:#666;font-weight:100;}
+        .weui-comment-icon{border:none;}
+        ul li {list-style: none;}
+        .top {position:fixed;top:0;width:100%;height:50px;line-height:50px;text-align:center;background-color:white;color:black;}
+    </style>
+</head>
+<body style="font-size: 12px;background-color:white;">
+
+<!--评论-->
+{if $_GPC['hi']==1}
+<form id="post_form" action="{php echo $this->createMobileUrl('Index',array('action'=>'huifu1','tid'=>$_GPC['tid'],'pid'=>$_GPC['pid'],'userid'=>$_GPC['userid']))}" method="post">
+    {/if}
+    {if $_GPC['hi']==0}
+    <form id="post_form" action="{php echo $this->createMobileUrl('Index',array('action'=>'pinglun','tid'=>$_GPC['tid']))}" method="post">
+        {/if}
+        {if $_GPC['hi']==2}
+        <form id="post_form" action="{php echo $this->createMobileUrl('Index',array('action'=>'huifu3','tid'=>$_GPC['tid'],'pid'=>$_GPC['pid'],'hid'=>$_GPC['hid'],'userid'=>$_GPC['userid']))}" method="post">
+            {/if}
+            <div class="panel" style="position: fixed;bottom: 0;left: 0;width: 100%;height: 100%;background: #fff;z-index:99;">
+                <div class="top" style="font-size:14px;position: fixed;top:0;width:100%;">
+                    <div onclick="javascript :history.back(-1);" style="position: absolute;left:10px;">取消</div>
+                    <div onclick="doUpload()" style="position: absolute;right:10px;color:white;"><span style="background: -webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;padding:3px 12px;border-radius:20px;">发表</span></div>
+                    <span style="font-size:15px;">评论</span>
+                </div>
+                <div style="height: 10px;background: #ccc;"></div>
+                <div class="weui_cells weui_cells_form" style="margin-top:40px;width: 100%;box-sizing: border-box;">
+                    {if $_GPC['hname'] != ""}
+                    <input value="" name="infos" placeholder="@{$_GPC['hname']}" style="height:30px;line-height:30px;"><input name="hname" hidden value="{$_GPC['hname']}">
+                    {/if}
+                    <div class="weui_cell" style="border-top:10px solid #eee;">
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <textarea id="saytext" name="info" class="weui_textarea" placeholder="我想说两句..." rows="3" style="min-height: 200px;width: 100%;outline: none;border: none;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div style="background:#eee;width: 100%;text-align: left;height:40px;line-height: inherit;">
+                    <a href="#"><img onclick="upload_img()" src="{ASSETS_PATH}img/tp.png" style="margin-top:5px;width:28px;height:28px;margin-left:20px;"></a>
+                   
+                </div>
+
+                <input type="hidden" name="images" value="">
+                <div class="weui_uploader_bd" style="border-bottom: solid 1px #eee; margin-top: 10px; margin-left: 10px; display: none">
+                    <ul class="weui_uploader_files">
+                    </ul>
+                    <div class="weui_uploader_input_wrp" onclick="upload_img()">
+                        <input class="weui_uploader_input" multiple="" id="img" type="button">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+</body>
+
+</html>
+<script src="https://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+<script src="{ASSETS_PATH}js/layer/layer.js"></script>
+<script  src="{ASSETS_PATH}/qqFace/js/jquery.min.js"></script>
+<script type="text/javascript" src="{ASSETS_PATH}/qqFace/js/jquery.qqFace.js"></script>
+<script type="text/javascript">
+
+    $(function(){
+
+        $('.emotion').qqFace({
+
+            id : 'facebox',
+
+            assign:'saytext',
+
+            path:'{ASSETS_PATH}/qqFace/arclist/'	//表情存放的路径
+        });
+
+    });
+
+    //查看结果
+
+    function replace_em(str){
+        str = str.replace(/\</g,'&lt;');
+
+        str = str.replace(/\>/g,'&gt;');
+
+        str = str.replace(/\n/g,'<br/>');
+
+        str = str.replace(/\[em_([0-9]*)\]/g,'<img src="{ASSETS_PATH}qqFace/arclist/$1.gif" border="0" />');
+        $("#show").html(str);
+
+    }
+
+</script>
+<script>
+    var images = new Array();
+    var serids = new Array();
+    function upload_img() {
+        var count=images.length;
+        wx.ready(function () {
+            wx.chooseImage({
+                count: 9-count,
+                sizeType: ['original', 'compressed'],
+                sourceType: ['album', 'camera'],
+                success: function (res) {
+                    $.each(res.localIds,function (k,v) {
+                        show_img(v);
+                        images.push(v);
+                    });
+                }
+            });
+        });
+    }
+
+    function show_img(local) {
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+            $(".weui_uploader_bd").show();
+            var str = '<li class="weui_uploader_file" local="' + local + '" style="background-image:url(' + local + ')"><i class="clear_del weui_icon_cancel" onclick="del_img(' + "'" + local + "'" + ')" </i></li>';
+            $(".weui_uploader_files").append(str);
+        }else if (u.indexOf('iPhone') > -1) {//苹果手机
+            wx.getLocalImgData({
+                localId: local, // 图片的localID
+                success: function (res) {
+
+                    var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                    $(".weui_uploader_bd").show();
+                    var str = '<li class="weui_uploader_file" local="'+localData+'" style="background-image:url('+localData+')"><i class="clear_del weui_icon_cancel" onclick="del_img('+"'"+localData+"'"+')" </i></li>';
+                    $(".weui_uploader_files").append(str);
+                }
+            });
+        }else if (u.indexOf('Windows Phone') > -1) {//winphone手机
+            alert("winphone手机");
+        }
+    }
+
+
+    function del_img(local) {
+        $.each(images,function (k,v) {
+            if(v == local)
+            {
+                images.splice(k);
+            }
+        });
+        $(".weui_uploader_file").each(function () {
+            if($(this).attr('local') == local)
+            {
+                $(this).remove();
+            }
+        });
+    }
+
+    function upload_video() {
+        $("#upload_video").toggle();
+    }
+
+    function doUpload () {
+        if (images.length == 0) {
+            doSave(0);
+        }else {
+            var i = 0, length = images.length;
+            images.serverId = [];
+            function upload() {
+                wx.uploadImage({
+                    localId: images[i],
+                    success: function (res) {
+                        i++;
+                        images.serverId.push(res.serverId);
+                        if (i < length) {
+                            upload();
+                        }
+                        else
+                        {
+                            var media_ids = images.serverId.join(',');
+                            doSave(media_ids);
+                        }
+                    },
+                    fail: function (res) {
+                        alert(JSON.stringify(res));
+                    }
+                });
+            }
+            upload();
+        }
+    }
+
+    function doSave(ids) {
+        if(ids != 0)
+        {
+            $("input[name='images']").val(ids);
+        }
+        if($("#saytext").val() == "")
+        {
+            alert("回复内容不能为空!");
+            return false;
+        }
+        $("#post_form").submit();
+    }
+
+
+</script>

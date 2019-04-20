@@ -1,0 +1,275 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}.resth button{margin-right:5px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-bell-o"></span> 系统提醒
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-6 am-u-md-12" style="text-align: right;">
+                <button type="button" class="am-btn am-btn-default am-btn-xs" onclick="rebatch('0');">
+                    全部标记为已读
+                </button>
+                <button type="button" class="am-btn am-btn-default am-btn-xs am-btn-secondary" onclick="rebatch('1');">
+                    批量标记已读
+                </button>
+                <button type="button" class="am-btn am-btn-default am-btn-xs am-btn-danger" onclick="rebatch('2');">
+                    批量删除提醒
+                </button>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="5%">
+                                <input id="withole" type="checkbox" class="tpl-table-fz-check">全选
+                            </th>
+                            <th width="15%">提醒日期</th>
+                            <th width="40%">提醒内容</th>
+                            <th width="20%">查看状态</th>
+                            <th width="20%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <input type="checkbox" class="tpl-table-fz-check elctive" value="{$vo.id}" data-mvalue="{$vo.mopt_id}">
+                            </td>
+                            <td class="am-hide-sm-only">{:date('Y-m-d H:i:s',$vo.msg_time)}</td>
+                            <td class="am-hide-sm-only">{$vo.retter}</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status == 0}
+                                <span class="am-text-warning">未读</span>
+                                {elseif $vo.status == 1}
+                                <span class="am-text-success">已读</span>
+                                {/if}
+                            </td>
+                            <td>
+                                {if $vo.status == 0}
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                        onclick="uknow('1','{$vo.id}','0');">标记为已读
+                                </button>
+                                {/if}
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger"
+                                        onclick="uknow('2','{$vo.id}','0');">删除提醒
+                                </button>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    !function () {
+        $('#withole').click(function () {
+            var wecked = $(this).prop('checked');
+            if (wecked) {
+                $('.elctive').prop('checked', true);
+            } else {
+                $('.elctive').prop('checked', false);
+            }
+        });
+        $('.elctive').click(function () {
+            var jack = 1;
+            $('.elctive').each(function () {
+                var weck = $(this).prop('checked');
+                if (weck == false) {
+                    jack = 0;
+                    return false;
+                }
+            });
+            if (jack) {
+                $('#withole').prop('checked', true);
+            } else {
+                $('#withole').prop('checked', false);
+            }
+        });
+    }();
+
+
+    function rebatch(guid) {
+        if (guid != 0) {
+            var tired = false;
+            $('.elctive').each(function () {
+                if ($(this).prop('checked')) {
+                    tired = true;
+                    return false;
+                }
+            });
+            if (!tired) {
+                layer.alert('很抱歉，当前没有选中要操作的数据', {'title': '系统提示'});
+                return;
+            }
+        }
+        if (guid == 0) {
+            layer.confirm('您确定要把系统提醒全部标记为已读状态吗？', {
+                btn: ['确定', '取消']
+            }, function (index) {
+                if (setrike('0', '0', '1') > 0) {
+                    layer.close(index);
+                    layer.msg('全部标记为已读成功', {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg('未知错误', {icon: 5, time: 1600}, function () {
+                        location.reload();
+                    });
+                }
+            }, function (index) {
+                layer.close(index);
+            });
+        } else if (guid == 1) {
+            layer.confirm('您确定要批量标记选中的系统提醒状态为已读吗？', {
+                btn: ['确定', '取消']
+            }, function (index) {
+                var i = 0;
+                var j = 0;
+                $('.elctive').each(function () {
+                    if ($(this).prop('checked')) {
+                        var suid = $(this).val();
+                        i++;
+                        j += setrike('1', suid, '1');
+                    }
+                });
+                if (i == j) {
+                    layer.close(index);
+                    layer.msg('批量标记成功', {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg('未知错误', {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }, function (index) {
+                layer.close(index);
+            });
+        } else if (guid == 2) {
+            layer.confirm('您确定要批量删除选中的系统提醒吗？', {
+                btn: ['确定', '取消']
+            }, function (index) {
+                var i = 0;
+                var j = 0;
+                $('.elctive').each(function () {
+                    if ($(this).prop('checked')) {
+                        var suid = $(this).val();
+                        i++;
+                        j += setrike('2', suid, '1');
+                    }
+                });
+                if (i == j) {
+                    layer.close(index);
+                    layer.msg('批量删除成功', {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg('未知错误', {icon: 5, time: 2000}, function () {
+                        location.reload();
+                    });
+                }
+            }, function (index) {
+                layer.close(index);
+            });
+        }
+    }
+
+    function uknow(uetype, suid, batch) {
+        if (uetype == 1) {
+            var title = '您确定要标记当前系统提醒状态为已读吗？';
+        } else {
+            var title = '您确定要删除这条系统提醒吗？';
+        }
+        layer.confirm(title, {
+            btn: ['确定', '取消']
+        }, function (index) {
+            layer.close(index);
+            setrike(uetype, suid, batch);
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+
+    var ulock = false;
+    function setrike(uetype, suid, batch) {
+        if (!ulock) {
+            ulock = true;
+            var surl = "{:url('awake')}";
+            var recode = 0;
+            $.ajax({
+                type: "post",
+                url: surl,
+                async: false,
+                data: {'uetype': uetype, 'usid': suid},
+                dataType: 'json',
+                success: function (data) {
+                    if (batch == 1) {
+                        ulock = false;
+                        if (data.code > 0) {
+                            recode = 1;
+                        } else {
+                            recode = 0;
+                        }
+                    } else {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1600}, function () {
+                                ulock = false;
+                            });
+                        }
+                    }
+                }
+            });
+            return recode;
+        }
+    }
+
+
+
+    function turtle(pigeon) {
+        if (isNaN(pigeon)) {
+            var fz_name = $.trim($('#fz_name').val());
+            if (fz_name)
+                location.href = "{:url('spread')}&hazy_name=" + fz_name + "&page={$page}";
+            else
+                location.href = "{:url('spread')}&page={$page}";
+        } else {
+            var fz_name = $.trim($('#fz_name').val());
+            var egon = '{$egon}';
+            if ((egon != '' || pigeon != '') && fz_name != '')
+                location.href = "{:url('spread')}&egon=" + (pigeon == '' ? egon : pigeon) + "&hazy_name=" + fz_name + "&page={$page}";
+            else if (egon != '' || pigeon != '')
+                location.href = "{:url('spread')}&egon=" + (pigeon == '' ? egon : pigeon) + "&page={$page}";
+            else if (fz_name != '')
+                location.href = "{:url('spread')}&hazy_name=" + fz_name + "&page={$page}";
+            else
+                location.href = "{:url('spread')}&page={$page}";
+        }
+    }
+
+</script>
+{/block}

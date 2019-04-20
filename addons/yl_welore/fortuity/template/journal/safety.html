@@ -1,0 +1,316 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:45px;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}.resth button{margin-right:5px;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-google-wallet"></span> 圈子管理投诉
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="turtle('all');"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索圈子或用户...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-6 am-u-md-7">
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs resth">
+                        <button type="button" class="am-btn am-btn-default" onclick="turtle('all');">全部</button>
+                        <button type="button" class="am-btn am-btn-default" onclick="turtle('0');">未查看</button>
+                        <button type="button" class="am-btn am-btn-default" onclick="turtle('1');">已查看</button>
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-6 am-u-md-5" style="text-align: right;">
+                <button type="button" class="am-btn am-btn-default am-btn-xs am-btn-secondary" onclick="rebatch('0');">
+                    批量标记已查看
+                </button>
+                <button type="button" class="am-btn am-btn-default am-btn-xs am-btn-danger" onclick="rebatch('1');">
+                    批量删除
+                </button>
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="10%">
+                                <input id="withole" type="checkbox" class="tpl-table-fz-check">全选
+                            </th>
+                            <th width="11%">投诉用户</th>
+                            <th width="11%">被投诉用户</th>
+                            <th width="11%">所属圈子</th>
+                            <th width="11%">职位</th>
+                            <th width="11%">投诉原因</th>
+                            <th width="11%">提交时间</th>
+                            <th width="10%">查看状态</th>
+                            <th width="14%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <input type="checkbox" class="tpl-table-fz-check elctive" value="{$vo.id}" data-mvalue="{$vo.mopt_id}">
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_nick_name|emoji_decode|filter_emoji}&page=1"
+                                   title="{$vo.user_nick_name|emoji_decode}"
+                                   target="_blank">
+                                    {$vo.user_nick_name|emoji_decode|subtext=7}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.username|emoji_decode|filter_emoji}&page=1"
+                                   title="{$vo.username|emoji_decode|filter_emoji}" target="_blank">
+                                    {$vo.username|emoji_decode|filter_emoji|subtext=15}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('compass/fence')}&hazy_name={$vo.realm_name}&page=1"
+                                   title="{$vo.realm_name}" target="_blank">
+                                    {$vo.realm_name|subtext=6}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.labor==0}圈主{else}管理员{/if}
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button" class="am-btn am-btn-default am-btn-xs"
+                                                onclick="originer('{$vo.id}');">查看原因
+                                        </button>
+                                        <input id="ounger-{$vo.id}" type="hidden"
+                                               value="{$vo.ment_caption|strip_tags|emoji_decode|filter_emoji}">
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="am-hide-sm-only">{:date('Y-m-d H:i:s',$vo.ment_time)}</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status == 0}
+                                <span class="am-text-warning">未查看</span>
+                                {elseif $vo.status == 1}
+                                <span class="am-text-success">已查看</span>
+                                {/if}
+                            </td>
+                            <td>
+                                {if $vo.status == 0}
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary"
+                                        onclick="uknow('{$vo.id}','{$vo.mopt_id}','0');">标记为已查看
+                                </button>
+                                {/if}
+                                <button type="button" class="am-btn am-btn-default am-btn-xs am-text-danger"
+                                        onclick="uknow('{$vo.id}','{$vo.mopt_id}','1');">删除
+                                </button>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    !function () {
+        $('#withole').click(function () {
+            var wecked = $(this).prop('checked');
+            if (wecked) {
+                $('.elctive').prop('checked', true);
+            } else {
+                $('.elctive').prop('checked', false);
+            }
+        });
+        $('.elctive').click(function () {
+            var jack = 1;
+            $('.elctive').each(function () {
+                var weck = $(this).prop('checked');
+                if (weck == false) {
+                    jack = 0;
+                    return false;
+                }
+            });
+            if (jack) {
+                $('#withole').prop('checked', true);
+            } else {
+                $('#withole').prop('checked', false);
+            }
+        });
+    }();
+
+    function originer(usid) {
+        layer.alert($('#ounger-' + usid).val(), {'title': '投诉原因'});
+    }
+
+    function rebatch(guid) {
+        var tired = false;
+        $('.elctive').each(function () {
+            if ($(this).prop('checked')) {
+                tired = true;
+                return false;
+            }
+        });
+        if (!tired) {
+            layer.alert('很抱歉，当前没有选中要操作的数据', {'title': '系统提示'});
+            return;
+        }
+        if (guid == 0) {
+            layer.confirm('您确定要批量标记选中的数据状态为已查看吗？', {
+                btn: ['确定', '取消']
+            }, function(index){
+                var i = 0;
+                var j = 0;
+                $('.elctive').each(function () {
+                    if ($(this).prop('checked')) {
+                        var suid = $(this).val();
+                        var moid = $(this).attr('data-mvalue');
+                        i++;
+                        j += setrike(suid, moid, '0', '1');
+                    }
+                });
+                if (i == j) {
+                    layer.close(index);
+                    layer.msg('批量标记成功', {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg('未知错误', {icon: 5, time: 1600}, function () {
+                        location.reload();
+                    });
+                }
+            }, function(index){
+                layer.close(index);
+            });
+        } else {
+            layer.confirm('您确定要批量删除选中的数据吗？', {
+                btn: ['确定', '取消']
+            }, function(index){
+                var i = 0;
+                var j = 0;
+                $('.elctive').each(function () {
+                    if ($(this).prop('checked')) {
+                        var suid = $(this).val();
+                        var moid = $(this).attr('data-mvalue');
+                        i++;
+                        j += setrike(suid, moid, '1', '1');
+                    }
+                });
+                if (i == j) {
+                    layer.close(index);
+                    layer.msg('批量删除成功', {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg('未知错误', {icon: 5, time: 1600}, function () {
+                        location.reload();
+                    });
+                }
+            }, function(index){
+                layer.close(index);
+            });
+        }
+    }
+
+    function uknow(suid, moid, uetype) {
+        if (uetype == 0) {
+            var title = '您确定要标记当前数据状态为已查看吗？';
+        } else {
+            var title = '您确定要删除这条数据吗？';
+        }
+        layer.confirm(title, {
+            btn: ['确定', '取消']
+        }, function (index) {
+            layer.close(index);
+            setrike(suid, moid, uetype, '0');
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+
+    var ulock = false;
+    function setrike(suid, moid, uetype, batch) {
+        if (!ulock) {
+            ulock = true;
+            if (uetype == 0) {
+                var surl = "{:url('jaureak')}";
+            } else {
+                var surl = "{:url('sprelint')}";
+            }
+            var recode = 0;
+            $.ajax({
+                type: "post",
+                url: surl,
+                async: false,
+                data: {'suid': suid, 'moid': moid},
+                dataType: 'json',
+                success: function (data) {
+                    if (batch == 1) {
+                        ulock = false;
+                        if (data.code > 0) {
+                            recode = 1;
+                        } else {
+                            recode = 0;
+                        }
+                    } else {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1600}, function () {
+                                ulock = false;
+                            });
+                        }
+                    }
+                }
+            });
+            return recode;
+        }
+    }
+
+
+
+    function turtle(pigeon) {
+        if (isNaN(pigeon)) {
+            var fz_name = $.trim($('#fz_name').val());
+            if (fz_name)
+                location.href = "{:url('safety')}&hazy_name=" + fz_name + "&page={$page}";
+            else
+                location.href = "{:url('safety')}&page={$page}";
+        } else {
+            var fz_name = $.trim($('#fz_name').val());
+            var egon = '{$egon}';
+            if ((egon != '' || pigeon != '') && fz_name != '')
+                location.href = "{:url('safety')}&egon=" + (pigeon == '' ? egon : pigeon) + "&hazy_name=" + fz_name + "&page={$page}";
+            else if (egon != '' || pigeon != '')
+                location.href = "{:url('safety')}&egon=" + (pigeon == '' ? egon : pigeon) + "&page={$page}";
+            else if (fz_name != '')
+                location.href = "{:url('safety')}&hazy_name=" + fz_name + "&page={$page}";
+            else
+                location.href = "{:url('safety')}&page={$page}";
+        }
+    }
+
+</script>
+{/block}

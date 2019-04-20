@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="60208a03-402b-4eca-b7d0-b65369f8c202" name="nyt" url="http://120.77.71.175">
+        <fileTransfer host="120.77.71.175" port="22" rootFolder="/www3/wwwroot/nyt.gzchujiao.com" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

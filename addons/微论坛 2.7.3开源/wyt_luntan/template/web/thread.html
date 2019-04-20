@@ -1,0 +1,289 @@
+{template 'common/header'}
+<div id="menu">
+    <ul class="nav nav-tabs">
+        <li {if $_GPC['action'] == ''}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('thread', array('action' => ''));}">帖子列表</a>
+        </li>
+        <li {if $_GPC['action'] == 'add'}class="active"{/if}>
+        <a href="#">帖子编辑</a>
+        </li>
+        <li {if $_GPC['action'] == 'back'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('thread', array('action' => 'back'));}">后台发布</a>
+        </li>
+
+        <!--<li {if $_GPC['action'] == 'export'}class="active"{/if}>-->
+        <!--<a href="{php echo $this->createWebUrl('thread', array('action' => 'export'));}">导出数据</a>-->
+        <!--</li>-->
+    </ul>
+</div>
+
+{if $_GPC['action'] == 'add'}
+<form method="post" action="{php echo $this->createWebUrl('thread',array('action'=>'add1','id'=>$res1['id']))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">帖子管理</div>
+        <div class="panel-body">
+           <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >标题</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="title" value="{$res1['title']}" class="form-control" placeholder="请输入文章标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >类型</label>
+                <div class="col-sm-9 col-xs-12">
+                    <select  name="fenlei" class="form-control valid" style="width:200px;" aria-invalid="false">
+                        <option  value="{$res1['fenlei']}">{$res1['fenlei']}</option>
+                        {loop $luntan_module $val}
+                        {if $res1['fenlei'] != $val['name']}
+                        <option  value="{$val['name']}">{$val['name']}</option>
+                        {/if}
+                        {/loop}
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >内容</label>
+                <div class="col-sm-9 col-xs-12">
+                    <textarea name="info"  cols="30" rows="10" class="form-control" placeholder="请输入内容">{$res1['info']}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >发帖昵称</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="nickname" value="{$res1['nickname']}" class="form-control" placeholder="请输入文章链接">
+                </div>
+            </div>
+            {if $res1[biaoshi]=='1'}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_multi_image('images',$images);}
+                </div>
+            </div>
+            {/if}
+            {if $res1[biaoshi]=='2'}
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_multi_image('images',$images2)}
+                </div>
+            </div>
+            {/if}
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $_GPC['action'] == 'back'}
+<form method="post" action="{php echo $this->createWebUrl('thread',array('action'=>'addback','id'=>$res1['id']))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">后台发帖</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >标题</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="title" value="{$res1['title']}" class="form-control" placeholder="请输入文章标题">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >内容</label>
+                <div class="col-sm-9 col-xs-12">
+                    <textarea name="info" id="" cols="30" rows="10" class="form-control" placeholder="请输入内容"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_multi_image('images',$images);}
+                </div>
+            </div>
+            
+            <div class="form-group">
+            	<label class="col-xs-12 col-sm-3 col-md-2 control-label" >类型</label>
+			    <div class="col-sm-9 col-xs-12">
+                    <select id="data_type" name="fenlei" class="form-control valid" style="width:200px;" aria-invalid="false">
+                    	{loop $luntan_module $val}
+                    	<option value="{$val['name']}">{$val['name']}</option>
+                    	{/loop}                        
+                    </select>
+                </div>
+			</div>
+
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $_GPC['action'] ==''}
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>昵称</th>
+        {if $set['dingdan'] == 1}
+            <th>字段增加</th>
+        {/if}
+        <th>内容</th>
+        <th>时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res $v}
+    <tr>
+        <td>{$v['nickname']}</td>
+        {if $set['dingdan'] == 1}
+            <td>{$v['zengjia']}</td>
+        {/if}
+        <td>{$v['info2']}</td>
+        <td>{$v['time']}</td>
+        <td>
+            {if $v['shstate'] ==0}
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('thread',array('action'=>'browse', 'id' => $v['id']));}">浏览记录</a>
+            <a  class="btn btn-success btn-sm" onclick="shenghe(1,{$v['id']},this)"  >已显</a>
+            {else}
+            <a  class="btn btn-info btn-sm" onclick="shenghe(0,{$v['id']},this)" >待审</a>
+            {/if}
+            {if $v['zdstate'] ==0}
+            <a  class="btn btn-primary btn-sm" onclick="zhiding(1,{$v['id']},this)"  >置顶</a>
+            {else}
+            <a  class="btn btn-info btn-sm" onclick="zhiding(0,{$v['id']},this)" >取置</a>
+            {/if}
+            <a class="btn btn-warning btn-sm" href="{php echo $this->createWebUrl('thread',array('action'=>'add', 'id' => $v['id']));}">编辑</a>
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('thread',array('action'=>'delete', 'id' => $v['id']));}">删除</a>
+            {if $v['ggstate'] ==0}
+            <a  class="btn btn-success btn-sm" onclick="notice(1,{$v['id']},this)"  >公告</a>
+            {else}
+            <a  class="btn btn-info btn-sm" onclick="notice(0,{$v['id']},this)" >取公</a>
+            {/if}
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+<div class="col-xs-12">
+    {php echo $pager}
+</div>
+
+{/if}
+
+{if $_GPC['action'] =='browse'}
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>头像</th>
+        <th>openid</th>
+        <th>昵称</th>
+        <th>浏览时间</th>
+        <th style="width:250px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $userinfo $v}
+    <tr>
+        <td>
+            <img src="{$v[avatar]}" style="width: 50px;height: 50px;border-radius:50px;margin: 0 auto;">
+        </td>
+        <td>{$v['openid']}</td>
+        <td>{$v['nickname']}</td>
+        <td>{php echo date('Y-m-d H:i:s',$v['add_time'])}</td>
+        <td>
+         <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('thread',array('action'=>'browse_del', 'id' => $v['id']));}">删除</a>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+
+<!--<div class="col-xs-12">
+    {php echo $pager}
+</div>-->
+
+{/if}
+
+
+
+{template 'common/footer'}
+<style>
+    .on{background-color: chartreuse}
+</style>
+<script>
+    function shenghe(shstate ,id,btn) {
+       var a= confirm('确定修改？');
+        if(a){
+        $.ajax({
+            url : "{php echo $this->createWebUrl('Thread',array('action'=>'shenghe'))}",
+            type:"post",
+            data:{
+                shstate : shstate,
+                id : id
+            }, success: function (res) {
+                if(res==1) {
+                    window.location.reload();
+                }else{
+                    window.location.reload();
+                }
+            }
+        });
+        }else{
+            return false;
+        }
+    }
+
+    function zhiding(zdstate ,id) {
+        var a= confirm('确定修改？');
+        if(a){
+        $.ajax({
+            url : "{php echo $this->createWebUrl('Thread',array('action'=>'zhiding'))}",
+            type:"post",
+            data:{
+                zdstate : zdstate,
+                id : id
+            }, success: function (res) {
+                if(res==1) {
+                    window.location.reload();
+                }else{
+                    window.location.reload();
+                }
+            }
+        });
+        }else{
+            return false;
+        }
+    }
+    function notice(ggstate ,id) {
+       var a= confirm('确定修改？');
+        if(a){
+        $.ajax({
+            url : "{php echo $this->createWebUrl('Thread',array('action'=>'notice'))}",
+            type:"post",
+            data:{
+                ggstate : ggstate,
+                id : id
+            }, success: function (res) {
+                if(res==1) {
+                    window.location.reload();
+                }else{
+                    window.location.reload();
+                }
+            }
+        });
+    }else{
+        return false;
+    }
+    }
+</script>

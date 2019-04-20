@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>修改帖子</title>
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key={$set['qq_address_key']}"></script>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui.css"/>
+    <link rel="stylesheet" href="{ASSETS_PATH}css/weui2.css"/>
+    <script src="{ASSETS_PATH}js/layer/layer.js"></script>
+    <style>
+        .weui_cells {margin-top:0px;}
+        ul li {list-style: none;}
+        .fenlei {margin-bottom:8px;margin-left:5px;font-size:13px;float: left;border:1px solid #999;color:#666;padding:3px 12px;border-radius:15px;}
+        .bgcolor{color: #fff;background:#ff9000;border:1px solid white}
+        .weui_cells:after {border:none;}
+    </style>
+
+</head>
+<body style="background-color: rgb(245, 245, 245);">
+<form name="form1" action="{php echo $this->createMobileUrl('Index',array('action'=>'update','id'=>$res['id']))}" method="post">
+    <div class="weui_cells weui_cells_form" style="padding-bottom:10px;background-color: rgb(245, 245, 245) !important;">
+
+        <div class="weui_cell" style="padding: 10px 10px !important;">
+            <div class="weui_cell_bd weui_cell_primary" style="background: #ffffff;">
+                <textarea name="info" id="textarea" style="height: 400px;padding: 1%;width: 98% !important;" class="weui_textarea" placeholder="我想说点什么..." rows="5">{$res['info']}</textarea>
+            </div>
+        </div>
+
+    </div>
+
+    <a href="javascript:form1.submit();"   style="position:fixed;bottom:0;width:100%;height:45px;line-height:45px;background:-webkit-linear-gradient(left,#ff9000,#ff5000) no-repeat;color:white;text-align:center"><span>确认修改</span></a>
+</form>
+
+
+</body>
+</html>
+<script>
+
+
+</script>
+{php echo register_jssdk(false)}
+
+<script>
+    var images = new Array();
+    var serids = new Array();
+    function upload_img() {
+
+        wx.ready(function () {
+            wx.chooseImage({
+                count:9,
+                sizeType: ['compressed'],
+                sourceType: ['album', 'camera'],
+                success: function (res) {
+                    $.each(res.localIds,function (k,v) {
+                        show_img(v);
+                        images.push(v);
+                    });
+                }
+            });
+        });
+    }
+
+
+
+
+    function del_img(local) {
+        $.each(images,function (k,v) {
+            if(v == local)
+            {
+                images.splice(k);
+            }
+        });
+        $(".weui_uploader_file").each(function () {
+            if($(this).attr('local') == local)
+            {
+                $(this).remove();
+            }
+        });
+    }
+
+
+</script>
+<script>
+    var isUploadVideo = false;
+    var uploadProgress = 0;
+    var isStart = false;
+
+    function progressStart () {
+        $('body').append('<div style="display">');
+    }
+
+    // 定时器
+    var timer = setInterval(function () {
+        if (isStart == false) {
+            return ;
+        }
+        if (uploadProgress > 90) {
+            return ;
+        }
+        if (uploadProgress >= 75) {
+            uploadProgress = uploadProgress + 1;
+        } else {
+            uploadProgress = uploadProgress + 5;
+        }
+        $('.upload-progress').text(uploadProgress + '%');
+    }, 1000);
+
+    function upload_video(obg) {
+        var formData = new FormData();
+        formData.append('file',$("input[name='video']")[0].files[0]);
+        $.ajax({
+            url : "{php echo $this->createMobileUrl('Index',array('action' => 'upload_video'))}",type:"post",
+            data:formData,
+            processData:false,
+            contentType:false,
+            beforeSend: function () {
+                isStart = true;
+                isUploadVideo = false;
+            },
+            success:function (res) {
+                isStart = false;
+                isUploadVideo = true;
+                uploadProgress = 0;
+                $('.upload-progress').text('100%');
+                var aa = res;
+
+                $("input[name='videos']").val(aa);
+                var video = "";
+                video += '<a href="#" class="thumbnail"><video width="100%" height="100%" controls> <source src="'+res+'" type="video/mp4"></video></a>'
+                $("#yulan").html(video);
+                $("#sss").val(aa);
+            }
+        });
+    }
+    function show_video()
+    {
+        $("#video").show();
+    }
+    $(".xuanze ul li").click(function () {
+        var fenlei=$(this).next().val();
+        $("#fenlei").val(fenlei);
+        $(this).addClass("bgcolor").siblings().removeClass("bgcolor");
+    })
+    function guanzhu1(){
+        var erwei = "{php echo tomedia($set['erwei'])}"
+        layer.open({
+            type: 1,
+            title: "扫一扫关注我们",
+            area: ['300px', '360px'], //宽高
+            shadeClose: true, //开启遮罩关闭
+            content: '<div style="width:280px;margin-left:10px;">' +
+            '<img src="'+erwei+'" style="width:280px;height:280px;">' +
+            '<div style="text-align:center;font-size:15px;margin-top:-10px;">长按二维码关注我们</div></div>'
+        });
+    }
+</script>

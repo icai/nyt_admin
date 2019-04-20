@@ -1,0 +1,105 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-adn"></span> 流量主
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-12">
+                <div class="am-form am-form-horizontal" style="width: 670px;height:400px;margin: 0px auto;box-shadow: 0px 0px 10px 0px black;">
+                    <div class="am-form-group" style="padding: 30px 0px 0px 0px;margin-left: 30px;">
+                        <label class="am-u-sm-3 am-form-label">圈子广告</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <div class="tpl-switch">
+                                <input id="adstory" type="checkbox" style="display: none;" class="ios-switch bigswitch tpl-switch-btn" {if $list.adstory==1}checked{/if}>
+                                <div class="tpl-switch-btn-view">
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-form-group" style="padding: 10px 0px 0px 0px;margin-left: 30px;">
+                        <label class="am-u-sm-3 am-form-label">帖子广告</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <div class="tpl-switch">
+                                <input id="adsper" type="checkbox" style="display: none;" class="ios-switch bigswitch tpl-switch-btn" {if $list.adsper==1}checked{/if}>
+                                <div class="tpl-switch-btn-view">
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-form-group" style="padding: 10px 0px 0px 0px;margin-left: 30px;">
+                        <label class="am-u-sm-3 am-form-label">广告相隔行数</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="number" id="isolate" value="{$list.isolate}" placeholder="请输入广告相隔行数">
+                            <small>每相隔多少行 ( 数据 ) 显示一条广告</small>
+                        </div>
+                    </div>
+                    <div class="am-form-group" style="padding: 10px 0px 30px 0px;margin-left: 30px;">
+                        <label class="am-u-sm-3 am-form-label">流量主ID</label>
+                        <div class="am-u-sm-8 am-u-end">
+                            <input type="text" id="adunitId" value="{$list.adunit_id}" placeholder="请输入流量主ID">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-7 am-u-sm-push-5">
+                            <button type="button" class="am-btn am-btn-secondary" style="border-radius: 5px;" onclick="holdSave();">保存设置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+
+    !function () {
+        $('.tpl-switch').find('.tpl-switch-btn-view').on('click', function () {
+            $(this).prev('.tpl-switch-btn').prop("checked", function () {
+                if ($(this).is(':checked')) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+        });
+    }();
+
+    function holdSave() {
+        var adstory = $('#adstory').prop('checked') ? 1 : 0;
+        var adsper = $('#adsper').prop('checked') ? 1 : 0;
+        var isolate = Number($('#isolate').val().match(/^\d+(?:\.\d{0,0})?/));
+        var adunitId = $.trim($('#adunitId').val());
+        $.ajax({
+            type: "post",
+            url: "{:url('proclaim')}",
+            data: {
+                'usid': '{$list.id}',
+                'adstory': adstory,
+                'adsper': adsper,
+                'isolate': isolate,
+                'adunitId': adunitId
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 2000});
+                }
+            }
+        });
+    }
+</script>
+{/block}

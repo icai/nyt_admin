@@ -1,0 +1,122 @@
+{template 'common/header'}
+<div id="menu">
+    <ul class="nav nav-tabs">
+        <li {if $_GPC['action'] == ''}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('list', array('action' => ''));}">菜单列表</a>
+        </li>
+        <li {if $_GPC['action'] == 'add'}class="active"{/if}>
+        <a href="{php echo $this->createWebUrl('list', array('action' => 'add'));}">添加/修改</a>
+        </li>
+
+    </ul>
+</div>
+
+
+{if $_GPC['action'] == 'add'}
+<form method="post" action="{php echo $this->createWebUrl('list',array('action'=>'add','id'=>$res['id']))}" class="form-horizontal bv-form" role="form" novalidate="novalidate">
+    <div class="panel panel-info">
+        <div class="panel-heading">广告列表</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >标题</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="title" value="{$res['title']}" class="form-control" placeholder="请输入标题">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片</label>
+                <div class="col-sm-9 col-xs-12">
+                    {php echo tpl_form_field_image('logo',$res['logo'])}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >链接</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text" name="url" value="{$res['url']}" class="form-control" placeholder="请输入链接">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >序号</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="number" name="xuhao" value="{$res['xuhao']}" class="form-control" placeholder="序号">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >主页</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text"  value="{php echo $this->createMobileUrl('Index',array('action'=>''))}" class="form-control" readonly/>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >反馈</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text"  value="{php echo $this->createMobileUrl('User',array('action'=>'opinion'))}" class="form-control" readonly/>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >发帖</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text"  value="{php echo $this->createMobileUrl('Index',array('action'=>'fatie'))}" class="form-control" readonly/>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label" >我的</label>
+                <div class="col-sm-9 col-xs-12">
+                    <input type="text"  value="{php echo $this->createMobileUrl('Index',array('action'=>'user'))}" class="form-control" readonly/>
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group" style="margin-left: 10%;">
+            <div class="col-sm-9 col-xs-12">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </div>
+    </div>
+</form>
+{/if}
+
+{if $_GPC['action'] ==''}
+<div class="panel panel-info" style="text-align: center;font-size: 20px;background-color: #bce8f1">建议添加四个</div>
+<table class="table table-hover">
+    <thead class="navbar-inner">
+    <tr>
+        <th>序号</th>
+        <th>图标</th>
+        <th>标题</th>
+        <th>链接</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop $res $v}
+    <tr>
+        <td>{$v['xuhao']}</td>
+        <td><img src="{php echo tomedia($v['logo'])}" width="50px" height="50px"></td>
+        <td>{$v['title']}</td>
+        <td>{$v['url']}</td>
+        <td>
+            <a class="btn btn-success btn-sm" href="{php echo $this->createWebUrl('list',array('action'=>'add', 'id' => $v['id']));}">编辑</a>
+            <a class="btn btn-danger btn-sm" href="{php echo $this->createWebUrl('list',array('action'=>'delete', 'id' => $v['id']));}">删除</a>
+        </td>
+    </tr>
+    {/loop}
+    </tbody>
+</table>
+<div class="col-xs-12">
+    {php echo $pager}
+</div>
+{/if}
+
+
+
+
+
+{template 'common/footer'}

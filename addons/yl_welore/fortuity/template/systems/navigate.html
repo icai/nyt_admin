@@ -1,0 +1,330 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.img-select {  box-shadow: 0px 0px 5px 5px rgb(102, 153, 255) !important;  }</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-life-bouy"></span> 自定义设置
+        </div>
+    </div>
+    <div class="tpl-block am-form am-form-horizontal">
+        <div class="am-g" style="margin: 20px 0px;">
+            <div class="am-u-sm-6 am-u-lg-centered">
+                <div class="am-form-group">
+                    <label class="am-u-sm-5 am-form-label" style="padding-top: 5px;">自定义 "首页标题" 名称</label>
+                    <div class="am-u-sm-7">
+                        <input id="sHomeTitle" style="width: 200px;" id="sHomeTitle" class="am-form-field am-round" type="text"
+                               value="{$list.home_title}" placeholder="首页名称">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-g" style="margin: 50px 0px;">
+            <div class="am-u-sm-4">
+                <div class="am-form-group">
+                    <label class="am-u-sm-5 am-form-label" style="padding-top: 10px;">自定义 "圈子" 名称</label>
+                    <div class="am-u-sm-7">
+                        <input id="landgrave" style="width: 200px;padding: 5px;margin-top: 10px;height: 30px;" type="text" value="{$list.landgrave}">
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-4">
+                <div class="am-form-group">
+                    <label class="am-u-sm-5 am-form-label" style="padding-top: 10px;">自定义 "贝壳" 名称</label>
+                    <div class="am-u-sm-7">
+                        <input id="currency" style="width: 200px;padding: 5px;margin-top: 10px;height: 30px;" type="text" value="{$list.currency}">
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-4">
+                <div class="am-form-group">
+                    <label class="am-u-sm-5 am-form-label" style="padding-top: 10px;">自定义 "积分" 名称</label>
+                    <div class="am-u-sm-7">
+                        <input id="confer" style="width: 200px;padding: 5px;margin-top: 10px;height: 30px;" type="text" value="{$list.confer}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-g" style="margin: 50px 0px;">
+            <div class="am-u-sm-4">
+                <div class="am-form-group">
+                    <label class="am-u-sm-5 am-form-label" style="padding-top: 5px;">导航背景颜色</label>
+                    <div class="am-u-sm-7">
+                        <input style="width: 200px;padding: 2px;border-radius: 10px;" type="color"
+                               value="{$list.pattern_data.style.backcolor}" onchange="transmutationNext(this);">
+                        <input id="backcolor"
+                               style="width: 200px;padding: 2px;border-radius: 10px;margin-top: 10px;height: 30px;"
+                               type="text" value="{$list.pattern_data.style.backcolor}"
+                               oninput="transmutationPrev(this);">
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-4">
+                <div class="am-form-group">
+                    <label class="am-u-sm-5 am-form-label" style="padding-top: 5px;">导航字体颜色</label>
+                    <div class="am-u-sm-7">
+                        <input style="width: 200px;padding: 2px;border-radius: 10px;" type="color"
+                               value="{$list.pattern_data.style.font_color}" onchange="transmutationNext(this);">
+                        <input id="fontColor"
+                               style="width: 200px;padding: 2px;border-radius: 10px;margin-top: 10px;height: 30px;"
+                               type="text" value="{$list.pattern_data.style.font_color}"
+                               oninput="transmutationPrev(this);">
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-4">
+                <div class="am-form-group">
+                    <label class="am-u-sm-5 am-form-label" style="padding-top: 5px;">导航字体选中颜色</label>
+                    <div class="am-u-sm-7">
+                        <input style="width: 200px;padding: 2px;border-radius: 10px;" type="color"
+                               value="{$list.pattern_data.style.font_color_active}" onchange="transmutationNext(this);">
+                        <input id="fontColorActive"
+                               style="width: 200px;padding: 2px;border-radius: 10px;margin-top: 10px;height: 30px;"
+                               type="text" value="{$list.pattern_data.style.font_color_active}"
+                               oninput="transmutationPrev(this);">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-g">
+            <div style="width:20%;text-align: center;color: #ffffff;float: left;">
+                <div style="background-image: linear-gradient(to right, #434343 0%, black 100%);line-height: 80px;width: 270px;height: 200px;text-align: center;margin: 0 auto;">
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">名称</p>
+                    <input id="homeTitle" type="text"
+                           style="border-radius: 3px;margin-left: 10px;width: 150px;display: inline;"
+                           value="{$list.pattern_data.home.title}"
+                           placeholder="首页">
+                    <br>
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">图片</p>
+                    <img class="picture_collection" src="{$list.pattern_data.home.images.img}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                    <img class="picture_collection" src="{$list.pattern_data.home.images.img_active}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                </div>
+            </div>
+            <div style="width:20%;text-align: center;color: #ffffff;float: left;">
+                <div style="background-image: linear-gradient(to right, #434343 0%, black 100%);line-height: 80px;width: 270px;height: 200px;text-align: center;margin: 0 auto;">
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">名称</p>
+                    <input id="plazaTitle" type="text"
+                           style="border-radius: 3px;margin-left: 10px;width: 150px;display: inline;"
+                           value="{$list.pattern_data.plaza.title}"
+                           placeholder="广场">
+                    <br>
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">图片</p>
+                    <img class="picture_collection" src="{$list.pattern_data.plaza.images.img}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                    <img class="picture_collection" src="{$list.pattern_data.plaza.images.img_active}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                </div>
+            </div>
+            <div style="width:20%;text-align: center;color: #ffffff;float: left;">
+                <div style="background-image: linear-gradient(to right, #434343 0%, black 100%);line-height: 80px;width: 270px;height: 200px;text-align: center;margin: 0 auto;">
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">名称</p>
+                    <input id="releaseTitle" type="text"
+                           style="border-radius: 3px;margin-left: 10px;width: 150px;display: inline;"
+                           value="{if $list.pattern_data.release.title}{$list.pattern_data.release.title}{else}发布{/if}"
+                           placeholder="发布">
+                    <br>
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">图片</p>
+                    <img class="picture_collection" src="{if $list.pattern_data.release.images.img}{$list.pattern_data.release.images.img}{else}{:urlBridging('static/wechat/release.png')}{/if}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                </div>
+            </div>
+            <div style="width:20%;text-align: center;color: #ffffff;float: left;">
+                <div style="background-image: linear-gradient(to right, #434343 0%, black 100%);line-height: 80px;width: 270px;height: 200px;text-align: center;margin: 0 auto;">
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">名称</p>
+                    <input id="goodsTitle" type="text"
+                           style="border-radius: 3px;margin-left: 10px;width: 150px;display: inline;"
+                           value="{$list.pattern_data.goods.title}"
+                           placeholder="商品">
+                    <br>
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">图片</p>
+                    <img class="picture_collection" src="{$list.pattern_data.goods.images.img}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                    <img class="picture_collection" src="{$list.pattern_data.goods.images.img_active}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                </div>
+            </div>
+            <div style="width:20%;text-align: center;color: #ffffff;float: left;">
+                <div style="background-image: linear-gradient(to right, #434343 0%, black 100%);line-height: 80px;width: 270px;height: 200px;text-align: center;margin: 0 auto;">
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">名称</p>
+                    <input id="userTitle" type="text"
+                           style="border-radius: 3px;margin-left: 10px;width: 150px;display: inline;"
+                           value="{$list.pattern_data.user.title}"
+                           placeholder="我的">
+                    <br>
+                    <p style="display: inline;margin: 0;margin-top: 4px;font-size: 14px;">图片</p>
+                    <img class="picture_collection" src="{$list.pattern_data.user.images.img}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                    <img class="picture_collection" src="{$list.pattern_data.user.images.img_active}"
+                         style="width: 80px;height: 80px;margin: 10px;display: inline;background-color: #ffffff;cursor: pointer;"
+                         onclick="cuonice(this);">
+                </div>
+        </div>
+    </div>
+    <div>
+        <div style="cursor:pointer;margin: 50px auto;color:#ffffff;background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);height: 38px;width: 220px;font-size: 15px;text-align: center;line-height: 38px;border-radius: 20px;"
+             onclick="holdSave();">
+            保存
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    function transmutationNext(obj) {
+        $(obj).next('input').val(obj.value);
+    }
+
+    function transmutationPrev(obj) {
+        $(obj).prev('input').val(obj.value);
+    }
+
+    function sutake(eurl) {
+        $('.img-select').attr('src', eurl);
+    }
+
+    function cuonice(obj) {
+        $(obj).addClass('img-select');
+        layer.open({
+            type: 2,
+            anim: 2,
+            scrollbar: false,
+            area: ['900px', '600px'],
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            content: ["{:url('images/dialogImages')}&gclasid=0", 'no'],
+            end: function (index, layer) {
+                $('.img-select').removeClass('img-select');
+            }
+        });
+    }
+
+
+    function holdSave() {
+        var sHomeTitle = $.trim($('#sHomeTitle').val());
+        var landgrave = $.trim($('#landgrave').val());
+        var currency = $.trim($('#currency').val());
+        var confer = $.trim($('#confer').val());
+        var gateData = {};
+        gateData['style'] = {};
+        gateData['home'] = {};
+        gateData['plaza'] = {};
+        gateData['release'] = {};
+        gateData['goods'] = {};
+        gateData['user'] = {};
+        gateData['style']['backcolor'] = $.trim($('#backcolor').val());
+        gateData['style']['font_color'] = $.trim($('#fontColor').val());
+        gateData['style']['font_color_active'] = $.trim($('#fontColorActive').val());
+        gateData['home']['title'] = $.trim($('#homeTitle').val());
+        gateData['plaza']['title'] = $.trim($('#plazaTitle').val());
+        gateData['release']['title'] = $.trim($('#releaseTitle').val());
+        gateData['goods']['title'] = $.trim($('#goodsTitle').val());
+        gateData['user']['title'] = $.trim($('#userTitle').val());
+
+        if (sHomeTitle == "") {
+            layer.msg('自定义 "首页标题" 名称不能为空');
+            return false;
+        }
+        if (landgrave == "") {
+            layer.msg('自定义 "圈子" 名称不能为空');
+            return false;
+        }
+        if (currency == "") {
+            layer.msg('自定义 "贝壳" 名称不能为空');
+            return false;
+        }
+        if (confer == "") {
+            layer.msg('自定义 "积分" 名称不能为空');
+            return false;
+        }
+        if (gateData['style']['backcolor']  == "") {
+            layer.msg('导航背景颜色不能为空');
+            return false;
+        }
+        if (gateData['style']['font_color'] == "") {
+            layer.msg('导航字体颜色不能为空');
+            return false;
+        }
+        if (gateData['style']['font_color_active'] == "") {
+            layer.msg('导航字体选中颜色不能为空');
+            return false;
+        }
+        if (gateData['home']['title'] == "") {
+            layer.msg('"首页" 导航名称 不能为空');
+            return false;
+        }
+        if (gateData['plaza']['title'] == "") {
+            layer.msg('"广场" 导航名称 不能为空');
+            return false;
+        }
+        if (gateData['release']['title'] == "") {
+            layer.msg('"发布" 导航名称 不能为空');
+            return false;
+        }
+        if (gateData['goods']['title'] == "") {
+            layer.msg('"小商品" 导航名称 不能为空');
+            return false;
+        }
+        if (gateData['user']['title'] == "") {
+            layer.msg('"我的"导航名称不能为空');
+            return false;
+        }
+        gateData['home']['images'] = {};
+        gateData['plaza']['images'] = {};
+        gateData['release']['images'] = {};
+        gateData['goods']['images'] = {};
+        gateData['user']['images'] = {};
+        $('.picture_collection').each(function (i) {
+            switch (i) {
+                case 0:
+                    gateData['home']['images']['img'] = $(this).attr('src');
+                    break;
+                case 1:
+                    gateData['home']['images']['img_active'] = $(this).attr('src');
+                    break;
+                case 2:
+                    gateData['plaza']['images']['img'] = $(this).attr('src');
+                    break;
+                case 3:
+                    gateData['plaza']['images']['img_active'] = $(this).attr('src');
+                    break;
+                case 4:
+                    gateData['release']['images']['img'] = $(this).attr('src');
+                    break;
+                case 5:
+                    gateData['goods']['images']['img'] = $(this).attr('src');
+                    break;
+                case 6:
+                    gateData['goods']['images']['img_active'] = $(this).attr('src');
+                    break;
+                case 7:
+                    gateData['user']['images']['img'] = $(this).attr('src');
+                    break;
+                case 8:
+                    gateData['user']['images']['img_active'] = $(this).attr('src');
+                    break;
+            }
+        });
+        $.post("{:url('systems/navigate')}", {"landgrave": landgrave, "currency": currency, "confer": confer, "home_title": sHomeTitle, "pattern_data": gateData}, function (data) {
+            if (data.code > 0) {
+                layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(data.msg, {icon: 5, time: 1000});
+            }
+        }, 'json');
+    }
+</script>
+{/block}

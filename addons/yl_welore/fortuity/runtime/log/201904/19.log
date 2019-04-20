@@ -1,0 +1,100 @@
+---------------------------------------------------------------
+[ 2019-04-19T17:14:29+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_user_status
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000426s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001248s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000569s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:14:29+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_diy
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000403s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001059s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000413s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:14:29+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_index_list
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000708s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001121s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000320s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:14:29+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_ad
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000520s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001067s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000367s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:14:29+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_diy
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000628s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001114s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000344s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:22:00+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_user_status
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000527s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.004475s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000382s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:22:00+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_diy
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000598s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001129s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000317s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:22:00+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_index_list
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000316s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.000955s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000269s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:22:00+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_ad
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000349s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.000829s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000258s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:22:00+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_diy
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000533s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001063s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000292s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:27:17+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_user_status
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000605s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001413s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000450s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:27:17+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_diy
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000432s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.000849s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000360s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:27:17+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_index_list
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000298s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.000811s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000303s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:27:17+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_ad
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000430s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.000921s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000374s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:27:17+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_diy
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000548s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001209s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5ZljmBiypi0cIDFFC06mZgQ'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000392s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:33:01+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_user_status
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000465s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.001088s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5df88FfJKpIfYHGsLaOGU5Q'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000482s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:33:01+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_diy
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000395s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.000973s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5df88FfJKpIfYHGsLaOGU5Q'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000367s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:33:01+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_index_list
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000296s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.000908s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5df88FfJKpIfYHGsLaOGU5Q'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000334s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:33:01+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_ad
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000469s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.000906s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5df88FfJKpIfYHGsLaOGU5Q'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000326s ]
+---------------------------------------------------------------
+[ 2019-04-19T17:33:01+08:00 ] 113.111.63.233 POST nyt.gzchujiao.com/addons/yl_welore/web/index.php?s=/api/User/get_diy
+[ sql ] [ DB ] CONNECT:[ UseTime:0.000614s ] mysql:host=127.0.0.1;port=3306;dbname=nyt_gzchujiao_c;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yl_welore_user` [ RunTime:0.003387s ]
+[ sql ] [ SQL ] SELECT * FROM `yl_welore_user` WHERE  `user_wechat_open_id` = 'o_SzI5df88FfJKpIfYHGsLaOGU5Q'  AND `token` IS NULL LIMIT 1 [ RunTime:0.000310s ]

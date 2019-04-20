@@ -1,0 +1,162 @@
+{extend name="/base"/}
+{block name="main"}
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-circle-o"></span> 圈子审核详情
+        </div>
+        <div style="text-align: right">
+            {if $list.realm_status==0}
+            <button type="button" class="am-btn am-btn-success am-btn-sm am-round" onclick="satypical('1');">通过审核</button>
+            <button type="button" class="am-btn am-btn-danger am-btn-sm am-round" onclick="satypical('3');">拒绝通过</button>
+            {/if}
+            <a href="{:url('solicit')}">
+                <button type="button" class="am-btn am-btn-default am-btn-sm am-round">返回</button>
+            </a>
+        </div>
+    </div>
+    <div class="tpl-block ">
+        <div class="am-g tpl-amazeui-form">
+            <div class="am-u-sm-12 am-u-md-9">
+                <div class="am-form am-form-horizontal">
+                    <div class="am-form-group">
+                        <label for="rename" class="am-u-sm-3 am-form-label">圈子名称</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="rename" value="{$list.realm_name}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="shion" class="am-u-sm-3 am-form-label">圈子图标</label>
+                        <div class="am-u-sm-9">
+                            <img src="{$list.realm_icon}" id="shion" onerror="this.src='static/disappear/default.png'"
+                                 style="width: 100px;height: 100px;"/>
+                            <input type="hidden" value="{$list.realm_icon}" name="sngimg">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="name" class="am-u-sm-3 am-form-label">圈子类型</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="name" value="{$list.name}" disabled>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="synopsis" class="am-u-sm-3 am-form-label">圈子简介</label>
+                        <div class="am-u-sm-9">
+                            <textarea rows="5" id="synopsis" disabled
+                                      placeholder="请输入圈子简介">{$list.realm_synopsis}</textarea>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="nick_name" class="am-u-sm-3 am-form-label">圈子申请用户</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="nick_name" disabled value="{$list.user_nick_name|emoji_decode|filter_emoji}">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="openid" class="am-u-sm-3 am-form-label">用户openid</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="openid" disabled value="{$list.user_wechat_open_id}">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="ustatus" class="am-u-sm-3 am-form-label">用户状态</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="ustatus" disabled value="{if $list.ustatus==1}正常{else}封禁{/if}">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="is_gnaw" class="am-u-sm-3 am-form-label">是否申请圈主</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="is_gnaw" disabled value="{if $list.is_gnaw_qulord==1}是{else}否{/if}">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="attention" class="am-u-sm-3 am-form-label">是否开启权限</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="attention" disabled value="{if $list.attention==1}是{else}否{/if}">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="solicit_origin" class="am-u-sm-3 am-form-label">申请原因</label>
+                        <div class="am-u-sm-9">
+                            <textarea rows="5" id="solicit_origin" disabled placeholder="请输入圈子简介">{$list.solicit_origin}</textarea>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="ustatus" class="am-u-sm-3 am-form-label">圈子提交申请次数</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" id="solicit_rate" disabled value="{$list.solicit_rate}">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">圈子状态</label>
+                        <div class="am-u-sm-9">
+                            {if $list.realm_status == 0}
+                            <span class="am-text-warning">待审核</span>
+                            {elseif $list.realm_status == 1}
+                            <span class="am-text-success">已通过</span>
+                            {elseif $list.realm_status == 3}
+                            <span class="am-text-danger">已拒绝</span>
+                            {elseif $list.realm_status == 4}
+                            <span class="am-text-danger">数据异常</span>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+{block name="script"}
+<script>
+
+    function satypical(pical) {
+        var uata = {};
+        uata['uplid'] = '{$list.id}';
+        uata['pical'] = pical;
+        if (pical == 1) {
+            layer.confirm("您要<span style='color: green;'>同意</span>该圈子通过审核吗？", {
+                btn: ['同意', '取消'], 'title': '操作提示'
+            }, function () {
+                equitable(uata);
+            }, function () {
+                layer.closeAll();
+            });
+        } else {
+            layer.confirm("您要<span style='color: red;'>拒绝</span>该圈子通过审核吗？", {
+                btn: ['确定', '取消'], 'title': '操作提示'
+            }, function () {
+                equitable(uata);
+            }, function () {
+                layer.closeAll();
+            });
+        }
+    }
+
+
+    function equitable(uata) {
+        $.ajax({
+            type: "post",
+            url: "{:url('aspsolicit')}",
+            data: uata,
+            dataType: 'json',
+            traditional: true,
+            success: function (data) {
+                if (data.code > 0) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 5, time: 1000}, function () {
+                        location.reload();
+                    });
+                }
+            }
+        });
+    }
+
+
+</script>
+{/block}

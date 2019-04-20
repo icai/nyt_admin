@@ -1,0 +1,340 @@
+{extend name="/base"/}
+{block name="main"}
+<style>.am-table > thead:first-child > tr:first-child > th{text-align:center;}.am-table-striped > tbody > tr:nth-child(odd) > td,.am-table > tbody > tr > td{line-height:86px;text-align:center;}.am-btn-group > .am-btn:first-child:not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:last-child:not(:first-child),.am-btn-group > .am-btn:not(:first-child):not(:last-child):not(.am-dropdown-toggle),.am-btn-group > .am-btn:first-child{margin-top:8px;}.resth button{margin-right:5px;}.cust-btn{font-size:14px;padding:5px 10px;}.cust-btn-one{margin-left:-20px;}.cust-btn-activate{border-bottom:solid 2px cornflowerblue;}</style>
+<div class="tpl-portlet-components">
+    <div class="portlet-title">
+        <div class="caption font-green bold">
+            <span class="am-icon-ioxhost"></span> 关注审核列表
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+                <div class="input-icon right">
+                    <i class="am-icon-search" onclick="turtle('all');"></i>
+                    <input type="text" class="form-control form-control-solid" id="fz_name" value="{$hazy_name}"
+                           placeholder="搜索用户名称...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-block">
+        <div class="am-g">
+            <div class="am-u-sm-6 am-u-md-7">
+                <div class="am-btn-toolbar" style="margin: 10px 0px 5px 20px;">
+                    <div class="am-btn-group am-btn-group-xs resth">
+                        <a href="{:url('compass/savour')}&hazy_bering={$hazy_bering}&egon=0" class="cust-btn cust-btn-one {if $egon==0}cust-btn-activate{/if}">全部</a>
+                        <a href="{:url('compass/savour')}&hazy_bering={$hazy_bering}&egon=1" class="cust-btn {if $egon==1}cust-btn-activate{/if}">待审核</a>
+                        <a href="{:url('compass/savour')}&hazy_bering={$hazy_bering}&egon=2" class="cust-btn {if $egon==2}cust-btn-activate{/if}">已通过</a>
+                        <a href="{:url('compass/savour')}&hazy_bering={$hazy_bering}&egon=3" class="cust-btn {if $egon==3}cust-btn-activate{/if}">已拒绝</a>
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-6 am-u-md-5" style="text-align: right;">
+                {if $egon==0||$egon==1}
+                <button type="button" class="am-btn am-btn-xs am-btn-success" onclick="rebatch('0');">
+                    批量同意
+                </button>
+                <button type="button" class="am-btn am-btn-xs am-btn-danger" onclick="rebatch('1');">
+                    批量拒绝
+                </button>
+                {else}
+                <span style="background: orangered; color: white;padding: 5px 10px;border-radius: 3px;cursor: pointer;font-size: 12px;" onclick="rebatch('2');">
+                    批量删除
+                </span>
+                {/if}
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-form">
+                    <table class="am-table am-table-striped am-table-hover table-main">
+                        <thead>
+                        <tr>
+                            <th width="7%">
+                                <input id="withole" type="checkbox" class="tpl-table-fz-check">全选
+                            </th>
+                            <th width="10%">用户头像</th>
+                            <th width="10%">用户名称</th>
+                            <th width="10%">关注圈子</th>
+                            <th width="10%">加入理由</th>
+                            <th width="10%">申请时间</th>
+                            <th width="10%">审核时间</th>
+                            <th width="12%">状态</th>
+                            <th width="14%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td class="am-hide-sm-only">
+                                <input type="checkbox" class="tpl-table-fz-check elctive" value="{$vo.id}">
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <img src="{$vo.user_head_sculpture}" style="width: 78px;height: 78px;border-radius: 50%;">
+                            </td>
+                            <td class="am-hide-sm-only">
+                                <a href="{:url('user/index')}&hazy_name={$vo.user_wechat_open_id}" target="_blank" title="{$vo.user_nick_name|emoji_decode}">
+                                {$vo.user_nick_name|emoji_decode|subtext=10}
+                                </a>
+                            </td>
+                            <td class="am-hide-sm-only">{$vo.realm_name}</td>
+                            <td class="am-hide-sm-only">
+                                <span style="background: deepskyblue;border-radius: 3px;color: white;padding: 5px 10px;cursor: pointer;" onclick="tance('{$vo.id}');">查 看</span>
+                            </td>
+                            <td class="am-hide-sm-only">{:date('Y-m-d H:i:s',$vo.sult_time)}</td>
+                            <td class="am-hide-sm-only">{if $vo.rest_time}{:date('Y-m-d H:i:s',$vo.rest_time)}{/if}</td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status == 0}
+                                <span style="background: orange; color: white;padding: 5px;border-radius: 3px;">待审核</span>
+                                {elseif $vo.status == 1}
+                                <span style="background: lightseagreen; color: white;padding: 5px;border-radius: 3px;">已通过</span>
+                                {elseif $vo.status == 2}
+                                <span style="background: red; color: white;padding: 5px;border-radius: 3px;">已拒绝</span>
+                                {/if}
+                            </td>
+                            <td class="am-hide-sm-only">
+                                {if $vo.status == 0}
+                                <button type="button" class="am-btn am-btn-xs am-btn-success" style="background: #5eb95e;" onclick="uknow('{$vo.id}','1');">
+                                    同意
+                                </button>
+                                <button type="button" class="am-btn am-btn-xs am-btn-danger" style="background: #be2924;" onclick="uknow('{$vo.id}','2');">
+                                    拒绝
+                                </button>
+                                {else}
+                                <span style="background: orangered; color: white;padding: 5px 10px;border-radius: 3px;cursor: pointer;" onclick="uknow('{$vo.id}','3');">
+                                    <span class="am-icon-trash-o"></span> 删 除
+                                </span>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <div class="am-cf">
+                        <div class="am-fr">
+                            {$list->render()}
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tpl-alert"></div>
+    <textarea id="editor" style="width: 600px;display: none;"></textarea>
+</div>
+{/block}
+{block name="script"}
+<script>
+    !function () {
+        $('#withole').click(function () {
+            var wecked = $(this).prop('checked');
+            if (wecked) {
+                $('.elctive').prop('checked', true);
+            } else {
+                $('.elctive').prop('checked', false);
+            }
+        });
+        $('.elctive').click(function () {
+            var jack = 1;
+            $('.elctive').each(function () {
+                var weck = $(this).prop('checked');
+                if (weck == false) {
+                    jack = 0;
+                    return false;
+                }
+            });
+            if (jack) {
+                $('#withole').prop('checked', true);
+            } else {
+                $('#withole').prop('checked', false);
+            }
+        });
+    }();
+
+    function rebatch(thorough) {
+        var tired = false;
+        $('.elctive').each(function () {
+            if ($(this).prop('checked')) {
+                tired = true;
+                return false;
+            }
+        });
+        if (!tired) {
+            layer.alert('很抱歉，当前没有选中要操作的数据', {'title': '系统提示'});
+            return;
+        }
+
+        switch (thorough)
+        {
+            case "0":
+                var rough = "您确定要批量同意选中的用户关注此圈子吗？";
+                break;
+            case "1":
+                var rough = "您确定要批量拒绝选中的用户关注此圈子吗？";
+                break;
+            case "2":
+                var rough = "您确定要批量删除选中的数据吗？";
+                break;
+        }
+        layer.confirm(rough, {
+            btn: ['确定', '取消'], 'title': '提示'
+        }, function (index) {
+            var i = 0;
+            var j = 0;
+            $('.elctive').each(function () {
+                if ($(this).prop('checked')) {
+                    var suid = $(this).val();
+                    i++;
+                    switch (thorough)
+                    {
+                        case "0":
+                            j += setrike(suid, '1', '1');
+                            break;
+                        case "1":
+                            j += setrike(suid, '2', '1');
+                            break;
+                        case "2":
+                            j += savourintDel(suid, '1');
+                            break;
+                    }
+                }
+            });
+            if (i == j) {
+                layer.close(index);
+                layer.msg('批量操作成功', {icon: 1, time: 1000}, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg('未知错误', {icon: 5, time: 1600}, function () {
+                    location.reload();
+                });
+            }
+        }, function (index) {
+            layer.close(index);
+        });
+    }
+
+    function uknow(suid, status) {
+
+        switch (status){
+            case "1":
+                var rough = "您确定要同意用户关注此圈子吗？";
+                break;
+            case "2":
+                var rough = "您确定要拒绝用户关注此圈子吗？";
+                break;
+            case "3":
+                var rough = "您确定要删除这条的数据吗吗？";
+                break;
+        }
+        if (status == 1 || status == 2) {
+            layer.confirm(rough, {
+                btn: ['确定', '取消'], 'title': '系统提示'
+            }, function (index) {
+                layer.close(index);
+                setrike(suid, status);
+            }, function (index) {
+                layer.close(index);
+            });
+        } else {
+            layer.confirm(rough, {
+                btn: ['确定', '取消'], 'title': '系统提示'
+            }, function (index) {
+                layer.close(index);
+                savourintDel(suid);
+            }, function (index) {
+                layer.close(index);
+            });
+        }
+    }
+
+    var ulock = false;
+    function setrike(suid, status, batch) {
+        if (!ulock) {
+            ulock = true;
+            var recode = 0;
+            $.ajax({
+                type: "post",
+                url: "{:url('compass/arcanum')}",
+                async: false,
+                data: {'suid': suid, 'status': status},
+                dataType: 'json',
+                success: function (data) {
+                    if (batch == 1) {
+                        ulock = false;
+                        if (data.code > 0) {
+                            recode = 1;
+                        } else {
+                            recode = 0;
+                        }
+                    } else {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1600}, function () {
+                                ulock = false;
+                            });
+                        }
+                    }
+                }
+            });
+            return recode;
+        }
+    }
+
+    var elock = false;
+    function savourintDel(suid, batch) {
+        if (!elock) {
+            elock = true;
+            var recode = 0;
+            $.ajax({
+                type: "post",
+                url: "{:url('compass/savour_link')}",
+                async: false,
+                data: {'suid': suid},
+                dataType: 'json',
+                success: function (data) {
+                    if (batch == 1) {
+                        elock = false;
+                        if (data.code > 0) {
+                            recode = 1;
+                        } else {
+                            recode = 0;
+                        }
+                    } else {
+                        if (data.code > 0) {
+                            layer.msg(data.msg, {icon: 1, time: 1000}, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.msg, {icon: 5, time: 1600}, function () {
+                                elock = false;
+                            });
+                        }
+                    }
+                }
+            });
+            return recode;
+        }
+    }
+
+
+    function tance(ecid) {
+        $.getJSON("{:url('compass/savour_tance')}", {'ecid': ecid}, function (data) {
+            layer.msg(data.info);
+        });
+    }
+
+
+    function turtle() {
+        var fz_name = $.trim($('#fz_name').val());
+        if (fz_name)
+            location.href = "{:url('compass/savour')}&hazy_bering={$hazy_bering}&egon={$egon}&hazy_name=" + fz_name + "&page={$page}";
+        else
+            location.href = "{:url('compass/savour')}&hazy_bering={$hazy_bering}&egon={$egon}&page={$page}";
+    }
+
+</script>
+{/block}
